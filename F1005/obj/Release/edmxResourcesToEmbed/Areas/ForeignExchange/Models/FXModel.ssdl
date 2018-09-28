@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MVCFX.Models.Model1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Daily0905">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="幣別" Type="varchar" MaxLength="50" />
+    <Property Name="現金買入" Type="varchar" MaxLength="50" />
+    <Property Name="現金賣出" Type="varchar" MaxLength="50" />
+    <Property Name="即期買入" Type="varchar" MaxLength="50" />
+    <Property Name="即期賣出" Type="varchar" MaxLength="50" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <EntityType Name="TradeTable">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MClass" Type="nvarchar" MaxLength="50" />
+    <Property Name="NTD" Type="float" />
+    <Property Name="USD" Type="float" />
+    <Property Name="FX" Type="float" />
+    <Property Name="tax" Type="float" />
+    <Property Name="Ttime" Type="datetime" />
+    <Property Name="TClass" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="MVCFXModelsModel1ModelStoreContainer">
+    <EntitySet Name="Daily0905" EntityType="Self.Daily0905" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TradeTable" EntityType="Self.TradeTable" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

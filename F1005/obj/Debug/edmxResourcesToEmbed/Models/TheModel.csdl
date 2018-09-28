@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Fund">
+    <Key>
+      <PropertyRef Name="Serial_Number" />
+    </Key>
+    <Property Name="Serial_Number" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FundName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BuyOrSell" Type="Boolean" Nullable="false" />
+    <Property Name="Fee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Units" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="NAV" Type="Double" Nullable="false" />
+    <Property Name="CashFlow" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Fund" EntityType="Self.Fund" />
+    <EntitySet Name="Insurance" EntityType="DatabaseModel.Insurance" />
+  </EntityContainer>
+  <EntityType Name="Insurance">
+    <Key>
+      <PropertyRef Name="Serial_Number" />
+    </Key>
+    <Property Name="Serial_Number" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="InsuranceName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BuyDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CashFlow" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+  </EntityType>
+</Schema>

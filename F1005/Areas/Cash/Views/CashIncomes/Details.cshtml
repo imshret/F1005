@@ -1,0 +1,66 @@
+﻿@model F1005.Models.CashIncome
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CashIncome</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InCashType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InCashType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InNote)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InNote)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SummaryTable.TradeType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SummaryTable.TradeType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.InCashID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

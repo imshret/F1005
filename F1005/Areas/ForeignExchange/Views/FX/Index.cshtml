@@ -1,0 +1,241 @@
+﻿@model  F1005.Models.FXtradeTable
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container-fluid" style="width:60%;">
+    <h2>外匯買賣</h2>
+    <div class="row">
+        <div class="col-md-12" style="padding:0px 0px 10px 0px;">
+            <div class="btn-group">
+                <button type="button" class="btn-sb btn-primary" id="btnbuy">買入</button>
+                <button type="button" class="btn-sb btn-primary" id="btnsell">賣出</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <span class="badge badge-primary">結構幣別</span>
+            </div>
+            <div class="col-md-9">
+                <select id="moneyselect" onchange="selectfc()"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <span class="badge badge-primary">目前匯率</span>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="nowfc" class="form-control" disabled>
+            </div>
+            <div class="col-md-3">
+                <span class="badge badge-primary">輸入匯率</span>
+
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="ExchargeRate" class="form-control" oninput="inputvalue()">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="d1" class="row" style="padding:10px;background-color:antiquewhite;">
+                    <div class="col-md-12">
+                        <input type="radio" id="r1" name="radio1" value="以外幣購買" checked="checked" onclick="radiochecked()">
+                    </div>
+                    <div class="col-md-3">
+                        <p id="p1" class="label label-primary" style="font-size:16px">以外幣買入
+                        <p>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="r11" class="form-control" oninput="inputvalue()">
+                    </div>
+                    <div class="col-md-3">換算新台幣</div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="r12" disabled>
+                    </div>
+                </div>
+                <div id="d2" class="row" style="padding:10px">
+                    <div class="col-md-12">
+                        <input type="radio" id="r2" name="radio1" value="以新台幣購買" onclick="radiochecked()">
+                    </div>
+                    <div class="col-md-3">
+                        <p id="p2" class="label label-primary" style="font-size:16px">以新臺幣買入</p>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="r21" class="form-control" oninput="inputvalue()">
+                    </div>
+                    <div class="col-md-3">換算外幣</div>
+                    <div class="col-md-9">
+                        <input type="text" id="r22" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="badge badge-default">匯率優惠</span>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="fxpre" class="form-control" id="tax" oninput="inputvalue()">(百分比)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p id="p3" class="label label-primary" style="font-size:16px">總支出新臺幣</p>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="fxpre" class="form-control" id="r4" disabled>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="label label-primary" style="font-size:16px">備註</p>
+                    </div>
+                    <div class="col-md-9">
+                        <textarea id="note"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="label label-primary" style="font-size:16px">不要連動新臺幣帳戶</p>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="checkbox" id="tf">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-warning" onclick="btncheck()">@Html.ActionLink("確認", "Create", "TradeTables")</button>
+        </div>
+    </div>
+</div>
+
+    @section styles
+{
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    }
+    @section scripts
+{
+        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+
+        <script>
+            function loadmoney() {
+                $.get("/api/FX/Getmoney", { name: "value" },
+                    function (data, textStatus, jqXHR) {
+                        var arr = $.map(data, function (qq) { return qq });
+                        for (i = 0; i < arr.length; i++) {
+                            var arrr = $.map(arr[i], function (qq) { return qq });
+                            document.getElementById('moneyselect').insertAdjacentHTML('beforeEnd', '<option value=' + arrr[1] + '>' + arrr[1] + '</option>')
+                        }
+                    },
+                    "json"
+                );
+            }
+
+            function radiochecked() {
+                if (document.getElementById("r1").checked) {
+                    document.getElementById("r11").disabled = false;
+                    document.getElementById("r21").disabled = true;
+                    document.getElementById("r21").value = "";
+                    document.getElementById("r22").value = "";
+                    document.getElementById("r4").value = "";
+                    $('#d1').css('background-color', 'antiquewhite');
+                    $('#d2').css('background-color', 'white');
+                }
+                else {
+                    document.getElementById("r11").disabled = true;
+                    document.getElementById("r21").disabled = false;
+                    document.getElementById("r11").value = "";
+                    document.getElementById("r12").value = "";
+                    document.getElementById("r4").value = "";
+                    $('#d1').css('background-color', 'white');
+                    $('#d2').css('background-color', 'antiquewhite');
+                }
+            }
+
+            function selectfc() {
+                var rec = document.getElementById("moneyselect").value;
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/api/FX/Getnowfc",
+                        data: JSON.stringify(rec), //重要!(把物件轉為JSON格式)
+                        dataType: "json",
+                        success: function (response) {
+                            var arr = $.map(response, function (qq) { return qq });
+                            $('#nowfc').val(arr[0]);
+                        }
+                    });
+            }
+
+            function inputvalue() {
+                if (document.getElementById("r1").checked) {
+                    var input = document.getElementById("r11").value;
+                    var fc = document.getElementById("ExchargeRate").value;
+                    var fxpre = document.getElementById("tax").value;
+                    var total = input * fc;
+                    var tototal = total * (1 - fxpre / 100)
+                    $('#r12').val(total);
+                    $('#r4').val(tototal);
+                }
+                else {
+                    var input = document.getElementById("r21").value;
+                    var fc = document.getElementById("ExchargeRate").value;
+                    var fxpre = document.getElementById("tax").value;
+                    var total = input / fc;
+                    var tototal = input * (1 - fxpre / 100)
+                    $('#r22').val(total.toFixed(1));
+                    $('#r4').val(tototal);
+                }
+            }
+            function btncheck() {
+                var ck = document.getElementById("r1").checked
+                if (ck) {
+                    localStorage.USD = document.getElementById("r11").value;
+                    localStorage.NTD = document.getElementById("r4").value;
+                }
+                else {
+                    localStorage.USD = document.getElementById("r22").value;
+                    localStorage.NTD = document.getElementById("r4").value;
+                }
+                localStorage.tax = document.getElementById("tax").value;
+                localStorage.CurrencyClass = document.getElementById("moneyselect").value;
+                localStorage.ExchargeRate = document.getElementById("ExchargeRate").value;
+                localStorage.note = document.getElementById("note").value;
+                localStorage.tf = document.getElementById("tf").checked;
+            }
+            $('#btnbuy').bind('click', function () {
+                localStorage.TradeClass = "買入";
+                document.getElementById("p1").innerText = "以外幣買入";
+                document.getElementById("p2").innerText = "以新臺幣買入";
+                document.getElementById("p3").innerText = "總支出新臺幣";
+                document.getElementById("tf").disabled = false;
+                $('#p1').attr({
+                    class: 'label label-primary',
+                }).css("font-size", "16px");
+                $('#p2').attr({
+                    class: 'label label-primary',
+                }).css("font-size", "16px");
+            })
+            $('#btnsell').bind('click', function () {
+                localStorage.TradeClass = "賣出";
+                document.getElementById("p1").innerText = "以外幣賣出";
+                document.getElementById("p2").innerText = "以新臺幣賣出";
+                document.getElementById("p3").innerText = "總收入新臺幣";
+                document.getElementById("tf").disabled = true;
+                $('#p1').attr({
+                    class: 'label label-success',
+                }).css("font-size", "16px");
+                $('#p2').attr({
+                    class: 'label label-success',
+                }).css("font-size", "16px");
+            })
+
+            $(function () {
+                localStorage.TradeClass = "買入";
+                loadmoney();
+                radiochecked();
+                selectfc()
+            });
+        </script>
+    }

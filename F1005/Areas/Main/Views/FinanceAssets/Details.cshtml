@@ -1,0 +1,50 @@
+﻿@model MyjsGrid.Models.FinanceAsset
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FinanceAsset</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TransNo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

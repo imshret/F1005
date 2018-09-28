@@ -1,0 +1,444 @@
+﻿@model IEnumerable<MyjsGrid.Models.FinanceAsset>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*jsGrid Table*@
+<div class="container" style="background-color:lavenderblush">
+	<div class="jumbotron">
+		<h2><i class="glyphicon glyphicon-th-list"></i>  資產明細表</h2>
+	</div>
+	<div id="jsGrid"></div>
+</div>
+
+@*Draw 資產分配統計圖*@
+<div class="container" style="background-color:lavenderblush">
+    <div class="jumbotron">
+        <h2><i class="glyphicon glyphicon-stats"></i>  資產分配統計圖</h2>
+    </div>
+	<div class="col-md-8 col-md-offset-2">
+		<canvas id="barChart"></canvas>
+	</div>
+</div>
+
+@*Draw Doughnut*@
+<div class="container" style="background-color:lavenderblush">
+    <div class="jumbotron">
+        <h2><i class="glyphicon glyphicon-stats"></i>  資產分布百分比</h2>
+    </div>
+    <div class="row" style="height:350px">
+        <div class="col-lg-6">
+            <canvas id="Doughnut"></canvas>
+        </div>
+        @*Draw Pie*@
+        <div class="col-lg-6">
+            <canvas id="Pie"></canvas>
+        </div>
+    </div>
+</div>
+
+
+@*Draw 資產分配統計圖*@
+<div class="container" style="background-color:lavenderblush">
+    <div class="jumbotron">
+        <h2><i class="glyphicon glyphicon-stats"></i>  現金資產新增歷史</h2>
+    </div>
+    <div class="col-md-8 col-md-offset-2">
+        <canvas id="GetCashBar"></canvas>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+			//init();
+			$.notify("Welcome Back", "success");
+			$(function () {
+				$('#main-menu').smartmenus({
+					subMenusSubOffsetX: 1,
+					subMenusSubOffsetY: -8
+				});
+			});
+		});
+
+
+		//script初始化
+        function init() {
+            $.ajax({
+                type: "Get",
+                url:"@Url.Action("GetList", "FinanceAssets")",
+            }).done(function (res) {
+                var MyDateField = function (config) {
+                    jsGrid.Field.call(this, config);
+                };
+
+                MyDateField.prototype = new jsGrid.Field({
+
+                    css: "date-field",            // redefine general property 'css'
+                    align: "center",              // redefine general property 'align'
+
+                    myCustomProperty: "foo",      // custom property
+
+                    sorter: function (date1, date2) {
+                        return new Date(date1) - new Date(date2);
+                    },
+
+                    itemTemplate: function (value) {
+                        return new Date(value).toDateString();
+                    },
+
+                    insertTemplate: function (value) {
+                        return this._insertPicker = $("<input>").datepicker({ defaultDate: new Date() });
+                    },
+
+                    editTemplate: function (value) {
+                        return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
+                    },
+
+                    insertValue: function () {
+                        return this._insertPicker.datepicker("getDate").toISOString();
+                    },
+
+                    editValue: function () {
+                        return this._editPicker.datepicker("getDate").toISOString();
+                    }
+                });
+
+				jsGrid.fields.date = MyDateField;
+				var filter = $("#grid").jsGrid("getFilter");
+				//var AssetType = [
+				//	{ Name: "---請選擇---", Id: 0 },
+				//	{ Name: "現金", Id: 1 },
+				//	{ Name: "股票", Id: 2 },
+				//	{ Name: "基金", Id: 3 },
+				//	{ Name: "外匯", Id: 4 },
+				//	{ Name: "儲蓄險", Id: 5 },
+				//];
+
+				$("#jsGrid").jsGrid({
+					width: "100%",
+					height: "400px",
+
+					filtering: true,
+					inserting: true,
+					editing: true,
+					sorting: true,
+					paging: true,
+					autoload: true,
+					pageSize: 10,
+					pageButtonCount: 5,
+					deleteConfirm: "Do you really want to delete the client?",
+						
+                    data: res,
+
+                    controller: {
+                        loadData: function (filter) {
+                            return $.ajax({
+                                type: "GET",
+                                url: "@Url.Action("GetList", "FinanceAssets")",
+                                data: filter
+                            });
+                        },
+
+                        insertItem: function (item) {
+                            return $.ajax({
+                                type: "POST",
+                                url: "@Url.Action("Insert","FinanceAssets")",
+                                data: item
+                            }).done(function () {
+								$("#jsGrid").jsGrid("loadData");
+								$.notify("新增成功", "success");
+								LoadBarChart();
+								LoadDoughnut();
+								LoadPie();
+								GetDateHis();
+								GetAlertCash(); //現金低於1000通知
+                                })
+                        },
+
+                        updateItem: function (item) {
+                            return $.ajax({
+                                type: "PUT",
+                                url: "@Url.Action("Edit", "FinanceAssets")",
+                                data: item
+                            }).done(function () {
+								$("#jsGrid").jsGrid("loadData");
+								$.notify("修改成功", "success");
+								LoadBarChart();
+								LoadDoughnut();
+								LoadPie();
+								GetDateHis();
+								$('#barChart').html(function () { LoadBarChart();})
+								GetAlertCash(); //現金低於1000通知
+                            });
+                        },
+
+                        deleteItem: function (item) {
+                            var id = item.TransNo;
+                            return $.ajax({
+                                type: "Delete",
+                                url: "@Url.Action("Delete", "FinanceAssets")/"+id,
+                                data: item
+                            }).done(function (res) {
+								$('#jsGrid').jsGrid("loadData");
+								$.notify("刪除成功", "warn");
+								LoadBarChart();
+								LoadDoughnut();
+								LoadPie();
+								GetDateHis();
+								GetAlertCash(); //現金低於1000通知
+                            });
+                        },
+                    },
+
+                    fields: [
+                        { name: "TransNo", type: "text", title: "交易序號", width: 50, validate: "required" },
+                        { name: "UserNo", type: "text", title: "使用者代號", width: 50 },
+                        // { name: "Country", type: "select",items: res.TransType, valueField: "TransType", textField: "TransType" },
+						{ name: "TransType", type: "text", title: "交易類別", width:100},
+                        { name: "Amount", type: "text", title:"金額", width: 100 },
+                        { name: "TransDate", type: "date", title: "日期", sorting: false },
+                        { type: "control" }
+                    ],
+
+                });
+            }).fail(function (err) {
+                alert("Error");
+                });
+
+            //======================================
+
+			LoadBarChart();
+			LoadDoughnut();
+			LoadPie();
+			GetDateHis();
+			
+
+        }// 這是init()的尾巴
+
+
+        //資產分布長條圖
+        function LoadBarChart() {
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetBarChart","FinanceAssets")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                var dataAmount = [];
+                var dataType = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    dataType.push(response[i].Type);
+                    dataAmount.push(response[i].TotalAmount)
+                };
+				var ctx = document.getElementById("barChart").getContext("2d");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dataType,
+                        datasets: [{
+                            label: "資產分配圖",
+                            data: dataAmount,
+                            backgroundColor: [
+                                'rgba(255,99,135,0.2)',
+                                'rgba(255,99,135,0.2)',
+                                'rgba(255,99,135,0.2)',
+                                'rgba(255,99,135,0.2)',
+                                'rgba(255,99,135,0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                            ],
+                            borderWidth:2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: { beginAtZero: true }
+                                }],
+                        }
+                    }
+                });
+            }
+         });
+        }
+
+
+        //資產分布百分比甜甜圈
+        //Draw Doughnut
+        function LoadDoughnut() {
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetDoughnut", "FinanceAssets")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                var TypeAsset = [];
+                var AssetPG = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    TypeAsset.push(response[i].MyType);
+                    AssetPG.push(response[i].Percentage)
+                };
+				var ctxDoughnut = document.getElementById("Doughnut");
+                var DoughnutChart = new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: TypeAsset,
+                        datasets: [{
+                            data: AssetPG,
+                            backgroundColor: [
+                                window.chartColors.red,
+                                window.chartColors.blue,
+                                window.chartColors.orange,
+                                window.chartColors.yellow,
+                                window.chartColors.green,
+                            ]
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '資產分布%'
+                        },
+                    }
+                })
+            }
+          });
+        };
+
+        //資產分布百分比圓餅圖
+        //Draw Pie
+        function LoadPie() {
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetDoughnut", "FinanceAssets")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                var TypeAsset = [];
+                var AssetPG = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    TypeAsset.push(response[i].MyType);
+                    AssetPG.push(response[i].Percentage)
+                };
+				var ctxDoughnut = document.getElementById("Pie");
+                var DoughnutChart = new Chart(ctxDoughnut, {
+                    type: 'pie',
+                    data: {
+                        labels: TypeAsset,
+                        datasets: [{
+                            data: AssetPG,
+                            backgroundColor: [
+                                window.chartColors.red,
+                                window.chartColors.blue,
+                                window.chartColors.orange,
+                                window.chartColors.yellow,
+                                window.chartColors.green,
+                            ]
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '資產分布%'
+                        },
+                    }
+                })
+            }
+        });
+        };
+
+        //Date Cash
+        function GetDateHis() {
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetCashBar", "FinanceAssets")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                var MyDate = [];
+                var MyAmount = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    MyDate.push(response[i].MyDate);
+                    MyAmount.push(response[i].Amount)
+                };
+				var ctx = document.getElementById("GetCashBar").getContext("2d");
+                var myBarChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: MyDate,
+                        datasets: [{
+                            label: "現金資產歷史",
+                            data: MyAmount,
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(54, 162, 235, 1)',
+                            ],
+                            borderWidth:2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: { beginAtZero: true }
+                                }],
+                        }
+                    }
+                });
+            }
+        });
+      }
+
+
+		function GetAlertCash() {
+			$.ajax({
+				type: "Get",
+				url:"@Url.Action("GetAlertCash","FinanceAssets")"
+			}).done(function (res) {
+				if (res <= 1000) {
+					$.notify("現金資產低於1000", "warn");
+				}
+				else {
+					return;
+				}
+			}).fail(function (err) {
+				alert(err.responseText);
+			});
+		};
+
+		init();
+		
+
+
+    </script>
+}

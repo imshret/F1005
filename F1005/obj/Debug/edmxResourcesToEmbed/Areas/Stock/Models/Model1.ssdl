@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DBStockTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="StockHistory">
+    <Key>
+      <PropertyRef Name="stockTradeID" />
+    </Key>
+    <Property Name="stockTradeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="STId" Type="int" Nullable="false" />
+    <Property Name="stockID" Type="nvarchar" MaxLength="10" />
+    <Property Name="stockPirce" Type="decimal" Precision="6" Scale="2" />
+    <Property Name="stockAmount" Type="int" />
+    <Property Name="stockTP" Type="decimal" Precision="6" Scale="2" />
+    <Property Name="stockFee" Type="int" />
+    <Property Name="stockTax" Type="int" />
+    <Property Name="stockNetincom" Type="int" />
+    <Property Name="stockNote" Type="nvarchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="StockIDList">
+    <Key>
+      <PropertyRef Name="stockID" />
+    </Key>
+    <Property Name="stockID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="stockName" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="SummaryTable">
+    <Key>
+      <PropertyRef Name="STId" />
+    </Key>
+    <Property Name="STId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TradeType" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="date" Type="smalldatetime" Nullable="false" />
+    <Property Name="userID" Type="nvarchar" MaxLength="5" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_StockHistory_StockHistory">
+    <End Role="StockIDList" Type="Self.StockIDList" Multiplicity="0..1" />
+    <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockIDList">
+        <PropertyRef Name="stockID" />
+      </Principal>
+      <Dependent Role="StockHistory">
+        <PropertyRef Name="stockID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockHistory_SummaryTable">
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
+    <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SummaryTable">
+        <PropertyRef Name="STId" />
+      </Principal>
+      <Dependent Role="StockHistory">
+        <PropertyRef Name="STId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBStockTestModelStoreContainer">
+    <EntitySet Name="StockHistory" EntityType="Self.StockHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StockIDList" EntityType="Self.StockIDList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SummaryTable" EntityType="Self.SummaryTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_StockHistory_StockHistory" Association="Self.FK_StockHistory_StockHistory">
+      <End Role="StockIDList" EntitySet="StockIDList" />
+      <End Role="StockHistory" EntitySet="StockHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockHistory_SummaryTable" Association="Self.FK_StockHistory_SummaryTable">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="StockHistory" EntitySet="StockHistory" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

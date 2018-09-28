@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities">
+    <EntitySetMapping Name="Fund">
+      <EntityTypeMapping TypeName="DatabaseModel.Fund">
+        <MappingFragment StoreEntitySet="Fund">
+          <ScalarProperty Name="Serial_Number" ColumnName="Serial_Number" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="BuyOrSell" ColumnName="BuyOrSell" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
+          <ScalarProperty Name="Units" ColumnName="Units" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="NAV" ColumnName="NAV" />
+          <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Insurance">
+      <EntityTypeMapping TypeName="DatabaseModel.Insurance">
+        <MappingFragment StoreEntitySet="Insurance">
+          <ScalarProperty Name="Serial_Number" ColumnName="Serial_Number" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="InsuranceName" ColumnName="InsuranceName" />
+          <ScalarProperty Name="BuyDate" ColumnName="BuyDate" />
+          <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

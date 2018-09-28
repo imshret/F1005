@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "ExchangeRates";
+}
+
+
+
+
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <p style="font-size:larger">選擇交易貨幣</p>
+        <select id="currencies1"></select>
+    </div>
+    <div class="form-group">
+        <p style="font-size:larger">選擇兌換貨幣</p>
+        <select id="currencies2"></select>
+    </div>
+    <div class="row">
+        <div class="col-md-1"><input id="input" value="1" style="font-size:x-large" /></div>
+        <div class="col-md-1"><p id="p1" style="font-size:x-large"></p></div>
+        <div class="col-md-1"><p style="font-size:x-large">等於</p></div>
+        <div class="col-md-1"><input type="text" id="output" style="font-size:x-large" /></div>
+        <div class="col-md-1"><p id="p2" style="font-size:x-large"></p></div>
+        <div class="col-md-12"><button type="button" onclick="getRate()" class="btn btn-primary">換算</button></div>
+    </div>
+
+</div>
+
+<script>
+    function loadmoney() {
+        $.get("https://api.coinbase.com/v2/currencies", { name: "value" },
+            function (data, textStatus, jqXHR) {
+                var arr = $.map(data, function (qq) { return qq });
+                for (i = 0; i < arr.length; i++) {
+                    var arrr = $.map(arr[i], function (qq) { return qq });
+                    document.getElementById('currencies1').insertAdjacentHTML('beforeEnd', '<option value=' + arrr[0] + '>' + arrr[0] + "  (" + arrr[1] + ")" + '</option>');
+                    document.getElementById('currencies2').insertAdjacentHTML('beforeEnd', '<option value=' + arrr[0] + '>' + arrr[0] + "  (" + arrr[1] + ")" + '</option>');
+                }
+            },
+            "json"
+        );
+    }
+    function getRate() {
+        var show1 = document.getElementById('currencies1').value;
+        var url = "https://api.coinbase.com/v2/exchange-rates?currency=" + show1;
+        var show2 = document.getElementById('currencies2').value;
+        xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+            var response = JSON.parse(this.responseText);
+            document.getElementById('p1').innerHTML = show1;
+            document.getElementById('p2').innerHTML = show2;
+            var rate = response.data.rates[show2];
+
+            var money = document.getElementById('input').value * rate;
+            document.getElementById('output').value = money;
+        };
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("CB-VERSION", "2018-01-01");
+        xhr.send();
+    }
+    $(document).ready(function () {
+        loadmoney();
+    });
+</script>

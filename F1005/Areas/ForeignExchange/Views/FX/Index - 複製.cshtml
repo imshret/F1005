@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div id="MyDiv">
+    <div class="btn-group">
+        <button type="button" class="btn-sb btn-primary" id="btnbuy">買入</button>
+        <button type="button" class="btn-sb btn-primary" id="btnsell">賣出</button>
+    </div>
+</div>
+<br />
+<div>
+    <div class="form-group">
+        <div >結構幣別</div>
+        <div >
+            <select id="moneyselect" onchange="selectfc()"></select>
+        </div>
+        <div >目前匯率</div>
+        <input type="text" id="nowfc" class="form-control" disabled>
+        <div >輸入匯率</div>
+        <input type="text" id="inputFx" class="form-control">
+        <div style="padding:20px;">
+            <div class="row" style="border: 1px solid gold;">
+                <div class="col-lg-12">
+                    <input type="radio" id="r1" name="radio1" value="以外幣購買" checked="checked" onclick="radiochecked()">
+                </div>
+                <div class="col-lg-3">以外幣買入</div>
+                <div class="col-lg-9">
+                    <input type="text" id="r11" class="form-control" oninput="inputfconinput()">
+                </div>
+                <div class="col-lg-3">換算新台幣</div>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="r12" disabled>
+                </div>
+            </div>
+        </div>
+        <div style="padding:20px;">
+            <div class="row" style="border: 1px solid gold;">
+                <div class="col-lg-12">
+                    <input type="radio" id="r2" name="radio1" value="以新台幣購買" onclick="radiochecked()">
+                </div>
+                <div class="col-lg-3">以新台幣買入</div>
+                <div class="col-lg-9">
+                    <input type="text" id="r21" class="form-control" oninput="inputntdoninput()">
+                </div>
+                <div class="col-lg-3">換算外幣</div>
+                <div class="col-lg-9">
+                    <input type="text" id="r22" class="form-control" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">匯率優惠</div>
+        <div class="col-lg-9">
+            <input type="text" name="fxpre" class="form-control" id="tax">(百分比)
+        </div>
+        <div class="col-lg-12">總支出新台幣為:</div>
+        <div class="col-lg-9">
+            <input type="text" name="fxpre" class="form-control" id="r4">
+        </div>
+    </div>
+    <button type="button" class="btn btn-warning" onclick="btncheck()">@Html.ActionLink("確認", "Create", "TradeTables")</button>
+</div>
+
+@section styles
+{
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script>
+        function loadmoney() {
+            $.get("/api/FX/Getmoney", { name: "value" },
+                function (data, textStatus, jqXHR) {
+                    var arr = $.map(data, function (qq) { return qq });
+                    for (i = 0; i < arr.length; i++) {
+                        var arrr = $.map(arr[i], function (qq) { return qq });
+                        document.getElementById('moneyselect').insertAdjacentHTML('beforeEnd', '<option value=' + arrr[1] + '>' + arrr[1] + '</option>')
+                    }
+                },
+                "json"
+            );
+        }
+
+        function radiochecked() {
+            if (document.getElementById("r1").checked) {
+                document.getElementById("r11").disabled = false;
+                document.getElementById("r21").disabled = true;
+                document.getElementById("r21").value = "";
+                document.getElementById("r22").value = "";
+                document.getElementById("r4").value = "";
+            }
+            else {
+                document.getElementById("r11").disabled = true;
+                document.getElementById("r21").disabled = false;
+                document.getElementById("r11").value = "";
+                document.getElementById("r12").value = "";
+                document.getElementById("r4").value = "";
+            }
+        }
+
+        function selectfc() {
+            var rec = document.getElementById("moneyselect").value;
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/api/FX/Getnowfc",
+                    data: JSON.stringify(rec), //重要!(把物件轉為JSON格式)
+                    dataType: "json",
+                    success: function (response) {
+                        var arr = $.map(response, function (qq) { return qq });
+                        $('#nowfc').val(arr[0]);
+                    }
+                });
+        }
+
+        function inputfconinput() {
+            var input = document.getElementById("r11").value;
+            var fc = document.getElementById("inputFx").value;
+            var fxpre = document.getElementById("tax").value;
+            var total = input * fc;
+            var tototal = total * (1 - fxpre / 100)
+            $('#r12').val(total);
+            $('#r4').val(tototal);
+        }
+        function inputntdoninput() {
+            var input = document.getElementById("r21").value;
+            var fc = document.getElementById("inputFx").value;
+            var fxpre = document.getElementById("tax").value;
+            var total = input / fc;
+            var tototal = input * (1 - fxpre / 100)
+            $('#r22').val(total.toFixed(1));
+            $('#r4').val(tototal);
+        }
+        function btncheck() {
+            var ck = document.getElementById("r1").checked
+            if (ck) {
+                localStorage.USD = document.getElementById("r11").value;
+                localStorage.NTD = document.getElementById("r12").value;
+            }
+            else {
+                localStorage.USD = document.getElementById("r22").value;
+                localStorage.NTD = document.getElementById("r21").value;
+            }
+            localStorage.tax = document.getElementById("tax").value;
+            localStorage.TClass = "買入";
+            localStorage.MClass = document.getElementById("moneyselect").value;
+            localStorage.inputFx = document.getElementById("inputFx").value;
+        }
+
+        $(function () {
+            loadmoney();
+            radiochecked();
+            selectfc()
+        });
+    </script>
+}

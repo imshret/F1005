@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MVCFX.Models.Model1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Daily0905">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="幣別" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="現金買入" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="現金賣出" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="即期買入" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="即期賣出" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="TradeTable">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NTD" Type="Double" />
+    <Property Name="USD" Type="Double" />
+    <Property Name="FX" Type="Double" />
+    <Property Name="tax" Type="Double" />
+    <Property Name="Ttime" Type="DateTime" Precision="3" />
+    <Property Name="TClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="FXEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Daily0905" EntityType="Self.Daily0905" />
+    <EntitySet Name="TradeTable" EntityType="Self.TradeTable" />
+  </EntityContainer>
+</Schema>

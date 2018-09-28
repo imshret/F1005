@@ -1,0 +1,112 @@
+﻿@model F1005.Models.StockHistory
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="button" id="EXSeach" value="查詢可參與除權庫存" class="btn btn-default" onclick="SearchEXSInv()" />
+            <input type="button" id="EXSeach" value="計算獲利" class="btn btn-default" onclick="CalculateEXSD()" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        @using (Html.BeginForm("CreateEXS", "Stock", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "STOCKEXS" })
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName" })
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockID)
+
+                    @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StockEXSID" })
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    @Html.Label("除權日期")
+                    @Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "EXDate", @Value = "2018-09-20" })
+
+                </div>
+            </div>
+
+            //資料表欄位中 股價此表格的現金股利
+
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    @Html.Label("股票股利")
+                    <input type="text" class="form-control" id="StockSDiv" />
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockNote)
+                    @Html.TextBoxFor(m => m.stockNote, null, new { @class = "form-control", @id = "StockEXSNote" })
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("參與除權庫存")
+                    <input type="text" class="form-control" id="EXSDivInv" readonly="" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("參與除權庫存成本")
+                    <input type="text" class="form-control" id="EXSDivAvc" readonly="" />
+                </div>
+            </div>
+            //資料表欄位中的Netimcoe為此表格的現金股利收入
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("現金收入")
+                    @Html.TextBoxFor(m => m.stockNetincome, null, new { @class = "form-control", @id = "StockSDivNetincome", @readonly = "" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("報酬率")
+                    <input type="text" class="form-control" id="StockSDivR" readonly="" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("新庫存數量(張)")
+                    <input type="text" class="form-control" id="StockSDivInvN" readonly="" />
+                </div>
+            </div>
+
+            //資料表欄位中的股票張數為此表格的新增股數
+            <div class="form-group">
+                @Html.HiddenFor(m => m.stockAmount, new { @id = "StockDivDiff" })
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("新庫存成本")
+                    <input type="text" class="form-control" id="StockSDivAvcN" readonly="" />
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-right" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MVCFXModelsModel1ModelStoreContainer" CdmEntityContainer="FXEntities">
+    <EntitySetMapping Name="Daily0905">
+      <EntityTypeMapping TypeName="MVCFX.Models.Model1Model.Daily0905">
+        <MappingFragment StoreEntitySet="Daily0905">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="幣別" ColumnName="幣別" />
+          <ScalarProperty Name="現金買入" ColumnName="現金買入" />
+          <ScalarProperty Name="現金賣出" ColumnName="現金賣出" />
+          <ScalarProperty Name="即期買入" ColumnName="即期買入" />
+          <ScalarProperty Name="即期賣出" ColumnName="即期賣出" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TradeTable">
+      <EntityTypeMapping TypeName="MVCFX.Models.Model1Model.TradeTable">
+        <MappingFragment StoreEntitySet="TradeTable">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="MClass" ColumnName="MClass" />
+          <ScalarProperty Name="NTD" ColumnName="NTD" />
+          <ScalarProperty Name="USD" ColumnName="USD" />
+          <ScalarProperty Name="FX" ColumnName="FX" />
+          <ScalarProperty Name="tax" ColumnName="tax" />
+          <ScalarProperty Name="Ttime" ColumnName="Ttime" />
+          <ScalarProperty Name="TClass" ColumnName="TClass" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

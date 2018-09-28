@@ -1,0 +1,100 @@
+﻿@model F1005.Models.Insurances
+
+@{
+				/**/
+
+				ViewBag.Title = "Withdraw";
+}
+
+<h2>解約</h2>
+@using (Html.BeginForm())
+{
+	<div>
+		<hr />
+		<dl class="dl-horizontal">
+			@Html.HiddenFor(model=>model.SerialNumber)
+			<dt>
+				@Html.DisplayNameFor(model => model.InsuranceName)
+			</dt>
+
+			<dd id="InsuranceName">
+				@Html.EditorFor(model => model.InsuranceName)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.PurchaseDate)
+			</dt>
+
+			<dd id="PurchaseDate">
+				@Html.EditorFor(model => model.PurchaseDate)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.WithdrawDate)
+			</dt>
+
+			<dd id="WithdrawDate">
+				@Html.EditorFor(model => model.WithdrawDate)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.PaymentPerYear)
+			</dt>
+
+			<dd id="PaymentPerYear">
+				@Html.EditorFor(model => model.PaymentPerYear)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.PayYear)
+			</dt>
+
+			<dd id="PayYear">
+				@Html.EditorFor(model => model.PayYear)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.Withdrawal)
+			</dt>
+
+			<dd id="Withdrawal">
+				@Html.EditorFor(model => model.Withdrawal)
+			</dd>
+
+		</dl>
+	</div>
+	<div class="form-group col-md-4 ">
+		<div class="col-md-2 ">
+			<input type="submit" value="解約" class="btn btn-default" />
+		</div>
+	</div>
+
+}
+<p>
+	@Html.ActionLink("回到保險首頁", "Index")
+</p>
+
+@section scripts
+	{
+	@*<script>
+		function withdraw() {
+			var para =
+			{
+				"PurchaseDate": $('#PurchaseDate').text(),
+				"WithdrawDate": $('#WithdrawDate').text(),
+				"PayYear": $('#PayYear').text(),
+				"PaymentPerYear": $('#PaymentPerYear').text(),
+				"Withdrawal": $('#Withdrawal').text()
+			}
+			$.ajax({
+				type: "POST",
+				url: "/Insurances/Withdrawthis",
+				data: para
+			}).done(function () {
+				alert("解約成功");
+			}).fail(function (err) {
+				alert(err.responseText);
+			});
+		}
+	</script>*@
+}

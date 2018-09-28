@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MVC0905.Models.TradeTable>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MClass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NTD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FX)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ttime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TClass)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MClass)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NTD)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.USD)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FX)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tax)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ttime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TClass)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

@@ -1,0 +1,123 @@
+﻿@model MVC0905.Models.FXtradeTable
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>TradeTable</h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @id = "User" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrencyClass, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CurrencyClass, new { htmlAttributes = new { @class = "form-control", @id = "CurrencyClass" } })
+                @Html.ValidationMessageFor(model => model.CurrencyClass, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NTD, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NTD, new { htmlAttributes = new { @class = "form-control", @id = "NTD" } })
+                @Html.ValidationMessageFor(model => model.NTD, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.USD, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.USD, new { htmlAttributes = new { @class = "form-control", @id = "USD" } })
+                @Html.ValidationMessageFor(model => model.USD, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExchargeRate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExchargeRate, new { htmlAttributes = new { @class = "form-control", @id = "ExchargeRate" } })
+                @Html.ValidationMessageFor(model => model.ExchargeRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.tax, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tax, new { htmlAttributes = new { @class = "form-control", @id = "tax" } })
+                @Html.ValidationMessageFor(model => model.tax, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SummaryTable.TradeDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Now } })
+                @Html.ValidationMessageFor(model => model.SummaryTable.TradeDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SummaryTable.TradeType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SummaryTable.TradeType, new { htmlAttributes = new { @class = "form-control", @id = "TradeType" } })
+                @Html.ValidationMessageFor(model => model.SummaryTable.TradeType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.note, new { htmlAttributes = new { @class = "form-control", @id = "note" } })
+                @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    }
+
+    <div>
+        @Html.ActionLink("回到上一頁", "Index","FX")
+    </div>
+    <script>
+        if (localStorage.TClass == "賣出") {
+            document.getElementById('USD').value = localStorage.USD * -1;
+            document.getElementById('NTD').value = localStorage.NTD * -1;
+        }
+        else {
+            document.getElementById('USD').value = localStorage.USD;
+            document.getElementById('NTD').value = localStorage.NTD;
+        }
+
+        document.getElementById('tax').value = localStorage.tax;
+        document.getElementById('TClass').value = localStorage.TClass;
+        document.getElementById('ExchargeRate').value = localStorage.inputFx;
+        document.getElementById('CurrencyClass').value = localStorage.CurrencyClass;
+        document.getElementById('note').value = localStorage.note;
+
+    </script>
+</body>
+</html>
