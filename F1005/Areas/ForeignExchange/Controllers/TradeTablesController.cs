@@ -65,6 +65,38 @@ namespace F1005.Areas.ForeignExchange.Controllers
                 tradeTable.SummaryId = uid;
                 db.FXtradeTable.Add(tradeTable);
                 db.SaveChanges();
+                if (tradeTable.TradeClass == "賣出")
+                {
+                    CashIncome cashincome = new CashIncome();
+                    cashincome.UserName = Session["User"].ToString();
+                    cashincome.OID = uid;
+                    cashincome.InCashType = summaryTable.TradeType;
+                    cashincome.InDate = summaryTable.TradeDate;
+                    cashincome.InNote = tradeTable.TradeClass;
+                    var change = tradeTable.NTD * -1;
+                    cashincome.InAmount = Convert.ToInt32(change);
+                    db.CashIncome.Add(cashincome);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    CashExpense cashexpense = new CashExpense();
+                    cashexpense.UserName = Session["User"].ToString();
+                    cashexpense.OID = uid;
+                    cashexpense.ExCashType = summaryTable.TradeType;
+                    cashexpense.ExDate = summaryTable.TradeDate;
+                    cashexpense.ExNote = tradeTable.TradeClass;
+                    if (tradeTable.TradeClass == "買入(不要連動新臺幣帳戶)")
+                    {
+                        cashexpense.ExAmount = 0;
+                    }
+                    else
+                    {
+                        cashexpense.ExAmount = Convert.ToInt32(tradeTable.NTD);
+                    }
+                    db.CashExpense.Add(cashexpense);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             return View(tradeTable);
