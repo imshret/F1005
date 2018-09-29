@@ -10,76 +10,76 @@
 		{
 			@Html.AntiForgeryToken()
 
-			<div class="form-horizontal col-md-6" id="form">
-				<hr />
-				@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		<div class="form-horizontal col-md-6" id="form">
+			<hr />
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.InsuranceName, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control" } })
-						@Html.ValidationMessageFor(model => model.InsuranceName, "", new { @class = "text-danger" })
-					</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.InsuranceName, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.ValidationMessageFor(model => model.InsuranceName, "", new { @class = "text-danger" })
 				</div>
+			</div>
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDate", type = "date" } })
-						@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
-					</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDate", type = "date" } })
+					@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
 				</div>
+			</div>
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.WithdrawDate, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						@Html.EditorFor(model => model.WithdrawDate, new { htmlAttributes = new { @class = "form-control", id = "WithdrawDate", type = "date" } })
-						@Html.ValidationMessageFor(model => model.WithdrawDate, "", new { @class = "text-danger" })
-					</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.WithdrawDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.WithdrawDate, new { htmlAttributes = new { @class = "form-control", id = "WithdrawDate", type = "date" } })
+					@Html.ValidationMessageFor(model => model.WithdrawDate, "", new { @class = "text-danger" })
 				</div>
+			</div>
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.PaymentPerYear, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						@Html.EditorFor(model => model.PaymentPerYear, new { htmlAttributes = new { @class = "form-control", id = "PaymentPerYear" } })
-						@Html.ValidationMessageFor(model => model.PaymentPerYear, "", new { @class = "text-danger" })
-					</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PaymentPerYear, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PaymentPerYear, new { htmlAttributes = new { @class = "form-control", id = "PaymentPerYear" } })
+					@Html.ValidationMessageFor(model => model.PaymentPerYear, "", new { @class = "text-danger" })
 				</div>
+			</div>
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.PayYear, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						@Html.EditorFor(model => model.PayYear, new { htmlAttributes = new { @class = "form-control", id = "PayYear" } })
-						@Html.ValidationMessageFor(model => model.PayYear, "", new { @class = "text-danger" })
-					</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PayYear, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PayYear, new { htmlAttributes = new { @class = "form-control", id = "PayYear" } })
+					@Html.ValidationMessageFor(model => model.PayYear, "", new { @class = "text-danger" })
 				</div>
+			</div>
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.Withdrawal, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						@Html.EditorFor(model => model.Withdrawal, new { htmlAttributes = new { @class = "form-control", id = "Withdrawal" } })
-						@Html.ValidationMessageFor(model => model.Withdrawal, "", new { @class = "text-danger" })
-					</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.Withdrawal, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.Withdrawal, new { htmlAttributes = new { @class = "form-control", id = "Withdrawal"} })
+					@Html.ValidationMessageFor(model => model.Withdrawal, "", new { @class = "text-danger" })
 				</div>
+			</div>
 
-				<div class="form-group">
-					@Html.LabelFor(model => model.RelateCash, htmlAttributes: new { @class = "control-label col-md-2" })
-					<div class="col-md-10">
-						<div class="col-md-6">
-							@Html.RadioButtonFor(model => model.RelateCash, true, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })
-							<span>是,我想從現金資產扣款</span>
-						</div>
-						<div class="col-md-6">
-							@Html.RadioButtonFor(model => model.RelateCash, false, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })
-							<span>否,直接加入這筆保單</span>
-						</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.RelateCash, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					<div class="col-md-6">
+						@Html.RadioButtonFor(model => model.RelateCash, true, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })
+						<span>是,我想從現金資產扣款</span>
+					</div>
+					<div class="col-md-6">
+						@Html.RadioButtonFor(model => model.RelateCash, false, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })
+						<span>否,直接加入這筆保單</span>
+					</div>
 						@Html.ValidationMessageFor(model => model.RelateCash, "", new { @class = "text-danger" })
 					</div>
 				</div>
 
-				<div class="form-group col-md-12 ">
+			<div class="form-group col-md-12 ">
 					<div class="col-md-offset-6 ">
 						<input type="submit" value="確認新增" class="btn btn-default" />
 					</div>
@@ -91,13 +91,6 @@
 			<br />
 			<button class="btn" id="GetIRR" onclick="GetIRR()">試算報酬</button>
 			<h2 id="IRR">	</h2>
-
-		</div>
-		@*保險統計圖*@
-		<div class="container" style="background-color:lavenderblush">
-			<div class="col-md-8 col-md-offset-2" id="xx">
-				<canvas id="InsuranceChart"></canvas>
-			</div>
 		</div>
 	</div>
 
@@ -130,53 +123,5 @@
 				alert(err.responseText);
 			});
 		}
-
-		 function GetInsuranceChart() {
-				var MyTime = ["2018-09-01","2019-09-01","2020-09-01"];
-                var MyAmount = ["100","150","200"];
-     
-				var ctx = document.getElementById("InsuranceChart").getContext("2d");
-                var myBarChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-						labels: MyTime,
-                        datasets: [{
-							label: "保險年利率成長圖",
-							data: MyAmount,
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-                            ],
-                            borderColor: [
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-                            ],
-                            borderWidth:2
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: { beginAtZero: true }
-                                }],
-                        }
-                    }
-                });
-		}
-
-		$(document).ready(function () {
-			GetInsuranceChart();
-		});
 	</script>
 }

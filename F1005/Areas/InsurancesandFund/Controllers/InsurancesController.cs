@@ -209,7 +209,5 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             IRRCalculater calculater = new IRRCalculater();
             return Content(calculater.IRR(model));
         }
-
-
     }
 }

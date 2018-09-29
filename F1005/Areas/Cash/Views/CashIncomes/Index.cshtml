@@ -4,6 +4,64 @@
 	ViewBag.Title = "Index";
 }
 
+@*<h2>Index</h2>
+
+	<p>
+		@Html.ActionLink("Create New", "Create")
+	</p>
+	<table class="table">
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.UserName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.InCashType)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.InAmount)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.InDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.InNote)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SummaryTable.TradeType)
+			</th>
+			<th></th>
+		</tr>
+
+	@foreach (var item in Model) {
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.UserName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.InCashType)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.InAmount)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.InDate)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.InNote)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id=item.InCashID }) |
+				@Html.ActionLink("Details", "Details", new { id=item.InCashID }) |
+				@Html.ActionLink("Delete", "Delete", new { id=item.InCashID })
+			</td>
+		</tr>
+	}
+
+	</table>*@
+
 
 @*jsGrid Table*@
 <div class="container" style="background-color:lavenderblush">
@@ -126,7 +184,7 @@
 						sorting: true,
 						paging: true,
 						autoload: true,
-						pageSize: 10,
+						pageSize: 5,
 						pageButtonCount: 5,
 						deleteConfirm: "確定要刪除這筆資料?",
 						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
@@ -155,7 +213,7 @@
 									InAmount: item.InAmount,
 									InDate: item.InDate,
 									InNote: item.InNote
-								}
+								} 
 								return $.ajax({
 									type: "POST",
 									url: "@Url.Action("InsertIncome", "CashIncomes")",
@@ -167,7 +225,6 @@
 									LoadDoughnut();
 									LoadPie();
 									GetBalance();
-									clearCanvas();
 								})
 							},
 
@@ -183,7 +240,6 @@
 									LoadDoughnut();
 									LoadPie();
 									GetBalance();
-									clearCanvas();
 								});
 							},
 
@@ -200,7 +256,6 @@
 									LoadDoughnut();
 									LoadPie();
 									GetBalance();
-									clearCanvas();
 								});
 							},
 						},
@@ -224,12 +279,11 @@
 
 		};//init tail
 
-		function clearCanvas() {
-			$('#CashIncomeHis').remove();
-			$('#xx').append('<canvas id="CashIncomeHis"></canvas>');
-			container = document.getElementById("CashIncomeHis");
-			context = container.getContext("2d");
-		}
+		//Clear DateCash
+		//function ClearDateCash() {
+		//	$('#CashIncomeHis').remove();
+		//	$('#xx').append('<canvas id="CashIncomeHis"></canvas>');
+		//};
 
 		//Draw Date Cash
         function GetIncomeHis() {
@@ -239,63 +293,6 @@
             data: null,
             dataType: "json",
             success: function (response) {
-                var MyDate = [];
-                var MyAmount = [];
-                for (var i = 0; i <= response.length - 1; i++) {
-                    MyDate.push(response[i].MyDate);
-                    MyAmount.push(response[i].Amount)
-                };
-				var ctx = document.getElementById("CashIncomeHis").getContext("2d");
-                var myBarChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: MyDate,
-                        datasets: [{
-							label: "現金收入歷史紀錄",
-                            data: MyAmount,
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-                            ],
-                            borderColor: [
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-                            ],
-                            borderWidth:2
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: { beginAtZero: true }
-                                }],
-                        }
-                    }
-                });
-            }
-        });
-		}
-
-		function MonthChange() {
-			var d = document.getElementById("Month").value;
-			var month = d.substring(0, 1);
-			$.ajax({
-            type: "Get",
-            url: "@Url.Action("GetIncomeHisByMonth", "CashIncomes")/",
-			data: "month=" + month,
-            dataType: "json",
-				success: function (response) {
                 var MyDate = [];
                 var MyAmount = [];
                 for (var i = 0; i <= response.length - 1; i++) {
