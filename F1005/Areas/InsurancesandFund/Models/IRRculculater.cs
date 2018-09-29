@@ -50,7 +50,7 @@ namespace F1005.Areas.InsurancesandFund.Models
                 cashflow[i] = -data.PaymentPerYear;
             }
             cashflow[cashflow.Length - 1] = data.Withdrawal;
-            return Financial.IRR(ref cashflow).ToString("P");
+            return Financial.IRR(ref cashflow).ToString();
         }
     }
 }
