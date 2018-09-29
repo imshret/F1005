@@ -50,14 +50,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("後臺系統", "Admin", "Account", new { area = "" }, new { @class = "navbar-brand", @style = "color:white" })
+                @Html.ActionLink("後臺系統", "Index", "BS", new { area = "BStage" }, new { @class = "navbar-brand", @style = "color:white" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("最近新增資訊", "Index2", "Home", new { @style = "color:white" })</li>
-                    <li>@Html.ActionLink("股票", "Index2", "Home", new { @style = "color:white" })</li>
-                    <li>@Html.ActionLink("外匯", "Index2", "Home", new { @style = "color:white" })</li>
-                    <li>@Html.ActionLink("儲蓄險", "Index", "Insurances", null,new { @style = "color:white" })</li>
+                    <li>@Html.ActionLink("最近新增資訊", "Newly", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>                 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
