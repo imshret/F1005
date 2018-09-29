@@ -1,0 +1,55 @@
+﻿@model IEnumerable<F1005.Models.CashIncome>
+
+@{
+    ViewBag.Title = "IndexCashI";
+    Layout = null;
+}
+
+<h2>IndexCashI</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InCashType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InNote)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SummaryTable.TradeType)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InCashType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InNote)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
+        </td>
+    </tr>
+}
+
+</table>
