@@ -98,5 +98,16 @@ namespace F1005.Areas.ForeignExchange.Controllers
             });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult chartpie1()
+        {
+            var x = Session["User"].ToString();
+            var result = dc.FXtradeTable.Where(c => c.SummaryTable.UserName == x).GroupBy(c => c.CurrencyClass, c => c.USD ,(CurrencyClass, USD) => new
+            {
+                Currency = CurrencyClass,
+                USD = USD.Sum()
+            });
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

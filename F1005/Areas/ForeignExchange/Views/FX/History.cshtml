@@ -24,7 +24,7 @@
     <script>
         function LoadData() {
             var datatable = $('#myTable').DataTable({
-                ajax: "/api/FX/Getlist",
+                ajax: "@Url.Action("Getlist", "Money", new { Area = "ForeignExchange" }, null)",
                 columns: [
                     { title: '幣別', data: "CurrencyClass" },
                     { title: '即期買入', data: "OnlineBuy" },
