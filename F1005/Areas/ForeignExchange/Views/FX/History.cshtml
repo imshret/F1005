@@ -3,7 +3,7 @@
     ViewBag.Title = "Now";
 }
 
-<h2>目前匯率</h2> 
+<h2>目前匯率</h2>
 <div class="btn btn-group">
     @Html.ActionLink("匯率轉換", "ExchangeRates", "FX")
 </div>
@@ -15,12 +15,19 @@
 {
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <link href="~/Areas/Main/Smartmenus/sm-core-css.css" rel="stylesheet" />
+    <link href="~/Areas/Main/Smartmenus/sm-blue.css" rel="stylesheet" />
 }
 @section scripts
 {
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+
+    @*NavBar*@
+    <script src="~/Areas/Main/Smartmenus/jquery.smartmenus.js"></script>
+
     <script>
         function LoadData() {
             var datatable = $('#myTable').DataTable({
