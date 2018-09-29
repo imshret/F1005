@@ -453,11 +453,62 @@
 					});
 				}).fail(function (err) {
 					alert("Error");
-				});
-		}
+                });          
+                                 
+        }
+
+                function LoadJsGrid2() {
+			$.ajax({
+					type: "Get",
+					url: "@Url.Action("GetAllInv", "Stock")",
+				}).done(function (res) {
+					var MyDateField = function (config) {
+						jsGrid.Field.call(this, config);
+				};
+					
+                    $("#jsGridInv").jsGrid({
+						width: "100%",
+						height: "400px",
+
+						//filtering: true,
+						inserting: true,
+						editing: true,
+						sorting: true,
+						paging: true,
+						autoload: true,
+						pageSize: 5,
+						pageButtonCount: 5,
+						deleteConfirm: "確定要刪除這筆資料?",
+						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
+						pagePrevText: "上一頁",
+						pageNextText: "下一頁",
+						pageFirstText: "第一頁",
+						pageLastText: "最終頁",
+						noDataContent: "目前沒有紀錄",
+
+						data: res,
+
+
+						fields: [
+                            { name: "stockid", type: "text", title: "交易日期", width: 100 },
+                            { name: "stockamount", type: "text", title: "股票代碼", width: 100 },
+
+							{ type: "control" }
+						],
+
+					});
+				}).fail(function (err) {
+					alert("Error");
+                });          
+                                 
+        }
+
+
+
 
 		$(document).ready(function () {
-			LoadJsGrid();
+            LoadJsGrid();
+            LoadJsGrid2();
 		});
 
     </script>

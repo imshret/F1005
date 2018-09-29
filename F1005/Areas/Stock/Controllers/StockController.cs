@@ -65,6 +65,7 @@ namespace F1005.Areas.Stock.Controllers
                 db.SummaryTable.Add(summaryTable);
                 db.SaveChanges();
                 var id = db.SummaryTable.Select(c => c.STId).ToList().LastOrDefault();
+
                 //存入現金帳戶
                 CashIncome cashincome = new CashIncome();
                 cashincome.OID = id;
@@ -79,7 +80,7 @@ namespace F1005.Areas.Stock.Controllers
 
                 //存入股票交易記錄表
 
-                stockHistory.stockAmount = stockHistory.stockAmount * 1000;
+                stockHistory.stockAmount = stockHistory.stockAmount * (-1000);
                 stockHistory.STId = id;
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
@@ -100,7 +101,7 @@ namespace F1005.Areas.Stock.Controllers
             var SellInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome > 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
             BuyInv = (BuyInv != null) ? BuyInv : 0;
             SellInv = (SellInv != null) ? SellInv : 0;
-            var TotalInv = BuyInv - SellInv;
+            var TotalInv = BuyInv + SellInv;
             //買進記錄按日期排序
             var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
 
@@ -156,7 +157,7 @@ namespace F1005.Areas.Stock.Controllers
             var SellInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome > 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
             BuyInv = (BuyInv != null) ? BuyInv : 0;
             SellInv = (SellInv != null) ? SellInv : 0;
-            var TotalInv = BuyInv - SellInv
+            var TotalInv = BuyInv +SellInv
                 ;
             //買進記錄按日期排序
             var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
@@ -211,7 +212,7 @@ namespace F1005.Areas.Stock.Controllers
             var SellInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome > 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
             BuyInv = (BuyInv != null) ? BuyInv : 0;
             SellInv = (SellInv != null) ? SellInv : 0;
-            var TotalInv = BuyInv - SellInv;
+            var TotalInv = BuyInv + SellInv;
             //買進記錄按日期排序
             var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
 
@@ -363,6 +364,21 @@ namespace F1005.Areas.Stock.Controllers
                 stockDate = c.SummaryTable.TradeDate.ToShortDateString()
             });
             return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        //顯示user股票庫存
+        public ActionResult GetAllInv()
+        {
+            var username = Session["User"].ToString();
+            var InvList = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => c.stockAmount, (id, amount) => new
+            {
+                stockid = id,
+                stockamount = amount.Sum()
+            });
+            
+
+           
+            return Json(InvList, JsonRequestBehavior.AllowGet);
         }
 
     }
