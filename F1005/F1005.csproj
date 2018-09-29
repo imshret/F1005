@@ -175,6 +175,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\BStage\BStageAreaRegistration.cs" />
+    <Compile Include="Areas\BStage\Controllers\BSController.cs" />
     <Compile Include="Areas\Cash\CashAreaRegistration.cs" />
     <Compile Include="Areas\Cash\Controllers\CashExpensesController.cs" />
     <Compile Include="Areas\Cash\Controllers\CashIncomesController.cs" />
@@ -681,6 +683,15 @@
     <Content Include="Areas\InsurancesandFund\Views\Insurances\Withdraw.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ForeignExchange\Views\FX\ExchangeRates.cshtml" />
+    <Content Include="Areas\BStage\Views\web.config" />
+    <Content Include="Areas\BStage\Views\BS\IndexFX.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\IndexStock.cshtml" />
+    <Content Include="Areas\BStage\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\IndexCashI.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\IndexCashE.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\Index.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\IndexIs.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\IndexFund.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -863,6 +874,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\BStage\Models\" />
+    <Folder Include="Areas\BStage\Views\Shared\" />
     <Folder Include="Areas\Cash\Models\" />
     <Folder Include="Areas\ForeignExchange\Views\Shared\" />
     <Folder Include="Areas\InsurancesandFund\Views\Shared\" />

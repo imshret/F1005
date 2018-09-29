@@ -1,13 +1,1 @@
 
-.vs/F1005/v15/.suo
-*.ide
-*.ide-shm
-*.ide-wal
-*.dll
-*.pdb
-*.user
-*.cache
-
-F1005/obj/Debug/F1005.csproj.FileListAbsolute.txt
-*.pdb
-*.dll
