@@ -19,7 +19,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.InsuranceName, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control", id = "InsuranceName" } })
 					@Html.ValidationMessageFor(model => model.InsuranceName, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -89,8 +89,13 @@
 		<div class="form-horizontal col-md-6">
 			<br />
 			<br />
-			<button class="btn" id="GetIRR" onclick="GetIRR()">試算報酬</button>
-			<h2 id="IRR">	</h2>
+			<button class="btn" id="GetIRR" >試算報酬</button>
+			<h4 style="font-family:'Microsoft JhengHei'" id="IRR">	</h4>
+			<div class="container" style="background-color:lavenderblush">
+				<div class="col-md-6 " id="xx">
+					<canvas id="IRRchart"></canvas>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -115,13 +120,74 @@
 			}
 			$.ajax({
 				type: "POST",
-				url: "/Insurances/CalculateIRR",
+				url:" @Url.Action("CalculateIRR", "Insurances")",
 				data: para
 			}).done(function (result) {
-				$('#IRR').text(result);
+				$('#IRR').text("IRR-內部報酬率:"+(result * 100).toFixed(2)+"%");
+				var startyear = parseInt($('#PurchaseDate').val().substr(0, 4));
+				var totalyears = parseInt($('#WithdrawDate').val().substr(0, 4)) - parseInt($('#PurchaseDate').val().substr(0, 4))-1;
+				var payyears = parseInt($('#PayYear').val());
+				var paymentperyear = parseInt($('#PaymentPerYear').val());
+				var ratio = parseFloat(result)+1;
+				var MyDate = [];
+				var MyAmount = [];
+				for (var i = 0; i <= totalyears+1; i++) {
+					MyDate.push((startyear + i).toString());
+				};
+				MyAmount.push(paymentperyear);
+				for (var i = 0; i < payyears-1; i++)
+				{
+					MyAmount.push((paymentperyear + MyAmount[i] * ratio));
+				};
+				for (var i = payyears; i <= totalyears+1; i++)
+				{
+					MyAmount.push((MyAmount[i - 1] * ratio));
+				};
+
+				for (var i = 0; i < MyAmount.length; i++)
+				{
+					MyAmount[i] = MyAmount[i].toFixed(0);
+					MyAmount[i] = MyAmount[i].toString();
+				}
+				var MyBackground = [];
+				var MyBorder = [];
+				for (var i = 0; i < MyAmount.length; i++)
+				{
+					MyBackground.push('rgba(54, 162, 235, 0.5)');
+					MyBorder.push('rgba(54, 162, 235, 1)');
+				}
+
+
+					var ctx = document.getElementById("IRRchart").getContext("2d");
+				var myBarChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: MyDate,
+						datasets: [{
+							label:  "年度保單價值",
+							data: MyAmount,
+							backgroundColor: MyBackground,
+							borderColor: MyBorder,
+							borderWidth: 2
+						}]
+					},
+					options: {
+						scales: {
+							yAxes: [
+								{
+									ticks: { beginAtZero: true }
+								}],
+						}
+					}
+				});
 			}).fail(function (err) {
 				alert(err.responseText);
 			});
 		}
+
+		
+		$(document).ready(function () {
+			$('#GetIRR').click(GetIRR);
+		});
 	</script>
 }

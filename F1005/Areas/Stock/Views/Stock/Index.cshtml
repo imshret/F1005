@@ -4,7 +4,6 @@
 }
 
 
-<h1>hOme</h1>
 <div class="row">
     <div class="col-md-12">
         <ul class="nav nav-tabs">
@@ -92,14 +91,10 @@
     <script>
 
         $("#UserName").val("@Session["User"]");
-        ////檢查現金餘額是否足夠
-        //var checkcash = $("#CashAccount").prop("checked");
-        //var exp = parseInt($("#stockNetincome").val());
-        //var cashacc=parseInt($)
-        //var
-        //if (checkcash&) {
+        $("#UserName2").val("@Session["User"]");
+        $("#UserName3").val("@Session["User"]");
+          $("#UserName4").val("@Session["User"]");
 
-        //}
 
 
 
@@ -111,11 +106,12 @@
             var Price = (document.getElementById("StockbuyPrice").value) ;
             var Feerate = (document.getElementById("StockbuyFeerate").value) / 1000;
             var FeeMin = (document.getElementById("StockbuyMinFee").value);
-            var _Fee = parseInt(Amount * Price * Feerate*0.6);
+            var FeeDiscount = (document.getElementById("StockbuyDiscount").value) * 0.1;
+            var _Fee = parseInt(Amount * Price * Feerate * FeeDiscount);
             TotalFee = (_Fee > FeeMin) ? _Fee : FeeMin;
             TotalCost = Amount * Price +TotalFee;
             BEPoint = Price * (1 - Feerate) / (1 - Feerate - 0.003) ;
-            document.getElementById("stockFee").value = parseInt(TotalCost);
+            document.getElementById("stockFee").value = parseInt(TotalFee);
             document.getElementById("stockTax").value = 0;
             document.getElementById("stockNetincome").value = (0-TotalCost).toFixed(0);
             document.getElementById("StockbuyBEPoint").value = BEPoint.toFixed(2);
@@ -143,7 +139,7 @@
             }
         }
 
-
+        //計算目標價
         function CalculateTP() {
 
             var Amount = document.getElementById("StockbuyAmount").value;
@@ -210,16 +206,22 @@
                 var SellPrice = (document.getElementById("StocksellPrice").value) ;
                 var Feerate = (document.getElementById("StocksellFeerate").value) / 1000;
                 var Taxrate = (document.getElementById("StocksellTaxrate").value) / 1000;
+
+                var FeeMin = (document.getElementById("StocksellMinFee").value);
+                var FeeDiscount = (document.getElementById("StocksellDiscount").value) * 0.1;
+                var _Fee = parseInt(SellAmount * SellPrice * Feerate * FeeDiscount);
+                TotalSellFee = (_Fee > FeeMin) ? _Fee : FeeMin;
                 var Netincome=0
 
-                var TotalProfit = SellPrice * SellAmount * (1 - Feerate - Taxrate);
+                var TotalProfit =( SellPrice * SellAmount * (1 - Taxrate))-TotalSellFee;
                 var TotalCost = Avc * SellAmount;
                 Netincome = TotalProfit - TotalCost;
                 RR = Netincome / TotalCost * 100;
-                //沒辦法傳公式 可能型別錯誤
+
                 document.getElementById("stockSellFee").value =parseInt(SellPrice * SellAmount * Feerate);
                 document.getElementById("stockSellTax").value = parseInt(SellPrice * SellAmount * Taxrate);
-                document.getElementById("stocksellNetincome").value =Netincome.toFixed(0);
+                document.getElementById("StockSellProfit").value = parseInt(Netincome);
+                document.getElementById("stocksellNetincome").value = TotalProfit.toFixed(0);
                 document.getElementById("StocksellReturnrate").value = RR.toFixed(2);
 
             }

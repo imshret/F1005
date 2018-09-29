@@ -209,5 +209,18 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             IRRCalculater calculater = new IRRCalculater();
             return Content(calculater.IRR(model));
         }
+
+        public JsonResult GetPie()
+        {
+            string UID = Session["User"].ToString();
+            var sum = db.Insurances.Where(I => I.PurchaseOrWithdraw == false && I.UserID ==UID).Sum(I=>I.Withdrawal);
+            var query = db.Insurances.Where(I => I.PurchaseOrWithdraw == false && I.UserID == UID).Select(I => new
+
+            {
+                Name = I.InsuranceName,
+                Money = I.Withdrawal
+            } ).ToList();
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
     }
 }
