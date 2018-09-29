@@ -11,7 +11,8 @@
             </div>
 
             <div class="form-group">
-                @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName" })
+                @*@Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName" })*@
+                @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName2" })
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -48,14 +49,14 @@
             <div class="col-md-6">
                 <div class="form-group">
 
-                    <label for="Stockbuyid">最低手續費</label>
-                    <input type="text" class="form-control" id="StockbuyFee" />
+                    <label for="Stockbuyid">最低手續費(元)</label>
+                    <input type="text" class="form-control" id="StockbuyMinFee" value="20" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="Stockbuyid">手續費折扣</label>
-                    <input type="text" class="form-control" id="StockbuyDiscount" />
+                    <label for="Stockbuyid">手續費折扣(折)</label>
+                    <input type="text" class="form-control" id="StockbuyDiscount" value="6" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -107,13 +108,13 @@
                 <div class="form-group">
 
                     <label for="StockbuyER">預期報酬</label>
-                    <input type="text" class="form-control" id="StockbuyER" />
+                    <input type="text" class="form-control" id="StockbuyER"readonly=""/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(m => m.stockTP)
-                    @Html.TextBoxFor(m => m.stockTP, null, new { @class = "form-control", @id = "StockbuyTP" })
+                    @Html.TextBoxFor(m => m.stockTP, null, new { @class = "form-control", @id = "StockbuyTP" ,@readonly=""})
                     @*<input type="text" class="form-control" id="StockbuyTP" />*@
                 </div>
             </div>
