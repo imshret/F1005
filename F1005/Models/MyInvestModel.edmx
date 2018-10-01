@@ -485,7 +485,7 @@
           </AssociationSet>
 
           <EntitySet Name="CurrencyName" EntityType="MyInvestModel.CurrencyName" />
-          <EntitySet Name="fund_data" EntityType="MyInvestModel.fund_data" />
+  
           <EntitySet Name="Stock_data" EntityType="MyInvestModel.Stock_data" />
           <AssociationSet Name="FK_CurrencyName_CurrencyRate1" Association="MyInvestModel.FK_CurrencyName_CurrencyRate1">
             <End Role="CurrencyRate" EntitySet="CurrencyRate" />
@@ -826,17 +826,8 @@
           <Property Name="TypeCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Currancy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BenifitCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-
-        <Association Name="FK_Fund_Fund">
-          <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="1" />
-          <End Type="MyInvestModel.Fund" Role="Fund1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Fund">
-              <PropertyRef Name="SerialNumber" />
-            </Principal>
-            <Dependent Role="Fund1">
-              <PropertyRef Name="SerialNumber" />
+        </EntityType>            
+              
 
         <EntityType Name="Stock_data">
           <Key>

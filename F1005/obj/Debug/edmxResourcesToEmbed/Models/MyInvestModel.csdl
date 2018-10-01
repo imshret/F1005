@@ -52,12 +52,12 @@
       <End Role="UsersData" EntitySet="UsersData" />
       <End Role="Insurances" EntitySet="Insurances" />
     </AssociationSet>
+    <EntitySet Name="fund_data" EntityType="MyInvestModel.fund_data" />
     <AssociationSet Name="FK_Fund_Fund" Association="MyInvestModel.FK_Fund_Fund">
       <End Role="Fund" EntitySet="Fund" />
       <End Role="Fund1" EntitySet="Fund" />
     </AssociationSet>
     <EntitySet Name="CurrencyName" EntityType="MyInvestModel.CurrencyName" />
-    <EntitySet Name="fund_data" EntityType="MyInvestModel.fund_data" />
     <EntitySet Name="Stock_data" EntityType="MyInvestModel.Stock_data" />
     <AssociationSet Name="FK_CurrencyName_CurrencyRate1" Association="MyInvestModel.FK_CurrencyName_CurrencyRate1">
       <End Role="CurrencyRate" EntitySet="CurrencyRate" />
@@ -288,8 +288,6 @@
     <Property Name="RelateCash" Type="Boolean" Nullable="false" />
     <Property Name="SellNAV" Type="Double" />
     <Property Name="CurrentNAV" Type="Double" />
-    <NavigationProperty Name="Fund1" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund" ToRole="Fund1" />
-    <NavigationProperty Name="Fund2" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund1" ToRole="Fund" />
   </EntityType>
   <EntityType Name="Insurances">
     <Key>
