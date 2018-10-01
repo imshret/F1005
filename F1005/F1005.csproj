@@ -215,7 +215,10 @@
     <Compile Include="Areas\InsurancesandFund\Controllers\FundsController.cs" />
     <Compile Include="Areas\InsurancesandFund\InsurancesandFundAreaRegistration.cs" />
     <Compile Include="Areas\InsurancesandFund\Controllers\InsurancesController.cs" />
+    <Compile Include="Areas\InsurancesandFund\Models\FundViewModel.cs" />
+    <Compile Include="Areas\InsurancesandFund\Models\InsurancesViewModel.cs" />
     <Compile Include="Areas\InsurancesandFund\Models\IRRculculater.cs" />
+    <Compile Include="Areas\InsurancesandFund\Models\SelectListViewModel.cs" />
     <Compile Include="Areas\Main\Controllers\HomeController.cs" />
     <Compile Include="Areas\Main\Controllers\RssViewModel.cs" />
     <Compile Include="Areas\Main\MainAreaRegistration.cs" />
@@ -685,6 +688,7 @@
     <Content Include="Areas\BStage\Views\BS\IndexIs.cshtml" />
     <Content Include="Areas\BStage\Views\BS\IndexFund.cshtml" />
     <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
+    <Content Include="Areas\InsurancesandFund\Views\Funds\Sell.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
