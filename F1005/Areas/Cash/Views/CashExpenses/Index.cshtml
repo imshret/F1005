@@ -21,6 +21,7 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  支出紀錄統計圖</h2>
 	</div>
+	<label>請選擇查詢年份:</label>@Html.DropDownList("Year", new SelectList(new[] { "--- 請選擇---" }), null, new { @class = "form-control" })
 	<label>請選擇查詢月份:</label>@Html.DropDownList("Month", new SelectList(new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" }), "---請選擇---", new { @class = "form-control", @onchange = "MonthChange()" });
 	<div class="col-md-8 col-md-offset-2" id="xx">
 		<canvas id="CashExpenseHis"></canvas>
@@ -34,6 +35,13 @@
 			init();
 			GetExpenseHis();
 			GetBalance();
+
+			for (var i = 2000; i < 2021; i++) {
+				var Yp = document.createElement("option")
+				var Y = document.createTextNode(i);
+				Yp.appendChild(Y);
+				document.getElementById("Year").append(Yp);
+			}
 		});
 
 		function GetBalance() {
@@ -91,14 +99,14 @@
 					jsGrid.fields.date = MyDateField;
 					var filter = $("#grid").jsGrid("getFilter");
 
-					var Ttype = [
-						{ Name: "---請選擇---", Id: 0 },
-						{ Name: "現金", Id: 1 },
-						{ Name: "股票", Id: 2 },
-						{ Name: "外匯", Id: 3 },
-						{ Name: "基金", Id: 4 },
-						{ Name: "儲蓄險", Id: 5 }
-					];
+					//var Ttype = [
+					//	{ Name: "---請選擇---", Id: 0 },
+					//	{ Name: "現金", Id: 1 },
+					//	{ Name: "股票", Id: 2 },
+					//	{ Name: "外匯", Id: 3 },
+					//	{ Name: "基金", Id: 4 },
+					//	{ Name: "儲蓄險", Id: 5 }
+					//];
 
 					$("#jsGridExpense").jsGrid({
 						width: "100%",
@@ -133,6 +141,7 @@
 
 							insertItem: function (item) {
 								item.UserName = "@Session["User"]";
+								item.ExCashType = "現金支出";
 								var dd = {
 									UserName: item.UserName,
 									ExCashType: item.ExCashType,
@@ -186,7 +195,7 @@
 						fields: [
 							{ name: "ExCashID", type: "text", title: "交易序號", width: 100, inserting: false },
 							{ name: "UserID", type: "text", title: "使用者代號", width: 100, inserting: false},
-							{ name: "ExCashType", type: "select", title: "交易類別", width: 100, items: Ttype, valueField: "Id", textField: "Name"},
+							{ name: "ExCashType", type: "text", title: "交易類別", width: 100, inserting: false},
 							{ name: "ExAmount", type: "text", title: "支出金額", width: 100 },
 							{ name: "ExDate", type: "date", title: "日期", width: 100 },
 							{ name: "ExNote", type: "text", title: "我的筆記", width: 100, sorting: false },
@@ -218,10 +227,14 @@
             dataType: "json",
             success: function (response) {
                 var MyDate = [];
-                var MyAmount = [];
+				var MyAmount = [];
+				var BackColor = [];
+				var BorderColor = [];
                 for (var i = 0; i <= response.length - 1; i++) {
                     MyDate.push(response[i].MyDate);
-                    MyAmount.push(response[i].Amount)
+					MyAmount.push(response[i].Amount);
+					BackColor.push('rgba(255,99,135,0.2)');
+					BorderColor.push('rgba(255,99,132,1)');
                 };
 				var ctx = document.getElementById("CashExpenseHis").getContext("2d");
                 var myBarChart = new Chart(ctx, {
@@ -231,22 +244,8 @@
                         datasets: [{
                             label: "現金支出歷史紀錄",
 							data: MyAmount,
-                            backgroundColor: [
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-                            ],
-                            borderColor: [
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-                            ],
+							backgroundColor: BackColor,
+							borderColor: BorderColor,
                             borderWidth:2
                         }]
                     },
@@ -263,45 +262,42 @@
         });
 		}
 
+		//Draw Date Cash by Month
 		function MonthChange() {
 			var d = document.getElementById("Month").value;
 			var month = d.substring(0, 1);
-			$.ajax({
+			if (d == "10月" || d == "11月" || d == "12月") {
+				var month = d.substring(0, 2);
+			}
+			var year = document.getElementById("Year").value;
+			
+        $.ajax({
             type: "Get",
             url: "@Url.Action("GetExpenseHisByMonth", "CashExpenses")/",
-			data: "month=" + month,
+			data: { "year": year, "month": month },
             dataType: "json",
-				success: function (response) {
+			success: function (response) {
+				clearCanvas();
                 var MyDate = [];
-                var MyAmount = [];
+				var MyAmount = [];
+				var BackColor = [];
+				var BorderColor = [];
                 for (var i = 0; i <= response.length - 1; i++) {
                     MyDate.push(response[i].MyDate);
-                    MyAmount.push(response[i].Amount)
+					MyAmount.push(response[i].Amount);
+					BackColor.push('rgba(255,99,135,0.2)');
+					BorderColor.push('rgba(255,99,132,1)');
                 };
-					var ctx = document.getElementById("CashExpenseHis").getContext("2d");
+				var ctx = document.getElementById("CashExpenseHis").getContext("2d");
                 var myBarChart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: MyDate,
                         datasets: [{
-							label: "現金支出歷史紀錄",
-                            data: MyAmount,
-                            backgroundColor: [
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-								'rgba(255,99,135,0.2)',
-                            ],
-                            borderColor: [
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-								'rgba(255,99,132,1)',
-                            ],
+                            label: "現金支出歷史紀錄",
+							data: MyAmount,
+							backgroundColor: BackColor,
+							borderColor: BorderColor,
                             borderWidth:2
                         }]
                     },
@@ -317,7 +313,6 @@
             }
         });
 		}
-
 
 	</script>
 }

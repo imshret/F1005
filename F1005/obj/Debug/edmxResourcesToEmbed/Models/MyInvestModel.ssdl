@@ -43,7 +43,7 @@
     <Property Name="SerialNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="STID" Type="int" />
     <Property Name="UserID" Type="nvarchar" MaxLength="30" />
-    <Property Name="FundName" Type="nvarchar" MaxLength="30" />
+    <Property Name="FundName" Type="nvarchar" MaxLength="255" />
     <Property Name="BuyOrSell" Type="bit" />
     <Property Name="Fee" Type="float" />
     <Property Name="Units" Type="float" />
@@ -51,6 +51,8 @@
     <Property Name="NAV" Type="float" />
     <Property Name="CashFlow" Type="float" />
     <Property Name="RelateCash" Type="bit" Nullable="false" />
+    <Property Name="SellNAV" Type="float" />
+    <Property Name="CurrentNAV" Type="float" />
   </EntityType>
   <EntityType Name="FXtradeTable">
     <Key>
@@ -100,6 +102,7 @@
     <Property Name="stockNetincome" Type="int" />
     <Property Name="stockNote" Type="nvarchar" MaxLength="300" />
     <Property Name="CashAccount" Type="bit" Nullable="false" />
+    <Property Name="stockLastAVG" Type="decimal" Precision="6" Scale="2" />
   </EntityType>
   <EntityType Name="StockIDList">
     <Key>
@@ -165,6 +168,18 @@
       </Principal>
       <Dependent Role="CashIncome">
         <PropertyRef Name="OID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fund_Fund">
+    <End Role="Fund" Type="Self.Fund" Multiplicity="1" />
+    <End Role="Fund1" Type="Self.Fund" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Fund">
+        <PropertyRef Name="SerialNumber" />
+      </Principal>
+      <Dependent Role="Fund1">
+        <PropertyRef Name="SerialNumber" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -283,6 +298,10 @@
     <AssociationSet Name="FK_CashIncome_SummaryTable" Association="Self.FK_CashIncome_SummaryTable">
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="CashIncome" EntitySet="CashIncome" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fund_Fund" Association="Self.FK_Fund_Fund">
+      <End Role="Fund" EntitySet="Fund" />
+      <End Role="Fund1" EntitySet="Fund" />
     </AssociationSet>
     <AssociationSet Name="FK_Fund_SummaryTable" Association="Self.FK_Fund_SummaryTable">
       <End Role="SummaryTable" EntitySet="SummaryTable" />
