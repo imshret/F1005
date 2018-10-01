@@ -5,14 +5,20 @@
 
 <h2>Index</h2>
 
-<input id="ff" type="text"/>
-<input id="btn" type="button" value="搜尋"/>
+@section styles
+{
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+}
+
+<input id="ff" type="text" />
+<input id="btn" type="button" value="搜尋" />
 
 <div class="col-md-12">
     <ul class="nav nav-tabs">
         <li class="nav-item active">
             <a class="nav-link disabled" href="#PageCash" data-toggle="tab" role="tab">現金</a>
-        </li>
+        </li>        
         <li class="nav-item">
             <a class="nav-link disabled" href="#PageStock" data-toggle="tab" role="tab">股票</a>
         </li>
@@ -33,7 +39,8 @@
 
         <div class="tab-pane active" id="PageCash" role="tabpanel">
             <span>@Html.Action("IndexCashI", "BS")</span>
-        </div>
+            <span>@Html.Action("IndexCashE", "BS")</span>
+        </div>           
 
         <div class="tab-pane fade" id="PageStock" role="tabpanel">
             <span>@Html.Action("IndexStock", "BS")</span>
@@ -55,30 +62,42 @@
     </div>
 </div>
 
-@section scripts{
+@section scripts
+    {
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
     <script>
 
-        function xxx() {
-            @*@Session["ff"] = $("#ff").val();*@
-            localStorage.ff = $("#ff").val();
+            function LoadData() {
+                var datatable = $('#GetCashI').DataTable({
+                    ajax: "@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)",
+                    columns: [
+                        { title: 'EXC', data: "NTD" },
+                        { title: 'EXA', data: "USD" }
+                    ]
+                });
 
-            alert($("#ff").val());
-        }
-
-        $(function () {
-            $("#btn").click(xxx);
-        });
-        
+                var datatable = $('#GetCashE').DataTable({
+                    ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",
+                    columns: [
+                        { title: 'EXC', data: "NTD" },
+                        { title: 'EXA', data: "USD" }
+                    ]
+                });
+            }
+            $(function () {
+                LoadData();
+            });
     </script>
-    
-    }
+}
 
 
 
 
 
 
-    @*<div class="col-lg-12">
+@*<div class="col-lg-12">
         <span>@Html.Action("IndexCashI", "BS")</span>
     </div>
 

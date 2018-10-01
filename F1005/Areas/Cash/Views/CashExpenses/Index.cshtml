@@ -4,63 +4,6 @@
 	ViewBag.Title = "Index";
 }
 
-@*<h2>Index</h2>
-
-	<p>
-		@Html.ActionLink("Create New", "Create")
-	</p>
-	<table class="table">
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.UserName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExCashType)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExAmount)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExDate)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExNote)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.SummaryTable.TradeType)
-			</th>
-			<th></th>
-		</tr>
-
-	@foreach (var item in Model) {
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.UserName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ExCashType)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ExAmount)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ExDate)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ExNote)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
-			</td>
-			<td>
-				@Html.ActionLink("Edit", "Edit", new { id=item.ExCashID }) |
-				@Html.ActionLink("Details", "Details", new { id=item.ExCashID }) |
-				@Html.ActionLink("Delete", "Delete", new { id=item.ExCashID })
-			</td>
-		</tr>
-	}
-
-	</table>*@
 
 @*jsGrid Table*@
 <div class="container" style="background-color:lavenderblush">
@@ -78,6 +21,7 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  支出紀錄統計圖</h2>
 	</div>
+	<label>請選擇查詢月份:</label>@Html.DropDownList("Month", new SelectList(new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" }), "---請選擇---", new { @class = "form-control", @onchange = "MonthChange()" });
 	<div class="col-md-8 col-md-offset-2" id="xx">
 		<canvas id="CashExpenseHis"></canvas>
 	</div>
@@ -205,6 +149,7 @@
 									$('#xxx').notify("新增成功", "success", { position: "bottom" });
 									GetExpenseHis();
 									GetBalance();
+									clearCanvas();
 								})
 							},
 
@@ -218,6 +163,7 @@
 									$('#xxx').notify("修改成功", "success", { position: "bottom" });
 									GetExpenseHis();
 									GetBalance();
+									clearCanvas();
 								});
 							},
 
@@ -232,13 +178,14 @@
 									$('#xxx').notify("刪除成功", "success", { position: "bottom" });
 									GetExpenseHis();
 									GetBalance();
+									clearCanvas();
 								});
 							},
 						},
 
 						fields: [
 							{ name: "ExCashID", type: "text", title: "交易序號", width: 100, inserting: false },
-							{ name: "UserID", type: "text", title: "使用者代號", width: 100 },
+							{ name: "UserID", type: "text", title: "使用者代號", width: 100, inserting: false},
 							{ name: "ExCashType", type: "select", title: "交易類別", width: 100, items: Ttype, valueField: "Id", textField: "Name"},
 							{ name: "ExAmount", type: "text", title: "支出金額", width: 100 },
 							{ name: "ExDate", type: "date", title: "日期", width: 100 },
@@ -253,6 +200,13 @@
 
 
 		};//init tail
+
+		function clearCanvas() {
+			$('#CashExpenseHis').remove();
+			$('#xx').append('<canvas id="CashExpenseHis"></canvas>');
+			container = document.getElementById("CashExpenseHis");
+			context = container.getContext("2d");
+		}
 
 
 		//Draw Date Cash
@@ -277,6 +231,61 @@
                         datasets: [{
                             label: "現金支出歷史紀錄",
 							data: MyAmount,
+                            backgroundColor: [
+								'rgba(255,99,135,0.2)',
+								'rgba(255,99,135,0.2)',
+								'rgba(255,99,135,0.2)',
+								'rgba(255,99,135,0.2)',
+								'rgba(255,99,135,0.2)',
+								'rgba(255,99,135,0.2)',
+                            ],
+                            borderColor: [
+								'rgba(255,99,132,1)',
+								'rgba(255,99,132,1)',
+								'rgba(255,99,132,1)',
+								'rgba(255,99,132,1)',
+								'rgba(255,99,132,1)',
+								'rgba(255,99,132,1)',
+                            ],
+                            borderWidth:2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: { beginAtZero: true }
+                                }],
+                        }
+                    }
+                });
+            }
+        });
+		}
+
+		function MonthChange() {
+			var d = document.getElementById("Month").value;
+			var month = d.substring(0, 1);
+			$.ajax({
+            type: "Get",
+            url: "@Url.Action("GetExpenseHisByMonth", "CashExpenses")/",
+			data: "month=" + month,
+            dataType: "json",
+				success: function (response) {
+                var MyDate = [];
+                var MyAmount = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    MyDate.push(response[i].MyDate);
+                    MyAmount.push(response[i].Amount)
+                };
+					var ctx = document.getElementById("CashExpenseHis").getContext("2d");
+                var myBarChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: MyDate,
+                        datasets: [{
+							label: "現金支出歷史紀錄",
+                            data: MyAmount,
                             backgroundColor: [
 								'rgba(255,99,135,0.2)',
 								'rgba(255,99,135,0.2)',

@@ -1,73 +1,11 @@
-﻿@model IEnumerable<F1005.Models.CashExpense>
-
-@{
+﻿@{
     ViewBag.Title = "IndexCashE";
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutEZ.cshtml";
+    //Layout = null;
 }
 
+
 <h2>IndexCashE</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExCashType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExNote)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SummaryTable.TradeType)
-        </th>
-    </tr>
-
-    @foreach (var item in Model)    
-        {
-        <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExCashType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExNote)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
-                </td>
-            </tr>
-        }
-
-    </table>
-
-@section scripts    
-    {
-    <script>
-
-        $(function () {
-
-            if (localStorage.ff != "") {
-
-
-            }
-
-
-        });
-    </script>    
-    
-    }
+<div>
+    <table id="GetCashE" class="table table-striped table-bordered" style="width:100%"></table>
+</div>

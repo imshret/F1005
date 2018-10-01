@@ -138,7 +138,8 @@ namespace F1005.Areas.Cash.Controllers
         //Load Income Table
         public ActionResult GetAllIncome()
         {
-            var query = db.CashIncome.ToList().Select(c => new GetIncomeViewModel
+            var username = Convert.ToString(Session["User"]);
+            var query = db.CashIncome.ToList().Where(c => c.UserName == username).Select(c => new GetIncomeViewModel
             {
                 InCashID = c.InCashID,
                 UserName = c.UserName,
@@ -196,9 +197,24 @@ namespace F1005.Areas.Cash.Controllers
 
         //====================================
 
+        //Get Income History
         public ActionResult GetIncomeHis()
         {
-            var query = db.CashIncome.Where(c => c.InCashType == "1").ToList().Select(c => new IncomeHisViewModel
+            var username = Convert.ToString(Session["User"]);
+            var query = db.CashIncome.Where(c => c.UserName == username).OrderBy(c => c.InDate).ToList().Select(c => new IncomeHisViewModel
+            {
+                Amount = c.InAmount,
+                MyDate = c.InDate.ToShortDateString()
+            });
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        //Get Income History by Month
+        [HttpGet]
+        public ActionResult GetIncomeHisByMonth(int? month)
+        {
+            var username = Convert.ToString(Session["User"]);
+            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Month== month).OrderBy(c=>c.InDate).ToList().Select(c => new IncomeHisViewModel
             {
                 Amount = c.InAmount,
                 MyDate = c.InDate.ToShortDateString()
@@ -209,8 +225,9 @@ namespace F1005.Areas.Cash.Controllers
         //支出收入百分比
         public ActionResult GetPie()
         {
-            var ISum = (decimal)db.CashIncome.Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
-            var ESum = (decimal)db.CashExpense.Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
+            var username = Convert.ToString(Session["User"]);
+            var ISum = (decimal)db.CashIncome.Where(c => c.UserName == username).Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
+            var ESum = (decimal)db.CashExpense.Where(c => c.UserName == username).Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
 
             var total = ISum + ESum;
             if (ISum == 0)
@@ -245,7 +262,8 @@ namespace F1005.Areas.Cash.Controllers
         //收入餘額
         public ActionResult GetIncomeBalance()
         {
-            var query = db.CashIncome.ToList().Sum(c => c.InAmount);
+            var username = Convert.ToString(Session["User"]);
+            var query = db.CashIncome.ToList().Where(c => c.UserName == username).Sum(c => c.InAmount);
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 

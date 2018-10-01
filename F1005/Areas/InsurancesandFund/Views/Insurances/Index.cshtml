@@ -17,6 +17,13 @@
 <div class="tab-content">
 	<div id="home" class="tab-pane fade in active">
 		<h3>未實現保險資產</h3>
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<canvas id="UnWithdrawedDoughnut"></canvas>
+		</div>
+		<div class="col-md-3"></div>
+		<hr />
+
 		<table class="table">
 			<tr>
 				<th>
@@ -74,10 +81,14 @@
 		</table>
 		<hr />
 		<h3>已實現保險資產</h3>
-		<div class="col-lg-6">
-			<canvas id="Doughnut"></canvas>
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<canvas id="WithdrawedDoughnut"></canvas>
 		</div>
+		<div class="col-md-3"></div>
+
 		<table class="table">
+
 			<tr>
 				<th>
 					@Html.DisplayNameFor(model => model.InsuranceName)
@@ -139,10 +150,10 @@
 @section scripts
 	{
 	<script>
-		function LoadDoughnut()	{
+				function LoadUnWithdrawedDoughnut()	{
 	$.ajax({
 	type: "Get",
-	url: "@Url.Action("GetPie", "Insurances")",
+	url: "@Url.Action("GetCurrentDoughnut", "Insurances")",
 	data: null,
 	dataType: "json",
 		success: function (response) {
@@ -160,7 +171,7 @@
 				data.push(((parseInt(arr[1]) / total) * 100).toFixed(2));
 			}
 			
-	var ctxDoughnut = document.getElementById("Doughnut");
+			var ctxDoughnut = document.getElementById("UnWithdrawedDoughnut");
 	var DoughnutChart = new Chart(ctxDoughnut, {
 	type: 'doughnut',
 	data: {
@@ -171,6 +182,10 @@
 	window.chartColors.blue,
 		window.chartColors.red,
 		window.chartColors.green,
+		window.chartColors.yellow,
+		window.chartColors.gray,
+		window.chartColors.orange,
+		window.chartColors.purple,
 	]
 	}],
 	},
@@ -179,7 +194,58 @@
 	title: {
 	display: true,
 	fontSize: 26,
-	text: '資產分布%'
+	text: '未實現保險收入百分比'
+	},
+	}
+	})
+	}
+	});
+		};
+		function LoadWithdrawedDoughnut()	{
+	$.ajax({
+	type: "Get",
+	url: "@Url.Action("GetWithdrawedDoughnut", "Insurances")",
+	data: null,
+	dataType: "json",
+		success: function (response) {
+			var datalabels = [];
+			var data = [];
+			var total = 0;
+			for (var i = 0; i < response.length; i++) {
+				var arr = $.map(response[i], function (qq) { return qq; })
+				total += parseInt(arr[1]);
+			}
+			for (var i = 0; i < response.length; i++)
+			{
+				var arr = $.map(response[i], function (qq) { return qq; })
+				datalabels.push(arr[0]);
+				data.push(((parseInt(arr[1]) / total) * 100).toFixed(2));
+			}
+			
+	var ctxDoughnut = document.getElementById("WithdrawedDoughnut");
+	var DoughnutChart = new Chart(ctxDoughnut, {
+	type: 'doughnut',
+	data: {
+	labels: datalabels,
+	datasets: [{
+	data: data,
+	backgroundColor: [
+	window.chartColors.blue,
+		window.chartColors.red,
+		window.chartColors.green,
+		window.chartColors.yellow,
+		window.chartColors.gray,
+		window.chartColors.orange,
+		window.chartColors.purple,
+	]
+	}],
+	},
+	options: {
+	responsive: true,
+	title: {
+	display: true,
+	fontSize: 26,
+	text: '已實現保險收入百分比'
 	},
 	}
 	})
@@ -187,7 +253,8 @@
 	});
 		};
 		$(document).ready(function () {
-			LoadDoughnut();
+			LoadWithdrawedDoughnut();
+			LoadUnWithdrawedDoughnut();
 		});
 	</script>
 	
