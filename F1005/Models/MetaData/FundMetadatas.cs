@@ -21,16 +21,27 @@ namespace F1005.Models
         [Display(Name = "單位數")]
         public double Units { get; set; }
         [Display(Name = "交易日期")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = false)]
         public System.DateTime Date { get; set; }
         [Display(Name = "淨值")]
         public double NAV { get; set; }
         [Display(Name = "現金流")]
         public double CashFlow { get; set; }
+        [Display(Name = "賣出淨值")]
+        public double SellNAV { get; set; }
+        [Display(Name = "最新淨值")]
+        public double CurrentNAV { get; set; }
     }
     [MetadataType(typeof(FundMetadata))]
     public partial class Fund
     {
-
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Units < 0)
+            {
+                yield return new ValidationResult("贖回單位數大於已持有單位數", new string[] { "Units" });
+            }
+        }
     }
 
 

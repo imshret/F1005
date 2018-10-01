@@ -15,7 +15,7 @@ namespace F1005.Areas.InsurancesandFund.Controllers
     public class InsurancesController : Controller
     {
         private MyInvestEntities db = new MyInvestEntities();
-
+        //解約
         public ActionResult Withdraw(int? id)
         {
             if (id == null)
@@ -51,41 +51,15 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        // GET: Insurances
+
+        // 保險首頁
         public ActionResult Index()
         {
             return View(db.Insurances.ToList());
         }
 
-        public JsonResult GetData()
-        {
-            var insurances = db.Insurances.ToList();
-
-            //組成jqGrid要讀取的資料
-            var jsonData = new
-            {
-                rows = insurances   //jqGrid呈現在表格中的資料
-            };
-
-            //回傳
-            return Json(jsonData, JsonRequestBehavior.AllowGet);
-        }
-
-        // GET: Insurances/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Insurances insurances = db.Insurances.Find(id);
-            if (insurances == null)
-            {
-                return HttpNotFound();
-            }
-            return View(insurances);
-        }
-
+        
+        //新增保單
         // GET: Insurances/Create
         public ActionResult Create()
         {
@@ -93,8 +67,6 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         }
 
         // POST: Insurances/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "SerialNumber,UserID,InsuranceName,PurchaseDate,WithdrawDate,PaymentPerYear,PayYear,PurchaseOrWithdraw,CashFlow,Withdrawal,RelateCash")] Insurances insurances)
@@ -139,6 +111,7 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         }
 
         // GET: Insurances/Edit/5
+        //編輯保單
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -204,12 +177,14 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             base.Dispose(disposing);
         }
 
+        //計算IRR
         public ActionResult CalculateIRR(IRRViewModel model)
         {
             IRRCalculater calculater = new IRRCalculater();
             return Content(calculater.IRR(model));
         }
 
+        //生成未實現圖表
         public JsonResult GetCurrentDoughnut()
         {
             string UID = Session["User"].ToString();
@@ -221,7 +196,7 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             }).ToList();
             return Json(query, JsonRequestBehavior.AllowGet);
         }
-
+        //生成已實現圖表
         public JsonResult GetWithdrawedDoughnut()
         {
             string UID = Session["User"].ToString();
@@ -232,6 +207,50 @@ namespace F1005.Areas.InsurancesandFund.Controllers
                 Money = I.Withdrawal
             } ).ToList();
             return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult loadalldata()
+        {
+            string UID = Session["User"].ToString();
+            var items = db.Insurances.ToList().Where(I => I.UserID == UID).Select(I => new InsurancesViewModel
+            {
+                SerialNumber = I.SerialNumber,
+                STID = I.STID,
+                UserID = I.UserID,
+                InsuranceName = I.InsuranceName,
+                PurchaseDate = I.PurchaseDate.ToShortDateString(),
+                WithdrawDate = I.WithdrawDate.ToShortDateString(),
+                PaymentPerYear = I.PaymentPerYear,
+                PayYear = I.PayYear,
+                PurchaseOrWithdraw = I.PurchaseOrWithdraw,
+                Withdrawal = I.Withdrawal,
+                Withdrawed = I.Withdrawed,
+                CashFlow = I.CashFlow,
+            });
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+        //Edit 
+        public ActionResult EditIinsurance(Insurances insurance)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(insurance).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(insurance);
+        }
+
+        //Delete 
+        public ActionResult DeleteInsurances(int? id)
+        {
+            Insurances obj = db.Insurances.Find(id);
+            var STdata = db.SummaryTable.Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
+            db.SummaryTable.Remove(STdata);
+            db.Insurances.Remove(obj);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
