@@ -177,6 +177,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\BStage\BStageAreaRegistration.cs" />
     <Compile Include="Areas\BStage\Controllers\BSController.cs" />
+    <Compile Include="Areas\BStage\Models\BSViewModel.cs" />
     <Compile Include="Areas\Cash\CashAreaRegistration.cs" />
     <Compile Include="Areas\Cash\Controllers\CashExpensesController.cs" />
     <Compile Include="Areas\Cash\Controllers\CashIncomesController.cs" />
@@ -692,6 +693,7 @@
     <Content Include="Areas\BStage\Views\BS\Index.cshtml" />
     <Content Include="Areas\BStage\Views\BS\IndexIs.cshtml" />
     <Content Include="Areas\BStage\Views\BS\IndexFund.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -874,7 +876,6 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\BStage\Models\" />
     <Folder Include="Areas\BStage\Views\Shared\" />
     <Folder Include="Areas\Cash\Models\" />
     <Folder Include="Areas\ForeignExchange\Views\Shared\" />

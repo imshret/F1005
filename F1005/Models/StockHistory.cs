@@ -25,6 +25,7 @@ namespace F1005.Models
         public Nullable<int> stockNetincome { get; set; }
         public string stockNote { get; set; }
         public bool CashAccount { get; set; }
+        public Nullable<decimal> stockLastAVG { get; set; }
     
         public virtual StockIDList StockIDList { get; set; }
         public virtual SummaryTable SummaryTable { get; set; }

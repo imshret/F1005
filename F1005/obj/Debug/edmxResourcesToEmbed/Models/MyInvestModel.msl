@@ -30,6 +30,7 @@
     <EntitySetMapping Name="StockHistory">
       <EntityTypeMapping TypeName="MyInvestModel.StockHistory">
         <MappingFragment StoreEntitySet="StockHistory">
+          <ScalarProperty Name="stockLastAVG" ColumnName="stockLastAVG" />
           <ScalarProperty Name="CashAccount" ColumnName="CashAccount" />
           <ScalarProperty Name="stockNote" ColumnName="stockNote" />
           <ScalarProperty Name="stockNetincome" ColumnName="stockNetincome" />
@@ -123,6 +124,8 @@
     <EntitySetMapping Name="Fund">
       <EntityTypeMapping TypeName="MyInvestModel.Fund">
         <MappingFragment StoreEntitySet="Fund">
+          <ScalarProperty Name="CurrentNAV" ColumnName="CurrentNAV" />
+          <ScalarProperty Name="SellNAV" ColumnName="SellNAV" />
           <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
           <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
           <ScalarProperty Name="NAV" ColumnName="NAV" />

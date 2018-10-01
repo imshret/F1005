@@ -52,6 +52,10 @@
       <End Role="UsersData" EntitySet="UsersData" />
       <End Role="Insurances" EntitySet="Insurances" />
     </AssociationSet>
+    <AssociationSet Name="FK_Fund_Fund" Association="MyInvestModel.FK_Fund_Fund">
+      <End Role="Fund" EntitySet="Fund" />
+      <End Role="Fund1" EntitySet="Fund" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="CashExpense">
     <Key>
@@ -96,6 +100,7 @@
     <Property Name="CashAccount" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="StockIDList" Relationship="MyInvestModel.FK_StockHistory_StockIDList" FromRole="StockHistory" ToRole="StockIDList" />
     <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_StockHistory_SummaryTable" FromRole="StockHistory" ToRole="SummaryTable" />
+    <Property Name="stockLastAVG" Type="Decimal" Precision="6" Scale="2" />
   </EntityType>
   <EntityType Name="StockIDList">
     <Key>
@@ -258,7 +263,7 @@
     <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="STID" Type="Int32" />
     <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="FundName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="BuyOrSell" Type="Boolean" />
     <Property Name="Fee" Type="Double" />
     <Property Name="Units" Type="Double" />
@@ -268,6 +273,10 @@
     <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_Fund_SummaryTable" FromRole="Fund" ToRole="SummaryTable" />
     <NavigationProperty Name="UsersData" Relationship="MyInvestModel.FK_Fund_UsersData" FromRole="Fund" ToRole="UsersData" />
     <Property Name="RelateCash" Type="Boolean" Nullable="false" />
+    <Property Name="SellNAV" Type="Double" />
+    <Property Name="CurrentNAV" Type="Double" />
+    <NavigationProperty Name="Fund1" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund" ToRole="Fund1" />
+    <NavigationProperty Name="Fund2" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund1" ToRole="Fund" />
   </EntityType>
   <EntityType Name="Insurances">
     <Key>
@@ -334,6 +343,18 @@
       </Principal>
       <Dependent Role="Insurances">
         <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fund_Fund">
+    <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="1" />
+    <End Type="MyInvestModel.Fund" Role="Fund1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Fund">
+        <PropertyRef Name="SerialNumber" />
+      </Principal>
+      <Dependent Role="Fund1">
+        <PropertyRef Name="SerialNumber" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
