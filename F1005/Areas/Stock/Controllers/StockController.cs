@@ -438,18 +438,6 @@ namespace F1005.Areas.Stock.Controllers
                 
             }
 
-                //new InvViewModel2
-                //{
-                //    stockid="5388",
-                //    stockamount=50,
-                //    avgcost=(decimal)30.55
-                //},
-                //new InvViewModel2
-                //{
-                //    stockid="2330",
-                //    stockamount=20,
-                //    avgcost=(decimal)250.55
-                //}
       
             return Json(testmodel, JsonRequestBehavior.AllowGet);
         }
