@@ -123,8 +123,8 @@
         <script src="~/Scripts/bootstrap.min.js"></script>
 
         <script>
-            function loadmoney() {
-                @*$.get("@Url.Action("Getmoney","Money", new { Area = "ForeignExchange" }, null)", { name: "value" },
+            @*function loadmoney() {
+                $.get("@Url.Action("Getmoney","Money", new { Area = "ForeignExchange" }, null)", { name: "value" },
                     function (data, textStatus, jqXHR) {
                         var arr = $.map(data, function (qq) { return qq });
                         for (i = 0; i < arr.length; i++) {
@@ -133,8 +133,8 @@
                         }
                     },
                     "json"
-                );*@
-            }
+                );
+            }*@
 
             function radiochecked() {
                 if (document.getElementById("r1").checked) {
@@ -251,9 +251,7 @@
 
             $(function () {
                 localStorage.TradeClass = "買入";
-                loadmoney();
                 radiochecked();
-                selectfc()
             });
         </script>
     }

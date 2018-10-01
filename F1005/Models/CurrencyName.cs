@@ -15,9 +15,7 @@ namespace F1005.Models
     public partial class CurrencyName
     {
         public int Id { get; set; }
-
         public string Currency { get; set; }
-
         public string CurrencyClassName { get; set; }
     
         public virtual CurrencyRate CurrencyRate { get; set; }

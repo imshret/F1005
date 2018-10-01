@@ -205,13 +205,15 @@
     <Compile Include="Areas\Cash\Controllers\GetExpenseViewModel.cs" />
     <Compile Include="Areas\Cash\Controllers\GetIncomeViewModel.cs" />
     <Compile Include="Areas\Cash\Controllers\IncomeHisViewModel.cs" />
-    <Compile Include="Areas\ForeignExchange\Controllers\DailyController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\FXController.cs" />
+    <Compile Include="Areas\ForeignExchange\Controllers\GetCurrencyViewModel.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\GetDataViewModel.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\HomeController.cs" />
+    <Compile Include="Areas\ForeignExchange\Controllers\MoneyController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\TestHomeController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\TradeTablesController.cs" />
     <Compile Include="Areas\ForeignExchange\ForeignExchangeAreaRegistration.cs" />
+    <Compile Include="Areas\ForeignExchange\Metadatas\FXMetadatas.cs" />
     <Compile Include="Areas\InsurancesandFund\Controllers\FundsController.cs" />
     <Compile Include="Areas\InsurancesandFund\InsurancesandFundAreaRegistration.cs" />
     <Compile Include="Areas\InsurancesandFund\Controllers\InsurancesController.cs" />
@@ -260,24 +262,6 @@
     </Compile>
     <Compile Include="Models\Insurances.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LGModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LGModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LGModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LGModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LGModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LGModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Loginer.cs">
-      <DependentUpon>LGModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MetaData\FundMetadatas.cs" />
     <Compile Include="Models\MetaData\InsurancesMetadata.cs" />
@@ -583,16 +567,6 @@
     <Content Include="Images\home.png" />
     <Content Include="Images\stock.png" />
     <Content Include="Images\stock3.png" />
-    <Content Include="Models\LGModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LGModel.edmx</DependentUpon>
-      <LastGenOutput>LGModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\LGModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LGModel.edmx</DependentUpon>
-      <LastGenOutput>LGModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\MyInvestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MyInvestModel.edmx</DependentUpon>
@@ -607,13 +581,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="Models\LGModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>LGModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\LGModel.edmx.diagram">
-      <DependentUpon>LGModel.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Main\Views\web.config" />
     <Content Include="Areas\Main\Views\_ViewStart.cshtml" />
@@ -640,13 +607,6 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Areas\ForeignExchange\Views\Home\About.cshtml" />
     <Content Include="Areas\ForeignExchange\Views\Home\Contact.cshtml" />
-    <EntityDeploy Include="Models\MyInvestModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MyInvestModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\MyInvestModel.edmx.diagram">
-      <DependentUpon>MyInvestModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Cash\Views\web.config" />
     <Content Include="Areas\Cash\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Cash\Views\Shared\_Layout.cshtml" />
@@ -689,6 +649,13 @@
     <Content Include="Areas\BStage\Views\BS\IndexFund.cshtml" />
     <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Funds\Sell.cshtml" />
+    <EntityDeploy Include="Models\MyInvestModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MyInvestModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\MyInvestModel.edmx.diagram">
+      <DependentUpon>MyInvestModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
