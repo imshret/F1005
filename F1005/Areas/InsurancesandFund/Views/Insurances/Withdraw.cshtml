@@ -1,73 +1,92 @@
 ﻿@model F1005.Models.Insurances
 
 @{
-				/**/
-
-				ViewBag.Title = "Withdraw";
+	ViewBag.Title = "Withdraw";
 }
 
 <h2>解約</h2>
 @using (Html.BeginForm())
 {
-	<div>
+<div class="col-md-12">
+	<div class="col-md-6">
 		<hr />
-		<dl class="dl-horizontal">
-			@Html.HiddenFor(model=>model.SerialNumber)
-			<dt>
-				@Html.DisplayNameFor(model => model.InsuranceName)
-			</dt>
 
-			<dd id="InsuranceName">
-				@Html.EditorFor(model => model.InsuranceName)
-			</dd>
+		@Html.HiddenFor(model => model.SerialNumber)
 
-			<dt>
-				@Html.DisplayNameFor(model => model.PurchaseDate)
-			</dt>
+		<div class="form-group ">
+			@Html.LabelFor(model => model.InsuranceName, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control", id = "InsuranceName" } })
+				@Html.ValidationMessageFor(model => model.InsuranceName, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-			<dd id="PurchaseDate">
-				@Html.EditorFor(model => model.PurchaseDate)
-			</dd>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDate" } })
+				@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-			<dt>
-				@Html.DisplayNameFor(model => model.WithdrawDate)
-			</dt>
+		<div class="form-group">
+			@Html.LabelFor(model => model.WithdrawDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.WithdrawDate, new { htmlAttributes = new { @class = "form-control", id = "WithdrawDate" } })
+				@Html.ValidationMessageFor(model => model.WithdrawDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-			<dd id="WithdrawDate">
-				@Html.EditorFor(model => model.WithdrawDate)
-			</dd>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PaymentPerYear, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PaymentPerYear, new { htmlAttributes = new { @class = "form-control", value = Model.PaymentPerYear, id = "PaymentPerYear" } })
+				@Html.ValidationMessageFor(model => model.PaymentPerYear, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-			<dt>
-				@Html.DisplayNameFor(model => model.PaymentPerYear)
-			</dt>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PayYear, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PayYear, new { htmlAttributes = new { @class = "form-control", id = "PayYear" } })
+				@Html.ValidationMessageFor(model => model.PayYear, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
-			<dd id="PaymentPerYear">
-				@Html.EditorFor(model => model.PaymentPerYear)
-			</dd>
 
-			<dt>
-				@Html.DisplayNameFor(model => model.PayYear)
-			</dt>
 
-			<dd id="PayYear">
-				@Html.EditorFor(model => model.PayYear)
-			</dd>
-
-			<dt>
-				@Html.DisplayNameFor(model => model.Withdrawal)
-			</dt>
-
-			<dd id="Withdrawal">
-				@Html.EditorFor(model => model.Withdrawal)
-			</dd>
-
-		</dl>
-	</div>
-	<div class="form-group col-md-4 ">
-		<div class="col-md-2 ">
-			<input type="submit" value="解約" class="btn btn-default" />
+		<div class="form-group">
+			@Html.LabelFor(model => model.Withdrawal, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Withdrawal, new { htmlAttributes = new { @class = "form-control", id = "Withdrawal" } })
+				@Html.ValidationMessageFor(model => model.Withdrawal, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group col-md-4 ">
+			<div class="col-md-2 ">
+				<input type="submit" value="解約" class="btn btn-default" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				@Html.ActionLink("刪除這筆保單", "Delete", new { id = Model.SerialNumber })
+			</div>
 		</div>
 	</div>
+	<div class="form-horizontal col-md-6">
+		<br />
+		<br />
+		<h4 style="font-family:'Microsoft JhengHei'" id="IRR">	</h4>
+		<div class="container" style="background-color:lavenderblush">
+			<div class="col-md-6 " id="xx">
+				<canvas id="IRRchart"></canvas>
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
 
 }
 <p>
@@ -76,25 +95,86 @@
 
 @section scripts
 	{
-	@*<script>
-		function withdraw() {
+	<script>
+		function GetIRR() {
 			var para =
 			{
-				"PurchaseDate": $('#PurchaseDate').text(),
-				"WithdrawDate": $('#WithdrawDate').text(),
-				"PayYear": $('#PayYear').text(),
-				"PaymentPerYear": $('#PaymentPerYear').text(),
-				"Withdrawal": $('#Withdrawal').text()
+				"PurchaseDate": $('#PurchaseDate').val(),
+				"WithdrawDate": $('#WithdrawDate').val(),
+				"PayYear": $('#PayYear').val(),
+				"PaymentPerYear": $('#PaymentPerYear').val(),
+				"Withdrawal": $('#Withdrawal').val()
 			}
 			$.ajax({
 				type: "POST",
-				url: "/Insurances/Withdrawthis",
+				url:" @Url.Action("CalculateIRR", "Insurances")",
 				data: para
-			}).done(function () {
-				alert("解約成功");
+			}).done(function (result) {
+				$('#IRR').text("IRR-內部報酬率:"+(result * 100).toFixed(2)+"%");
+				var startyear = parseInt($('#PurchaseDate').val().substr(0, 4));
+				var totalyears = parseInt($('#WithdrawDate').val().substr(0, 4)) - parseInt($('#PurchaseDate').val().substr(0, 4))-1;
+				var payyears = parseInt($('#PayYear').val());
+				var paymentperyear = parseInt($('#PaymentPerYear').val());
+				var ratio = parseFloat(result)+1;
+				var MyDate = [];
+				var MyAmount = [];
+				for (var i = 0; i <= totalyears+1; i++) {
+					MyDate.push((startyear + i).toString());
+				};
+				MyAmount.push(paymentperyear);
+				for (var i = 0; i < payyears-1; i++)
+				{
+					MyAmount.push((paymentperyear + MyAmount[i] * ratio));
+				};
+				for (var i = payyears; i <= totalyears+1; i++)
+				{
+					MyAmount.push((MyAmount[i - 1] * ratio));
+				};
+
+				for (var i = 0; i < MyAmount.length; i++)
+				{
+					MyAmount[i] = MyAmount[i].toFixed(0);
+					MyAmount[i] = MyAmount[i].toString();
+				}
+				var MyBackground = [];
+				var MyBorder = [];
+				for (var i = 0; i < MyAmount.length; i++)
+				{
+					MyBackground.push('rgba(54, 162, 235, 0.5)');
+					MyBorder.push('rgba(54, 162, 235, 1)');
+				}
+
+
+					var ctx = document.getElementById("IRRchart").getContext("2d");
+				var myBarChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: MyDate,
+						datasets: [{
+							label:  "年度保單價值",
+							data: MyAmount,
+							backgroundColor: MyBackground,
+							borderColor: MyBorder,
+							borderWidth: 2
+						}]
+					},
+					options: {
+						scales: {
+							yAxes: [
+								{
+									ticks: { beginAtZero: true }
+								}],
+						}
+					}
+				});
 			}).fail(function (err) {
 				alert(err.responseText);
 			});
 		}
-	</script>*@
+
+
+		$(document).ready(function () {
+			GetIRR();
+		});
+	</script>
 }
