@@ -48,7 +48,7 @@
           <Property Name="SerialNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="STID" Type="int" />
           <Property Name="UserID" Type="nvarchar" MaxLength="30" />
-          <Property Name="FundName" Type="nvarchar" MaxLength="30" />
+          <Property Name="FundName" Type="nvarchar" MaxLength="255" />
           <Property Name="BuyOrSell" Type="bit" />
           <Property Name="Fee" Type="float" />
           <Property Name="Units" Type="float" />
@@ -56,6 +56,8 @@
           <Property Name="NAV" Type="float" />
           <Property Name="CashFlow" Type="float" />
           <Property Name="RelateCash" Type="bit" Nullable="false" />
+          <Property Name="SellNAV" Type="float" />
+          <Property Name="CurrentNAV" Type="float" />
         </EntityType>
         <EntityType Name="FXtradeTable">
           <Key>
@@ -105,6 +107,7 @@
           <Property Name="stockNetincome" Type="int" />
           <Property Name="stockNote" Type="nvarchar" MaxLength="300" />
           <Property Name="CashAccount" Type="bit" Nullable="false" />
+          <Property Name="stockLastAVG" Type="decimal" Precision="6" Scale="2" />
         </EntityType>
         <EntityType Name="StockIDList">
           <Key>
@@ -170,6 +173,18 @@
             </Principal>
             <Dependent Role="CashIncome">
               <PropertyRef Name="OID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fund_Fund">
+          <End Role="Fund" Type="Self.Fund" Multiplicity="1" />
+          <End Role="Fund1" Type="Self.Fund" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Fund">
+              <PropertyRef Name="SerialNumber" />
+            </Principal>
+            <Dependent Role="Fund1">
+              <PropertyRef Name="SerialNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -289,6 +304,10 @@
             <End Role="SummaryTable" EntitySet="SummaryTable" />
             <End Role="CashIncome" EntitySet="CashIncome" />
           </AssociationSet>
+          <AssociationSet Name="FK_Fund_Fund" Association="Self.FK_Fund_Fund">
+            <End Role="Fund" EntitySet="Fund" />
+            <End Role="Fund1" EntitySet="Fund" />
+          </AssociationSet>
           <AssociationSet Name="FK_Fund_SummaryTable" Association="Self.FK_Fund_SummaryTable">
             <End Role="SummaryTable" EntitySet="SummaryTable" />
             <End Role="Fund" EntitySet="Fund" />
@@ -378,6 +397,10 @@
             <End Role="UsersData" EntitySet="UsersData" />
             <End Role="Insurances" EntitySet="Insurances" />
           </AssociationSet>
+          <AssociationSet Name="FK_Fund_Fund" Association="MyInvestModel.FK_Fund_Fund">
+            <End Role="Fund" EntitySet="Fund" />
+            <End Role="Fund1" EntitySet="Fund" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CashExpense">
           <Key>
@@ -422,6 +445,7 @@
           <Property Name="CashAccount" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="StockIDList" Relationship="MyInvestModel.FK_StockHistory_StockIDList" FromRole="StockHistory" ToRole="StockIDList" />
           <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_StockHistory_SummaryTable" FromRole="StockHistory" ToRole="SummaryTable" />
+          <Property Name="stockLastAVG" Type="Decimal" Precision="6" Scale="2" />
         </EntityType>
         <EntityType Name="StockIDList">
           <Key>
@@ -584,7 +608,7 @@
           <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="STID" Type="Int32" />
           <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="FundName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BuyOrSell" Type="Boolean" />
           <Property Name="Fee" Type="Double" />
           <Property Name="Units" Type="Double" />
@@ -594,6 +618,10 @@
           <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_Fund_SummaryTable" FromRole="Fund" ToRole="SummaryTable" />
           <NavigationProperty Name="UsersData" Relationship="MyInvestModel.FK_Fund_UsersData" FromRole="Fund" ToRole="UsersData" />
           <Property Name="RelateCash" Type="Boolean" Nullable="false" />
+          <Property Name="SellNAV" Type="Double" />
+          <Property Name="CurrentNAV" Type="Double" />
+          <NavigationProperty Name="Fund1" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund" ToRole="Fund1" />
+          <NavigationProperty Name="Fund2" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund1" ToRole="Fund" />
         </EntityType>
         <EntityType Name="Insurances">
           <Key>
@@ -663,6 +691,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Fund_Fund">
+          <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="1" />
+          <End Type="MyInvestModel.Fund" Role="Fund1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Fund">
+              <PropertyRef Name="SerialNumber" />
+            </Principal>
+            <Dependent Role="Fund1">
+              <PropertyRef Name="SerialNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -698,6 +738,7 @@
           <EntitySetMapping Name="StockHistory">
             <EntityTypeMapping TypeName="MyInvestModel.StockHistory">
               <MappingFragment StoreEntitySet="StockHistory">
+                <ScalarProperty Name="stockLastAVG" ColumnName="stockLastAVG" />
                 <ScalarProperty Name="CashAccount" ColumnName="CashAccount" />
                 <ScalarProperty Name="stockNote" ColumnName="stockNote" />
                 <ScalarProperty Name="stockNetincome" ColumnName="stockNetincome" />
@@ -791,6 +832,8 @@
           <EntitySetMapping Name="Fund">
             <EntityTypeMapping TypeName="MyInvestModel.Fund">
               <MappingFragment StoreEntitySet="Fund">
+                <ScalarProperty Name="CurrentNAV" ColumnName="CurrentNAV" />
+                <ScalarProperty Name="SellNAV" ColumnName="SellNAV" />
                 <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
                 <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
                 <ScalarProperty Name="NAV" ColumnName="NAV" />
