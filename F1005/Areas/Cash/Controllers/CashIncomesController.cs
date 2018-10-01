@@ -151,6 +151,7 @@ namespace F1005.Areas.Cash.Controllers
                 InDate = c.InDate.ToShortDateString(),
                 InNote = c.InNote
             });
+         
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
