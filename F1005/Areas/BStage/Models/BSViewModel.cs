@@ -3,13 +3,14 @@ using System;
 
 namespace F1005.Areas.BStage.Models
 {
-    internal class BSViewModel
+    public class BSViewModel
     {     
         public string UserName { get; set; }
 
         public string ExCashType { get; set; }
         public Nullable<int> ExAmount { get; set; }
-        public System.DateTime ExDate { get; set; }
+        //public System.DateTime ExDate { get; set; }
+        public string ExDate { get; set; }
         public string ExNote { get; set; }
                 
         public string InCashType { get; set; }
@@ -24,7 +25,8 @@ namespace F1005.Areas.BStage.Models
         public string stockNote { get; set; }
         
 
-        public string CurrencyClass { get; set; }   
+        public string CurrencyClass { get; set; }
+        //public string Tradetime { get; set; }
         public Nullable<System.DateTime> Tradetime { get; set; }
         public string TradeClass { get; set; }
         public string note { get; set; }
@@ -48,4 +50,12 @@ namespace F1005.Areas.BStage.Models
 
         //public virtual SummaryTable SummaryTable { get; set; }
     }
+
+    //internal class IQueryable<AllModel>
+    //{
+      
+    //    public string TypeName { get; set; }
+    //    public string Nums { get; set; }
+
+    //}
 }

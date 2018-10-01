@@ -69,14 +69,6 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetCashI()
         {
             var db = new F1005.Models.MyInvestEntities();
-            //var ret = from c in db.CashIncome
-            //          select new BSViewModel{
-            //              UserName = c.SummaryTable.UserName,
-            //              InCashType = c.InCashType,
-            //              InAmount = c.InAmount,
-            //              InDate = c.InDate,
-            //              InNote = c.InNote                        
-            //          };
 
             var ret = db.CashIncome.Select(c => new BSViewModel
             {
@@ -95,17 +87,16 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetCashE()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = db.CashExpense.Select(c => new BSViewModel
-
+            var ret = db.CashExpense.ToList().Select(c => new BSViewModel
             {
-                          UserName = c.SummaryTable.UserName,
+                          UserName = c.UserName,
                           ExCashType = c.ExCashType,
                           ExAmount = c.ExAmount,
-                          ExDate = c.ExDate,
+                          ExDate = c.ExDate.ToShortDateString(),
                           ExNote = c.ExNote           
             });
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetStock()
@@ -183,13 +174,71 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult chartpie()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var x = Session["User"].ToString();
+            var x = "msit119_one";
+
+            //var one = "10";
+            //var two = "8";
+            //var three = "6";
+            //var four = "4";
+            //var five = "2";
+            //var qq = new[{ "111":one,"222":"10"}];
+            //var result2 = new [{"股票":one}, {"外匯":two }];
+            //var result2 = new System.Linq.IQueryable
+            //{
+            //    TypeName = "股票",
+            //    Nums = one,
+            //};
+
+
             var result = db.FXtradeTable.Where(c => c.SummaryTable.UserName == x).GroupBy(c => c.CurrencyClass, c => c.NTD, (CurrencyClass, NTD) => new
             {
                 Currency = CurrencyClass,
                 NTD = NTD.Sum()
             });
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult chartpieX()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var stockCount = db.StockHistory.Count().ToString();
+            var FXCount = db.FXtradeTable.Count().ToString();
+            var InsuranceCount = db.Insurances.Count().ToString();
+            var FundCount = db.Fund.Count().ToString();
+
+            var query = db.StockHistory.Select(c => new OverallViewModel
+            {
+                X = stockCount,
+                XX = FXCount,
+                XXX = InsuranceCount,
+                XXXX = FundCount
+            }).First();
+            return Json(query,JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult chartpieXX()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var res = db.FXtradeTable.Count().ToString();
+
+            return Content(res);
+        }
+
+
+        public ActionResult chartpieXXX()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var res = db.Insurances.Count().ToString();      
+            
+            return Content(res);
+        }
+
+        public ActionResult chartpieXXXX()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var res = db.Fund.Count().ToString();
+
+            return Content(res);
         }
 
 

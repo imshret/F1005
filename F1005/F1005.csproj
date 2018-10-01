@@ -177,6 +177,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\BStage\BStageAreaRegistration.cs" />
     <Compile Include="Areas\BStage\Controllers\BSController.cs" />
+    <Compile Include="Areas\BStage\Controllers\OverallViewModel.cs" />
     <Compile Include="Areas\BStage\Models\BSViewModel.cs" />
     <Compile Include="Areas\Cash\CashAreaRegistration.cs" />
     <Compile Include="Areas\Cash\Controllers\CashExpensesController.cs" />

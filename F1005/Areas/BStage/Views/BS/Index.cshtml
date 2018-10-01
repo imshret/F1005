@@ -83,13 +83,14 @@
                 });
 
                 var datatable = $('#GetCashE').DataTable({
-                    ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
                         { title: 'UN', data: "UserName" },    
                         { title: 'ExCashType', data: "ExCashType" },
                         { title: 'ExAmount', data: "ExAmount" },
-                        { title: 'ExAmount', data: "ExAmount" },
-                        { title: 'ExAmount', data: "ExAmount" }                           
+                        { title: 'ExDate', data: "ExDate" },
+                        { title: 'ExNote', data: "ExNote" }                           
                     ]
                 });
 
