@@ -29,7 +29,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="CurrencyClass" Type="nvarchar" MaxLength="50" />
+    <Property Name="Currency" Type="nvarchar" MaxLength="50" />
     <Property Name="CurrencyClassName" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="CurrencyRate">
@@ -43,6 +43,7 @@
     <Property Name="OnlineBuy" Type="nvarchar" MaxLength="50" />
     <Property Name="OnlineSell" Type="nvarchar" MaxLength="50" />
     <Property Name="Date" Type="date" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Fund">
     <Key>
@@ -211,7 +212,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_CurrencyName_CurrencyRate1">
+  <Association Name="FK_CurrencyName_CurrencyRate">
     <End Role="CurrencyRate" Type="Self.CurrencyRate" Multiplicity="0..1" />
     <End Role="CurrencyName" Type="Self.CurrencyName" Multiplicity="*" />
     <ReferentialConstraint>
@@ -219,7 +220,7 @@
         <PropertyRef Name="CurrencyClass" />
       </Principal>
       <Dependent Role="CurrencyName">
-        <PropertyRef Name="CurrencyClass" />
+        <PropertyRef Name="Currency" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -366,7 +367,7 @@
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="CashIncome" EntitySet="CashIncome" />
     </AssociationSet>
-    <AssociationSet Name="FK_CurrencyName_CurrencyRate1" Association="Self.FK_CurrencyName_CurrencyRate1">
+    <AssociationSet Name="FK_CurrencyName_CurrencyRate" Association="Self.FK_CurrencyName_CurrencyRate">
       <End Role="CurrencyRate" EntitySet="CurrencyRate" />
       <End Role="CurrencyName" EntitySet="CurrencyName" />
     </AssociationSet>

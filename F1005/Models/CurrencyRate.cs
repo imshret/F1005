@@ -28,7 +28,6 @@ namespace F1005.Models
         public string OnlineSell { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public string Name { get; set; }
-
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CurrencyName> CurrencyName { get; set; }

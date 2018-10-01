@@ -70,23 +70,24 @@
     <script>
 
             function LoadData() {
-                var datatable = $('#GetCashI').DataTable({
+                @*var datatable = $('#GetCashI').DataTable({
                     ajax: "@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)",
+                    "ajax": { "url":"@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UN', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },   
                         { title: 'InCashType', data: "InCashType" },
                         { title: 'InAmount', data: "InAmount" },
                         { title: 'InDate', data: "InDate" },
                         { title: 'InNote', data: "InNote" }                 
         
                     ]
-                });
+                });*@
 
                 var datatable = $('#GetCashE').DataTable({
                     @*ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",*@
                     "ajax": { "url":"@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UN', data: "UserName" },    
+                        { title: 'UserName', data: "UserName" },    
                         { title: 'ExCashType', data: "ExCashType" },
                         { title: 'ExAmount', data: "ExAmount" },
                         { title: 'ExDate', data: "ExDate" },
@@ -97,7 +98,7 @@
                 var datatable = $('#GetStock').DataTable({
                     ajax: "@Url.Action("GetStock", "BS", new { Area = "BStage" }, null)",
                     columns: [
-                        { title: 'UN', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },   
                         { title: 'stockID', data: "stockID" },
                         { title: 'stockPrice', data: "stockPrice" },
                         { title: 'stockAmount', data: "stockAmount" },
@@ -108,9 +109,10 @@
                 });
 
                 var datatable = $('#GetFX').DataTable({
-                    ajax: "@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UN', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },   
                         { title: 'CurrencyClass', data: "CurrencyClass" },
                         { title: 'Tradetime', data: "Tradetime" },
                         { title: 'TradeClass', data: "TradeClass" },
@@ -122,7 +124,7 @@
                 var datatable = $('#GetIs').DataTable({
                     ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",
                     columns: [
-                        { title: 'UN', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },   
                         { title: 'InsuranceName', data: "InsuranceName" },
                         { title: 'PurchaseDate', data: "PurchaseDate" },
                         { title: 'WithdrawDate', data: "WithdrawDate" },
@@ -137,7 +139,7 @@
                 var datatable = $('#GetFund').DataTable({
                     ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",
                     columns: [
-                        { title: 'UN', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },   
                         { title: 'FundName', data: "FundName" },
                         { title: 'Date', data: "Date" },
                         { title: 'NAV', data: "NAV" },

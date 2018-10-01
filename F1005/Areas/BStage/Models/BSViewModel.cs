@@ -26,14 +26,14 @@ namespace F1005.Areas.BStage.Models
         
 
         public string CurrencyClass { get; set; }
-        //public string Tradetime { get; set; }
+        //public Nullable<string> Tradetime { get; set; }
         public Nullable<System.DateTime> Tradetime { get; set; }
         public string TradeClass { get; set; }
         public string note { get; set; }
 
         public string InsuranceName { get; set; }
-        public System.DateTime PurchaseDate { get; set; }
-        public System.DateTime WithdrawDate { get; set; }
+        public string PurchaseDate { get; set; }
+        public string WithdrawDate { get; set; }
         public Nullable<int> PaymentPerYear { get; set; }
         public Nullable<int> PayYear { get; set; }   
         public Nullable<int> Withdrawal { get; set; }
@@ -44,18 +44,5 @@ namespace F1005.Areas.BStage.Models
         public Nullable<double> Units { get; set; }
 
 
-
-
-
-
-        //public virtual SummaryTable SummaryTable { get; set; }
     }
-
-    //internal class IQueryable<AllModel>
-    //{
-      
-    //    public string TypeName { get; set; }
-    //    public string Nums { get; set; }
-
-    //}
 }
