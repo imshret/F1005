@@ -13,11 +13,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            @*<div class="col-md-3">
                 <span class="badge badge-primary">結構幣別</span>
-            </div>
-            <div class="col-md-9">
+            </div>*@
+            @*<div class="col-md-9">
                 <select id="moneyselect" onchange="selectfc()"></select>
+            </div>*@
+            <div class="form-group" row>
+                <label class="col-sm-3 control-label">結構幣別:</label>
+                @Html.DropDownList("CurrencyRate", null, "-- 請選擇 --", new { @class = "col-sm-3 form-control"})
             </div>
         </div>
         <div class="row">
@@ -120,7 +124,7 @@
 
         <script>
             function loadmoney() {
-                $.get("@Url.Action("Getmoney","Money", new { Area = "ForeignExchange" }, null)", { name: "value" },
+                @*$.get("@Url.Action("Getmoney","Money", new { Area = "ForeignExchange" }, null)", { name: "value" },
                     function (data, textStatus, jqXHR) {
                         var arr = $.map(data, function (qq) { return qq });
                         for (i = 0; i < arr.length; i++) {
@@ -129,7 +133,7 @@
                         }
                     },
                     "json"
-                );
+                );*@
             }
 
             function radiochecked() {
@@ -152,8 +156,7 @@
                     $('#d2').css('background-color', 'antiquewhite');
                 }
             }
-
-            function selectfc() {
+            @*function selectfc() {
                 var rec = document.getElementById("moneyselect").value;
                $.ajax(
                     {
@@ -166,7 +169,12 @@
                             $('#nowfc').val(arr[0]);
                         }
                     });
-            }
+            }*@
+            $('#CurrencyRate').bind('change', function ()
+            {
+                var value = $('#CurrencyRate').val();
+                $('#nowfc').val(value);
+            })
 
             function inputvalue() {
                 if (document.getElementById("r1").checked) {

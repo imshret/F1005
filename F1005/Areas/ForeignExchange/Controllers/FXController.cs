@@ -9,9 +9,12 @@ namespace F1005.Areas.ForeignExchange.Controllers
 {
     public class FXController : Controller
     {
+        private MyInvestEntities db = new MyInvestEntities();
         // GET: FX
         public ActionResult Index()
         {
+            //MyInvestEntities dc = new MyInvestEntities();
+            ViewBag.CurrencyRate = new SelectList(db.CurrencyRate, "OnlineSell", "CurrencyClass");
             return View();
         }
         public ActionResult History()

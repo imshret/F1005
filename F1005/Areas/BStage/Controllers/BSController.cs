@@ -1,8 +1,10 @@
-﻿using F1005.Models;
+﻿using F1005.Areas.ForeignExchange.Controllers;
+using F1005.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace F1005.Areas.BStage.Controllers
@@ -44,7 +46,7 @@ namespace F1005.Areas.BStage.Controllers
         {
             MyInvestEntities db = new MyInvestEntities();
 
-            return View(db.CashExpense.ToList());
+            return View();
         }
 
 
@@ -63,5 +65,29 @@ namespace F1005.Areas.BStage.Controllers
             return View(db.Fund.ToList());
         }
 
+        public JsonResult GetCashI()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var ret = from c in db.FXtradeTable
+                      select new GetDataViewModel{
+                          NTD=c.NTD,
+                          USD=c.USD
+                      };
+            dynamic retObject = new { data = ret.ToList() };
+            return Json(retObject, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCashE()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var ret = from c in db.FXtradeTable
+                      select new GetDataViewModel
+                      {
+                          NTD = c.NTD,
+                          USD = c.USD
+                      };
+            dynamic retObject = new { data = ret.ToList() };
+            return Json(retObject, JsonRequestBehavior.AllowGet);
+        }
     }
 }
