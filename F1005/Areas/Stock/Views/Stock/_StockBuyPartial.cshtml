@@ -126,15 +126,8 @@
                     @*<input type="text" class="form-control" id="StockbuyNote" />*@
                 </div>
             </div>
+
             <div class="col-md-6">
-                <div class="form-group">
-                    @Html.Label("現金帳戶餘額")
-                    <input type="text" class="form-control" id="CashAcc" readonly="" />
-
-
-                </div>
-            </div>
-            <div class="col-md-3">
                 <div class="form-group">
                     @Html.CheckBoxFor(m => m.CashAccount, new { @id = "UseCashAcc" })
                     @*<input onchange="onchecked()"  data-val="true" id="UseCashAcc" name="CashAccount" type="checkbox" value="true"  />*@
@@ -145,12 +138,9 @@
             </div>
 
             <div class="form-group">
-                <div class="col-md-3">
+                <div class="col-md-6">
 
-
-
-                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-right" />
-
+                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-left" />
 
                 </div>
             </div>
