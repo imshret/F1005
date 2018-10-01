@@ -210,10 +210,21 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             return Content(calculater.IRR(model));
         }
 
-        public JsonResult GetPie()
+        public JsonResult GetCurrentDoughnut()
         {
             string UID = Session["User"].ToString();
-            var sum = db.Insurances.Where(I => I.PurchaseOrWithdraw == false && I.UserID ==UID).Sum(I=>I.Withdrawal);
+            var query = db.Insurances.Where(I => I.PurchaseOrWithdraw == true && I.UserID == UID&&I.Withdrawed==false).Select(I => new
+
+            {
+                Name = I.InsuranceName,
+                Money = I.PaymentPerYear*I.PayYear
+            }).ToList();
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetWithdrawedDoughnut()
+        {
+            string UID = Session["User"].ToString();
             var query = db.Insurances.Where(I => I.PurchaseOrWithdraw == false && I.UserID == UID).Select(I => new
 
             {
