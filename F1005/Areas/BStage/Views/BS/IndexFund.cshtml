@@ -1,80 +1,11 @@
-﻿@model IEnumerable<F1005.Models.Fund>
-
-@{
+﻿@{
     ViewBag.Title = "IndexFund";
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutEZ.cshtml";
+    //Layout = null;
 }
+
 
 <h2>IndexFund</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FundName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BuyOrSell)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fee)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Units)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NAV)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CashFlow)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RelateCash)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SummaryTable.TradeType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UsersData.Password)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FundName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BuyOrSell)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fee)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Units)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NAV)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CashFlow)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RelateCash)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UsersData.Password)
-        </td>
-    </tr>
-}
-
-</table>
+<div>
+    <table id="GetFund" class="table table-striped table-bordered" style="width:100%"></table>
+</div>

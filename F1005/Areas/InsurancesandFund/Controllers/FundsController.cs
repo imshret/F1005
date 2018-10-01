@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using F1005.Areas.InsurancesandFund.Models;
 using F1005.Models;
 
 
@@ -18,11 +19,23 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds
         public ActionResult Index()
         {
+            var UID = Session["User"].ToString();
+            var query = db.Fund.Where(F => F.UserID == UID);
+            foreach (var item in query)
+            {
+                Fund fund = db.Fund.Find(item.SerialNumber);
+                string FundName = item.FundName;
+                var CurrentNAVstr = db.fund_data.Where(D => D.FundName == FundName).Select(D => D.FundNAV).ToArray();
+                double CurrentNAV = Convert.ToDouble(CurrentNAVstr[0]);
+                fund.CurrentNAV = CurrentNAV;
+            }
+            db.SaveChanges();
             return View(db.Fund.ToList());
         }
 
-        // GET: Funds/Details/5
-        public ActionResult Details(int? id)
+
+            // GET: Funds/Details/5
+            public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -49,6 +62,10 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "FundName,Fee,Units,Date,NAV")] Fund fund)
         {
+         
+
+            fund.BuyOrSell = true;
+            fund.CashFlow = (fund.NAV * fund.Units) * (1 + fund.Fee / 100);
             SummaryTable ST = new SummaryTable { UserName = Session["User"].ToString(), TradeDate = fund.Date, TradeType = "基金" };
             db.SummaryTable.Add(ST);
             fund.UserID = Session["User"].ToString();
@@ -61,6 +78,27 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             }
 
             return View(fund);
+        }
+
+      
+
+        public JsonResult GetCompanyList()
+        {
+
+            var data = db.fund_data.Where(D => D.Currancy == "TWD").Select(D => new    SelectListViewModel{
+                CompanyName = D.CompanyName,
+            }).Distinct().ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetFundList(SelectListViewModel company)
+        {
+            string companyname = company.CompanyName;
+            var data = db.fund_data.Where(D => D.Currancy == "TWD"&&D.CompanyName== companyname).Select(D => new SelectListViewModel
+            {
+                FundName = D.FundName,
+            }).Distinct().ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Funds/Edit/5
@@ -127,6 +165,104 @@ namespace F1005.Areas.InsurancesandFund.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Sell(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Fund fund = db.Fund.Find(id);
+            if (fund == null)
+            {
+                return HttpNotFound();
+            }
+            return View(fund);
+        }
+
+        [HttpPost]
+        public ActionResult Sell( Fund fund)
+        {
+            Fund olddata =  db.Fund.Find(fund.SerialNumber);
+            olddata.Units = olddata.Units-fund.Units;
+            db.SaveChanges();
+            fund.BuyOrSell = false;
+            fund.CashFlow = (fund.SellNAV * fund.Units) * (1 + fund.Fee / 100);
+            SummaryTable ST = new SummaryTable { UserName = Session["User"].ToString(), TradeDate = fund.Date, TradeType = "基金" };
+            db.SummaryTable.Add(ST);
+            fund.SerialNumber = 0;
+            fund.UserID = Session["User"].ToString();
+            fund.STID = db.SummaryTable.Select(s => s.STId).ToList().LastOrDefault();
+            if (ModelState.IsValid)
+            {
+                db.Fund.Add(fund);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(fund);
+        }
+
+        public JsonResult GetCurrentDoughnut()
+        {
+            string UID = Session["User"].ToString();
+            var query = db.Fund.Where(F => F.UserID == UID && F.BuyOrSell == true && F.Units > 0).Select(F => new
+            {
+                Name = F.FundName,
+                Money = F.Units*F.CurrentNAV
+            }).ToList();
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetSoldDoughnut()
+        {
+            string UID = Session["User"].ToString();
+            var query = db.Fund.Where(F => F.UserID == UID && F.BuyOrSell == false && F.Units > 0).Select(F => new
+            {
+                Name = F.FundName,
+                Money = F.Units * F.SellNAV
+            }).ToList();
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult loadalldata()
+        {
+            string UID = Session["User"].ToString();
+            var items = db.Fund.ToList().Where(I => I.UserID == UID).Select(I => new FundViewModel
+            {
+                SerialNumber = I.SerialNumber,
+                STID = I.STID,
+                UserID = I.UserID,
+                FundName = I.FundName,
+                BuyOrSell = I.BuyOrSell,
+                Fee = I.Fee,
+                Units = I.Units,
+                Date = I.Date.ToShortDateString(),
+                NAV = I.NAV,
+                CashFlow = I.CashFlow,
+                SellNAV = I.SellNAV,
+                CurrentNAV = I.CurrentNAV,
+            });
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditIinsurance(Fund fund)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(fund).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(fund);
+        }
+
+        public ActionResult DeleteInsurances(int? id)
+        {
+            Fund obj = db.Fund.Find(id);
+            var STdata = db.SummaryTable.Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
+            db.SummaryTable.Remove(STdata);
+            db.Fund.Remove(obj);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

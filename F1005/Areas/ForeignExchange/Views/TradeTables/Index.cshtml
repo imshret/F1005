@@ -27,7 +27,6 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("chartpie", "TestHome", new { Area = "ForeignExchange" }, null)",
-                data: "name=John&location=Boston",
                 dataType: "json",
             }).done(function (data) {
                 label.length = 0;

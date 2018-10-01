@@ -1,91 +1,11 @@
-﻿@model IEnumerable<F1005.Models.Insurances>
-
-@{
+﻿@{
     ViewBag.Title = "IndexIs";
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutEZ.cshtml";
+    //Layout = null;
 }
+
 
 <h2>IndexIs</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.InsuranceName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PurchaseDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WithdrawDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentPerYear)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PayYear)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PurchaseOrWithdraw)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Withdrawal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Withdrawed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CashFlow)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RelateCash)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SummaryTable.TradeType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UsersData.Password)
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.InsuranceName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PurchaseDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WithdrawDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentPerYear)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PayYear)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PurchaseOrWithdraw)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Withdrawal)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Withdrawed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CashFlow)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RelateCash)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UsersData.Password)
-        </td>
-    </tr>
-}
-
-</table>
+<div>
+    <table id="GetIs" class="table table-striped table-bordered" style="width:100%"></table>
+</div>

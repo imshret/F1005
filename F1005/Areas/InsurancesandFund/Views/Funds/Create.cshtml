@@ -5,7 +5,16 @@
 }
 
 <h2>新增基金</h2>
-
+<form>
+	<p>請選擇基金公司</p>
+	<!--給定這id，等等需要用他填入學院資料,onchange內動到這element會呼叫裡面的方法
+	this.selectedIndex是選到第幾項的值(0開始)傳入當參數-->
+	<select id="CompanyList" ></select>
+	<br>
+	<br>
+	<p>請選擇基金</p>
+	<select id="FundList"></select><!--給定這id，等等需要用他填入對應的系所資料-->
+</form>
 
 @using (Html.BeginForm())
 {
@@ -14,12 +23,11 @@
 	<div class="form-horizontal">
 		<hr />
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		
 
 		<div class="form-group">
 			@Html.LabelFor(model => model.FundName, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control" ,id="FundName" } })
 				@Html.ValidationMessageFor(model => model.FundName, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -43,7 +51,7 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" , type = "date"} })
+				@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date" } })
 				@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -71,4 +79,63 @@
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
+<script>
+	function getCompanylist()
+	{
+		$.ajax({
+			type: "GET",
+			url: "@Url.Action("GetCompanyList", "Funds")",
+			dataType: "json"
+		}).done(function (response) {
+			var Company = document.getElementById("CompanyList");
+			var inner = "";
+
+			for (var i = 0; i < response.length; i++)
+			{
+				var arr = $.map(response[i], function (qq) { return qq; })
+				inner = inner + '<option value=' + arr[0] + '>' + arr[0] + '</option>';
+			}
+			Company.innerHTML = inner;
+			});
+	}
+	function getFundList()
+	{
+		var companyname = document.getElementById("CompanyList").value;
+		var para =
+		{
+			"CompanyName": companyname,
+			"FundName":"aaa"
+		}
+		$.ajax({
+			type: "POST",
+			url: "@Url.Action("GetFundList", "Funds")",
+				data: para,
+			dataType: "json",
+		}).done(function (response) {
+			var Fund = document.getElementById("FundList");
+				var inner = "";
+
+				for (var i = 0; i < response.length; i++) {
+					var arr = $.map(response[i], function (qq) { return qq; })
+					inner = inner + '<option value=' + arr[0] + '>' + arr[0] + '</option>';
+				}
+			Fund.innerHTML = inner;
+			});
+
+	}
+	function getfundName()
+	{
+		var Fund = document.getElementById("FundList");
+		document.getElementById("FundName").value = Fund.value;
+	}
+	$(document).ready(function () {
+		getCompanylist()
+		var company = document.getElementById("CompanyList")
+		company.addEventListener("change", getFundList)
+
+		var Fund = document.getElementById("FundList")
+		Fund.addEventListener("change", getfundName)
+	});
+
+	</script>
 }

@@ -1,0 +1,74 @@
+﻿@model F1005.Models.Fund
+
+@{
+	ViewBag.Title = "Sell";
+}
+
+<h2>贖回基金</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.HiddenFor(model => model.SerialNumber)
+<div class="form-horizontal">
+	<hr />
+	<div class="form-group">
+		@Html.LabelFor(model => model.FundName, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.FundName, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Units, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.Units, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Units, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.SellNAV, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.SellNAV, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.SellNAV, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+
+
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" value="贖回" class="btn btn-default" />
+		</div>
+	</div>
+</div>
+}
+
+<div>
+	@Html.ActionLink("回到基金首頁", "Index")
+</div>
