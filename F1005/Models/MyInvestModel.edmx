@@ -48,7 +48,7 @@
           <Property Name="SerialNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="STID" Type="int" />
           <Property Name="UserID" Type="nvarchar" MaxLength="30" />
-          <Property Name="FundName" Type="nvarchar" MaxLength="30" />
+          <Property Name="FundName" Type="nvarchar" MaxLength="255" />
           <Property Name="BuyOrSell" Type="bit" />
           <Property Name="Fee" Type="float" />
           <Property Name="Units" Type="float" />
@@ -56,6 +56,25 @@
           <Property Name="NAV" Type="float" />
           <Property Name="CashFlow" Type="float" />
           <Property Name="RelateCash" Type="bit" Nullable="false" />
+          <Property Name="SellNAV" Type="float" />
+          <Property Name="CurrentNAV" Type="float" />
+        </EntityType>
+        <EntityType Name="fund_data">
+          <Key>
+            <PropertyRef Name="FundID" />
+          </Key>
+          <Property Name="日期" Type="nvarchar" MaxLength="255" />
+          <Property Name="MemberCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FundID" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FundCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="FundName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FundNAV" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fluctuate" Type="nvarchar" MaxLength="255" />
+          <Property Name="FluctuateRatio" Type="nvarchar" MaxLength="255" />
+          <Property Name="TypeCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="Currancy" Type="nvarchar" MaxLength="255" />
+          <Property Name="BenifitCode" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FXtradeTable">
           <Key>
@@ -173,6 +192,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Fund_Fund">
+          <End Role="Fund" Type="Self.Fund" Multiplicity="1" />
+          <End Role="Fund1" Type="Self.Fund" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Fund">
+              <PropertyRef Name="SerialNumber" />
+            </Principal>
+            <Dependent Role="Fund1">
+              <PropertyRef Name="SerialNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Fund_SummaryTable">
           <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1" />
           <End Role="Fund" Type="Self.Fund" Multiplicity="*" />
@@ -274,6 +305,7 @@
           <EntitySet Name="CashIncome" EntityType="Self.CashIncome" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CurrencyRate" EntityType="Self.CurrencyRate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fund" EntityType="Self.Fund" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fund_data" EntityType="Self.fund_data" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FXtradeTable" EntityType="Self.FXtradeTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Insurances" EntityType="Self.Insurances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StockHistory" EntityType="Self.StockHistory" Schema="dbo" store:Type="Tables" />
@@ -288,6 +320,10 @@
           <AssociationSet Name="FK_CashIncome_SummaryTable" Association="Self.FK_CashIncome_SummaryTable">
             <End Role="SummaryTable" EntitySet="SummaryTable" />
             <End Role="CashIncome" EntitySet="CashIncome" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fund_Fund" Association="Self.FK_Fund_Fund">
+            <End Role="Fund" EntitySet="Fund" />
+            <End Role="Fund1" EntitySet="Fund" />
           </AssociationSet>
           <AssociationSet Name="FK_Fund_SummaryTable" Association="Self.FK_Fund_SummaryTable">
             <End Role="SummaryTable" EntitySet="SummaryTable" />
@@ -377,6 +413,11 @@
           <AssociationSet Name="FK_Insurances_UsersData" Association="MyInvestModel.FK_Insurances_UsersData">
             <End Role="UsersData" EntitySet="UsersData" />
             <End Role="Insurances" EntitySet="Insurances" />
+          </AssociationSet>
+          <EntitySet Name="fund_data" EntityType="MyInvestModel.fund_data" />
+          <AssociationSet Name="FK_Fund_Fund" Association="MyInvestModel.FK_Fund_Fund">
+            <End Role="Fund" EntitySet="Fund" />
+            <End Role="Fund1" EntitySet="Fund" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="CashExpense">
@@ -584,7 +625,7 @@
           <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="STID" Type="Int32" />
           <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="FundName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BuyOrSell" Type="Boolean" />
           <Property Name="Fee" Type="Double" />
           <Property Name="Units" Type="Double" />
@@ -594,6 +635,8 @@
           <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_Fund_SummaryTable" FromRole="Fund" ToRole="SummaryTable" />
           <NavigationProperty Name="UsersData" Relationship="MyInvestModel.FK_Fund_UsersData" FromRole="Fund" ToRole="UsersData" />
           <Property Name="RelateCash" Type="Boolean" Nullable="false" />
+          <Property Name="SellNAV" Type="Double" />
+          <Property Name="CurrentNAV" Type="Double" />
         </EntityType>
         <EntityType Name="Insurances">
           <Key>
@@ -660,6 +703,35 @@
             </Principal>
             <Dependent Role="Insurances">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="fund_data">
+          <Key>
+            <PropertyRef Name="FundID" />
+          </Key>
+          <Property Name="日期" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MemberCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FundID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FundCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FundNAV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Fluctuate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FluctuateRatio" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TypeCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Currancy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BenifitCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Fund_Fund">
+          <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="1" />
+          <End Type="MyInvestModel.Fund" Role="Fund1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Fund">
+              <PropertyRef Name="SerialNumber" />
+            </Principal>
+            <Dependent Role="Fund1">
+              <PropertyRef Name="SerialNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -791,6 +863,8 @@
           <EntitySetMapping Name="Fund">
             <EntityTypeMapping TypeName="MyInvestModel.Fund">
               <MappingFragment StoreEntitySet="Fund">
+                <ScalarProperty Name="CurrentNAV" ColumnName="CurrentNAV" />
+                <ScalarProperty Name="SellNAV" ColumnName="SellNAV" />
                 <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
                 <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
                 <ScalarProperty Name="NAV" ColumnName="NAV" />
@@ -821,6 +895,24 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="STID" ColumnName="STID" />
                 <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fund_data">
+            <EntityTypeMapping TypeName="MyInvestModel.fund_data">
+              <MappingFragment StoreEntitySet="fund_data">
+                <ScalarProperty Name="BenifitCode" ColumnName="BenifitCode" />
+                <ScalarProperty Name="Currancy" ColumnName="Currancy" />
+                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+                <ScalarProperty Name="FluctuateRatio" ColumnName="FluctuateRatio" />
+                <ScalarProperty Name="Fluctuate" ColumnName="Fluctuate" />
+                <ScalarProperty Name="FundNAV" ColumnName="FundNAV" />
+                <ScalarProperty Name="FundName" ColumnName="FundName" />
+                <ScalarProperty Name="FundCode" ColumnName="FundCode" />
+                <ScalarProperty Name="FundID" ColumnName="FundID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
+                <ScalarProperty Name="日期" ColumnName="日期" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

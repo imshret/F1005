@@ -343,7 +343,8 @@
 
 		//資產分布百分比甜甜圈
         //Draw Doughnut
-        function LoadDoughnut() {
+		function LoadDoughnut()
+		{
         $.ajax({
             type: "Get",
             url: "@Url.Action("GetPie", "CashIncomes")",

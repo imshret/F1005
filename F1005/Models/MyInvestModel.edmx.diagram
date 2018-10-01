@@ -26,6 +26,8 @@
         <AssociationConnector Association="MyInvestModel.FK_Fund_UsersData" />
         <AssociationConnector Association="MyInvestModel.FK_Insurances_Insurances" />
         <AssociationConnector Association="MyInvestModel.FK_Insurances_UsersData" />
+        <EntityTypeShape EntityType="MyInvestModel.fund_data" Width="1.5" PointX="10.375" PointY="4.75" />
+        <AssociationConnector Association="MyInvestModel.FK_Fund_Fund" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
