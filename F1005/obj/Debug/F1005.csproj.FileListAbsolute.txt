@@ -3177,7 +3177,6 @@ D:\分享資料\F1005\F1005\bin\zh-Hant\System.Web.WebPages.Razor.resources.dll
 D:\分享資料\F1005\F1005\bin\zh-Hant\System.Net.Http.Formatting.resources.dll
 D:\分享資料\F1005\F1005\bin\zh-Hant\System.Web.Http.resources.dll
 D:\分享資料\F1005\F1005\bin\zh-Hant\System.Web.Http.WebHost.resources.dll
-D:\分享資料\F1005\F1005\obj\Debug\F1005.csprojAssemblyReference.cache
 D:\分享資料\F1005\F1005\obj\Debug\F1005.csproj.CoreCompileInputs.cache
 D:\分享資料\F1005\F1005\obj\Debug\F1005.csproj.CopyComplete
 D:\分享資料\F1005\F1005\obj\Debug\F1005.dll
@@ -3309,3 +3308,12 @@ C:\Users\III\Documents\GitHub\F1005\F1005\bin\System.IO.Packaging.dll
 C:\Users\III\Documents\GitHub\F1005\F1005\bin\ClosedXML.xml
 C:\Users\III\Documents\GitHub\F1005\F1005\bin\DocumentFormat.OpenXml.xml
 C:\Users\III\Documents\GitHub\F1005\F1005\bin\ExcelNumberFormat.xml
+D:\分享資料\F1005\F1005\bin\ClosedXML.dll
+D:\分享資料\F1005\F1005\bin\DocumentFormat.OpenXml.dll
+D:\分享資料\F1005\F1005\bin\ExcelNumberFormat.dll
+D:\分享資料\F1005\F1005\bin\FastMember.Signed.dll
+D:\分享資料\F1005\F1005\bin\System.IO.FileSystem.Primitives.dll
+D:\分享資料\F1005\F1005\bin\System.IO.Packaging.dll
+D:\分享資料\F1005\F1005\bin\ClosedXML.xml
+D:\分享資料\F1005\F1005\bin\DocumentFormat.OpenXml.xml
+D:\分享資料\F1005\F1005\bin\ExcelNumberFormat.xml

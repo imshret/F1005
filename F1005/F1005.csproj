@@ -212,27 +212,6 @@
     <Compile Include="Areas\ForeignExchange\Controllers\TestHomeController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\TradeTablesController.cs" />
     <Compile Include="Areas\ForeignExchange\ForeignExchangeAreaRegistration.cs" />
-    <Compile Include="Areas\ForeignExchange\Models\Daily0905.cs">
-      <DependentUpon>FXModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\FXModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FXModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\FXModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FXModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\FXModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FXModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\TradeTable.cs">
-      <DependentUpon>FXModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Areas\InsurancesandFund\Controllers\FundsController.cs" />
     <Compile Include="Areas\InsurancesandFund\InsurancesandFundAreaRegistration.cs" />
     <Compile Include="Areas\InsurancesandFund\Controllers\InsurancesController.cs" />
@@ -261,10 +240,16 @@
     <Compile Include="Models\CashIncome.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CurrencyName.cs">
+      <DependentUpon>MyInvestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CurrencyRate.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Fund.cs">
+      <DependentUpon>MyInvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\fund_data.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FXtradeTable.cs">
@@ -314,6 +299,9 @@
     <Compile Include="Models\StockIDList.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Stock_data.cs">
+      <DependentUpon>MyInvestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SummaryTable.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
@@ -341,16 +329,6 @@
     </Content>
     <Content Include="App_Data\FinalTerm_log.ldf">
       <DependentUpon>FinalTerm.mdf</DependentUpon>
-    </Content>
-    <Content Include="Areas\ForeignExchange\Models\FXModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FXModel.edmx</DependentUpon>
-      <LastGenOutput>FXModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\ForeignExchange\Models\FXModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FXModel.edmx</DependentUpon>
-      <LastGenOutput>FXModel.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Main\3DScroll\3Dsite.css" />
     <Content Include="Areas\Main\3DScroll\jquery.tiltedpage-scroll.js" />
@@ -644,13 +622,6 @@
     <Content Include="Areas\Stock\Views\Home\Index.cshtml" />
     <Content Include="Areas\Stock\Views\Shared\_StockBuyPartial.cshtml" />
     <Content Include="Areas\Stock\Views\Shared\_StockSellPartial.cshtml" />
-    <EntityDeploy Include="Areas\ForeignExchange\Models\FXModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FXModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Areas\ForeignExchange\Models\FXModel.edmx.diagram">
-      <DependentUpon>FXModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\ForeignExchange\Views\FX\History.cshtml" />
     <Content Include="Areas\ForeignExchange\Views\FX\Index.cshtml" />
     <Content Include="Areas\ForeignExchange\Views\FX\Jqgrid.cshtml" />
@@ -898,6 +869,7 @@
   <ItemGroup>
     <Folder Include="Areas\BStage\Views\Shared\" />
     <Folder Include="Areas\Cash\Models\" />
+    <Folder Include="Areas\ForeignExchange\Models\" />
     <Folder Include="Areas\ForeignExchange\Views\Shared\" />
     <Folder Include="Areas\InsurancesandFund\Views\Shared\" />
     <Folder Include="Areas\Main\Models\" />

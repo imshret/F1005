@@ -6,15 +6,21 @@
 <h3>資產分布比例</h3>
 <canvas id="chart"></canvas>
 
+@section styles
+{
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    }
+
 @section scripts
 {
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     @*<script src="~/Scripts/Chart.min.js"></script>
         <script src="~/Scripts/Utility.js"></script>
         <script src="~/Scripts/Colors.js"></script>*@
     <script>
         var label = ["股票", "外匯" ,"儲蓄險" ,"基金"];
-        
+
         //var list = [];
 
         function calldata() {
@@ -25,7 +31,7 @@
             }).done(function (data) {
                 //label.length = 0;
                 //list.length = 0;
-                
+
                 //for (i = 0; i < data.length; i++) {
                 //    var arr = $.map(data[i], function (qq) { return qq });
                 //    X.push(data[i].X);
