@@ -159,5 +159,48 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CurrencyName">
+      <EntityTypeMapping TypeName="MyInvestModel.CurrencyName">
+        <MappingFragment StoreEntitySet="CurrencyName">
+          <ScalarProperty Name="CurrencyClassName" ColumnName="CurrencyClassName" />
+          <ScalarProperty Name="CurrencyClass" ColumnName="CurrencyClass" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="fund_data">
+      <EntityTypeMapping TypeName="MyInvestModel.fund_data">
+        <MappingFragment StoreEntitySet="fund_data">
+          <ScalarProperty Name="BenifitCode" ColumnName="BenifitCode" />
+          <ScalarProperty Name="Currancy" ColumnName="Currancy" />
+          <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+          <ScalarProperty Name="FluctuateRatio" ColumnName="FluctuateRatio" />
+          <ScalarProperty Name="Fluctuate" ColumnName="Fluctuate" />
+          <ScalarProperty Name="FundNAV" ColumnName="FundNAV" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="FundCode" ColumnName="FundCode" />
+          <ScalarProperty Name="FundID" ColumnName="FundID" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
+          <ScalarProperty Name="日期" ColumnName="日期" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stock_data">
+      <EntityTypeMapping TypeName="MyInvestModel.Stock_data">
+        <MappingFragment StoreEntitySet="Stock_data">
+          <ScalarProperty Name="成交筆數" ColumnName="成交筆數" />
+          <ScalarProperty Name="漲跌價差" ColumnName="漲跌價差" />
+          <ScalarProperty Name="收盤價" ColumnName="收盤價" />
+          <ScalarProperty Name="最低價" ColumnName="最低價" />
+          <ScalarProperty Name="最高價" ColumnName="最高價" />
+          <ScalarProperty Name="開盤價" ColumnName="開盤價" />
+          <ScalarProperty Name="成交金額" ColumnName="成交金額" />
+          <ScalarProperty Name="成交股數" ColumnName="成交股數" />
+          <ScalarProperty Name="證券名稱" ColumnName="證券名稱" />
+          <ScalarProperty Name="StockID" ColumnName="StockID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
