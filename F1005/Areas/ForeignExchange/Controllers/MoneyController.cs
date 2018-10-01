@@ -16,16 +16,26 @@ namespace F1005.Areas.ForeignExchange.Controllers
         {
             return View();
         }
-
+        //讀取現在匯率("History","FX")
         public JsonResult Getlist()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = from c in db.CurrencyRate
-                      select c;
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            //var ret = from c in db.CurrencyRate
+            //          select c;
+            var ret = db.CurrencyRate.ToList().Select(c => new GetCurrencyViewModel
+            {
+                ID = c.ID,
+                CurrencyClass = c.CurrencyClass,
+                CurrencyClassName=c.Name,
+                OnlineBuy =c.OnlineBuy,
+                OnlineSell=c.OnlineSell,
+                Date=c.Date.Value.ToLongDateString(),
+            });
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
+        //
         public JsonResult Getmoney()
         {
             var db = new MyInvestEntities();

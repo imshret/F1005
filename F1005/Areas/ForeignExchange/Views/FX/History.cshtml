@@ -25,11 +25,14 @@
     <script>
         function LoadData() {
             var datatable = $('#myTable').DataTable({
-                ajax: "@Url.Action("Getlist", "Money", new { Area = "ForeignExchange" }, null)",
+                @*ajax: "@Url.Action("Getlist", "Money", new { Area = "ForeignExchange" }, null)",*@
+                "ajax": {"url":"@Url.Action("Getlist", "Money", new { Area = "ForeignExchange" }, null)","dataSrc":""},
                 columns: [
-                    { title: '幣別', data: "CurrencyClass" },
+                    { title: '中文', data: "CurrencyClassName" },
+                    { title: '外幣縮寫', data: "CurrencyClass" }, 
                     { title: '即期買入', data: "OnlineBuy" },
                     { title: '即期賣出', data: "OnlineSell" },
+                    { title: '更新日期', data: "Date" },
                 ]
             });
         }

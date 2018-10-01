@@ -12,24 +12,26 @@ namespace F1005.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CurrencyRate
+    public partial class Stock_data
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CurrencyRate()
+        public Stock_data()
         {
-            this.CurrencyName = new HashSet<CurrencyName>();
+            this.StockHistory = new HashSet<StockHistory>();
         }
     
-        public int ID { get; set; }
-        public string CurrencyClass { get; set; }
-        public string CashBuy { get; set; }
-        public string CashSell { get; set; }
-        public string OnlineBuy { get; set; }
-        public string OnlineSell { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public string Name { get; set; }
+        public string StockID { get; set; }
+        public string 證券名稱 { get; set; }
+        public string 成交股數 { get; set; }
+        public string 成交金額 { get; set; }
+        public string 開盤價 { get; set; }
+        public string 最高價 { get; set; }
+        public string 最低價 { get; set; }
+        public string 收盤價 { get; set; }
+        public string 漲跌價差 { get; set; }
+        public string 成交筆數 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CurrencyName> CurrencyName { get; set; }
+        public virtual ICollection<StockHistory> StockHistory { get; set; }
     }
 }
