@@ -4,64 +4,6 @@
 	ViewBag.Title = "Index";
 }
 
-@*<h2>Index</h2>
-
-	<p>
-		@Html.ActionLink("Create New", "Create")
-	</p>
-	<table class="table">
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.UserName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.InCashType)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.InAmount)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.InDate)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.InNote)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.SummaryTable.TradeType)
-			</th>
-			<th></th>
-		</tr>
-
-	@foreach (var item in Model) {
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.UserName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.InCashType)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.InAmount)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.InDate)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.InNote)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
-			</td>
-			<td>
-				@Html.ActionLink("Edit", "Edit", new { id=item.InCashID }) |
-				@Html.ActionLink("Details", "Details", new { id=item.InCashID }) |
-				@Html.ActionLink("Delete", "Delete", new { id=item.InCashID })
-			</td>
-		</tr>
-	}
-
-	</table>*@
-
 
 @*jsGrid Table*@
 <div class="container" style="background-color:lavenderblush">
@@ -79,7 +21,8 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  收入紀錄統計圖</h2>
 	</div>
-	<label>請選擇查詢月份:</label>@Html.DropDownList("Month", new SelectList(new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" }), "---請選擇---", new { @class = "form-control", @onchange = "MonthChange()" });
+	<label>請選擇查詢年份:</label>@Html.DropDownList("Year", new SelectList(new[] { "--- 請選擇---" }), null, new { @class = "form-control"})
+	<label>請選擇查詢月份:</label>@Html.DropDownList("Month", new SelectList(new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" }), "---請選擇---", new { @class = "form-control", @onchange = "MonthChange()" })
 	<div class="col-md-8 col-md-offset-2" id="xx">
 		<canvas id="CashIncomeHis"></canvas>
 	</div>
@@ -90,7 +33,8 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  資產分布百分比</h2>
 	</div>
-	<div class="row" style="height:350px">
+	@*<label>請選擇查詢月份:</label>@Html.DropDownList("PieMonth", new SelectList(new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" }), "---請選擇---", new { @class = "form-control", @onchange = "PieMonthChange()" })*@
+	<div class="row" style="height:350px" id="dd">
 		<div class="col-lg-6">
 			<canvas id="Doughnut"></canvas>
 		</div>
@@ -110,6 +54,16 @@
 			LoadDoughnut();
 			LoadPie();
 			GetBalance();
+
+
+		for(var i = 2000; i < 2021; i++)
+		{
+			var Yp = document.createElement("option")
+			var Y = document.createTextNode(i);
+			Yp.appendChild(Y);
+			document.getElementById("Year").append(Yp);
+		}
+			
 		});
 
 		function GetBalance() {
@@ -165,14 +119,14 @@
 					jsGrid.fields.date = MyDateField;
 					var filter = $("#grid").jsGrid("getFilter");
 
-					var Ttype = [
-						{ Name: "---請選擇---", Id:0},
-						{ Name: "現金", Id: 1 },
-						{ Name: "股票", Id: 2 },
-						{ Name: "外匯", Id: 3 },
-						{ Name: "基金", Id: 4 },
-						{ Name: "儲蓄險", Id: 5 }
-					];
+					//var Ttype = [
+					//	{ Name: "---請選擇---", Id: 0},
+					//	{ Name: "現金", Id: 1 },
+					//	{ Name: "股票", Id: 2 },
+					//	{ Name: "外匯", Id: 3 },
+					//	{ Name: "基金", Id: 4},
+					//	{ Name: "儲蓄險", Id: 5 }
+					//];
 
 					$("#jsGridIncome").jsGrid({
 						width: "100%",
@@ -184,7 +138,7 @@
 						sorting: true,
 						paging: true,
 						autoload: true,
-						pageSize: 5,
+						pageSize: 10,
 						pageButtonCount: 5,
 						deleteConfirm: "確定要刪除這筆資料?",
 						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
@@ -206,14 +160,15 @@
 							},
 
 							insertItem: function (item) {
-								 item.UserName = "@Session["User"]";
+								item.UserName = "@Session["User"]";
+								item.InCashType = "現金收入";
 								var dd = {
 									UserName: item.UserName,
 									InCashType: item.InCashType,
 									InAmount: item.InAmount,
 									InDate: item.InDate,
 									InNote: item.InNote
-								} 
+								}
 								return $.ajax({
 									type: "POST",
 									url: "@Url.Action("InsertIncome", "CashIncomes")",
@@ -225,6 +180,7 @@
 									LoadDoughnut();
 									LoadPie();
 									GetBalance();
+									clearCanvas();
 								})
 							},
 
@@ -240,6 +196,7 @@
 									LoadDoughnut();
 									LoadPie();
 									GetBalance();
+									clearCanvas();
 								});
 							},
 
@@ -256,6 +213,7 @@
 									LoadDoughnut();
 									LoadPie();
 									GetBalance();
+									clearCanvas();
 								});
 							},
 						},
@@ -263,7 +221,7 @@
 						fields: [
 							{ name: "InCashID", type: "text", title: "交易序號", width: 100, inserting: false },
 							{ name: "UserName", type: "text", title: "使用者代號", width: 100, inserting: false},
-							{ name: "InCashType", type: "select", title: "交易類別", width: 100, items: Ttype, valueField: "Id", textField: "Name" },
+							{ name: "InCashType", type: "text", title: "交易類別", width: 100, inserting: false},
 							{ name: "InAmount", type: "text", title: "收入金額", width: 100 },
 							{ name: "InDate", type: "date", title: "日期", width: 100 },
 							{ name: "InNote", type: "text", title: "我的筆記", width: 100, sorting: false },
@@ -279,11 +237,13 @@
 
 		};//init tail
 
-		//Clear DateCash
-		//function ClearDateCash() {
-		//	$('#CashIncomeHis').remove();
-		//	$('#xx').append('<canvas id="CashIncomeHis"></canvas>');
-		//};
+		//清除現金歷史圖
+		function clearCanvas() {
+			$('#CashIncomeHis').remove();
+			$('#xx').append('<canvas id="CashIncomeHis"></canvas>');
+			container = document.getElementById("CashIncomeHis");
+			context = container.getContext("2d");
+		}
 
 		//Draw Date Cash
         function GetIncomeHis() {
@@ -294,37 +254,26 @@
             dataType: "json",
             success: function (response) {
                 var MyDate = [];
-                var MyAmount = [];
+				var MyAmount = [];
+				var backColor = [];
+				var borderColor = [];
                 for (var i = 0; i <= response.length - 1; i++) {
                     MyDate.push(response[i].MyDate);
-                    MyAmount.push(response[i].Amount)
-                };
+					MyAmount.push(response[i].Amount);
+					backColor.push('rgba(54, 162, 235, 0.2)');
+					borderColor.push('rgba(54, 162, 235, 1)');
+				};
+
 				var ctx = document.getElementById("CashIncomeHis").getContext("2d");
                 var myBarChart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: MyDate,
                         datasets: [{
 							label: "現金收入歷史紀錄",
                             data: MyAmount,
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-                            ],
-                            borderColor: [
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(54, 162, 235, 1)',
-                            ],
+							backgroundColor: backColor,
+							borderColor: borderColor,
                             borderWidth:2
                         }]
                     },
@@ -340,6 +289,101 @@
             }
         });
 		}
+
+		function MonthChange() {
+			var d = document.getElementById("Month").value;
+			var month = d.substring(0, 1);
+			if (d == "10月" || d == "11月" || d == "12月")
+			{
+				var month = d.substring(0, 2);
+			}
+			var year = document.getElementById("Year").value;
+		
+			$.ajax({
+				type: "Get",
+				url: "@Url.Action("GetIncomeHisByMonth", "CashIncomes")/",
+				data: {"year":year,"month":month},
+            dataType: "json",
+				success: function (response) {
+					clearCanvas();
+                var MyDate = [];
+				var MyAmount = [];
+				var backColor = [];
+				var borderColor = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    MyDate.push(response[i].MyDate);
+					MyAmount.push(response[i].Amount);
+					backColor.push('rgba(54, 162, 235, 0.2)');
+					borderColor.push('rgba(54, 162, 235, 1)');
+                };
+				var ctx = document.getElementById("CashIncomeHis").getContext("2d");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: MyDate,
+                        datasets: [{
+							label: "現金收入歷史紀錄",
+                            data: MyAmount,
+							backgroundColor: backColor,
+							borderColor: borderColor,
+                            borderWidth:2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: { beginAtZero: true }
+                                }],
+                        }
+                    }
+					});
+            }
+        });
+		}
+
+		//清除收支百分比圖
+		function clearCanvasDoughnut() {
+			$('#Doughnut').remove();
+			$('#dd').append('<canvas id="Doughnut"></canvas>');
+			container = document.getElementById("Doughnut");
+			context = container.getContext("2d");
+		}
+
+		function PieMonthChange(){
+			var d = document.getElementById("PieMonth").value;
+			var month = d.substring(0, 1);
+			$.ajax({
+            type: "Get",
+            url: "@Url.Action("GetPiebyMonth", "CashIncomes")/",
+			data: "month=" + month,
+            dataType: "json",
+            success: function (response) {
+				var ctxDoughnut = document.getElementById("Doughnut");
+                var DoughnutChart = new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["收入百分比","支出百分比"],
+                        datasets: [{
+							data: [response.IncomeP,response.ExpenseP],
+                            backgroundColor: [
+                                window.chartColors.blue,
+                                window.chartColors.red,
+                            ]
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '資產分布%'
+                        },
+                    }
+                })
+            }
+          });
+		};
 
 		//資產分布百分比甜甜圈
         //Draw Doughnut
@@ -375,7 +419,15 @@
                 })
             }
           });
-        };
+		};
+
+		//清除收支百分比圖
+		function clearCanvasPie() {
+			$('#Pie').remove();
+			$('#dd').append('<canvas id="Pie"></canvas>');
+			container = document.getElementById("Pie");
+			context = container.getContext("2d");
+		}
 
         //資產分布百分比圓餅圖
         //Draw Pie

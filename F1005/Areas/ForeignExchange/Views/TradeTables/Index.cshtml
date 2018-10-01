@@ -27,7 +27,6 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("chartpie", "TestHome", new { Area = "ForeignExchange" }, null)",
-                data: "name=John&location=Boston",
                 dataType: "json",
             }).done(function (data) {
                 label.length = 0;
@@ -183,7 +182,7 @@
                 },
                 afterComplete: function (response) {
                     $('#myGrid').trigger('reloadGrid');
-                    $("#jsGrid1").jsGrid("loadData");  
+                    $("#jsGrid1").jsGrid("loadData");
                     clearCanvas();
                     calldata();
                     callnowcash();
@@ -211,6 +210,7 @@
                 url: "@Url.Action("Cash","Stock",new {Area= "Stock" },null)",
             }).done(function (result) {
                 document.getElementById("nowcash").value = result;
+                localStorage.cash = result;
                 }).fail(function (err) {
                     var content = JSON.parse(err);
                     alert(content)
@@ -225,8 +225,48 @@
         $(function () {
             jsGrid.locale("zh-tw");
             fillData();
-            calldata();
+            callusd();
             callnowcash();
+            getusdnowrate();
         });
+
+        var rate = 0;
+                function getusdnowrate(curr)
+        {
+            $.ajax(
+            {
+             type: "GET",
+             url: "@Url.Action("Getnowfc", "Money", new { Area = "ForeignExchange" }, null)",
+             data: curr,
+             dataType: "json",
+                    success: function (response1)
+                    {
+                     var arr1 = $.map(response1, function (qq) { return qq });
+                     rate=arr1[0];
+                    }
+            });
+        }
+        function callusd() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("chartpie1", "TestHome", new { Area = "ForeignExchange" }, null)",
+                data: "name=John&location=Boston",
+                dataType: "json",
+            }).done(function (data) {
+                label.length = 0;
+                list.length = 0;
+                for (i = 0; i < data.length; i++) {
+                    var arr = $.map(data[i], function (qq) { return qq });
+                    var curr = arr[0];
+                    var usd = arr[1];
+                    getusdnowrate(curr);
+                    var usdnow = usd * rate;
+                    var usdnow = usdnow.toFixed(2)
+                    label.push(arr[0]);
+                    list.push(usdnow);
+                };
+                loadpie();
+            });
+        }
     </script>
 }

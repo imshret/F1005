@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using F1005.Models;
 
 namespace F1005.Areas.Cash.Controllers
@@ -138,11 +141,12 @@ namespace F1005.Areas.Cash.Controllers
         //Load Income Table
         public ActionResult GetAllIncome()
         {
-            var query = db.CashIncome.ToList().Select(c => new GetIncomeViewModel
+            var username = Convert.ToString(Session["User"]);
+            var query = db.CashIncome.ToList().Where(c => c.UserName == username).OrderBy(c=>c.InDate).Select(c => new GetIncomeViewModel
             {
                 InCashID = c.InCashID,
                 UserName = c.UserName,
-                InCashType = IncomeType.現金,
+                InCashType = c.InCashType,
                 InAmount = c.InAmount,
                 InDate = c.InDate.ToShortDateString(),
                 InNote = c.InNote
@@ -194,11 +198,30 @@ namespace F1005.Areas.Cash.Controllers
             return RedirectToAction("Index");
         }
 
+
+
+
         //====================================
 
+        //Get Income History
         public ActionResult GetIncomeHis()
         {
-            var query = db.CashIncome.Where(c => c.InCashType == "1").ToList().Select(c => new IncomeHisViewModel
+            var username = Convert.ToString(Session["User"]);
+            var month = DateTime.Now.Month;
+            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Month==month).OrderBy(c => c.InDate).ToList().Select(c => new IncomeHisViewModel
+            {
+                Amount = c.InAmount,
+                MyDate = c.InDate.ToShortDateString()
+            });
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        //Get Income History by Month
+        [HttpGet]
+        public ActionResult GetIncomeHisByMonth(int? year , int? month)
+        {
+            var username = Convert.ToString(Session["User"]);
+            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Year==year && c.InDate.Month== month).OrderBy(c=>c.InDate).ToList().Select(c => new IncomeHisViewModel
             {
                 Amount = c.InAmount,
                 MyDate = c.InDate.ToShortDateString()
@@ -209,8 +232,46 @@ namespace F1005.Areas.Cash.Controllers
         //支出收入百分比
         public ActionResult GetPie()
         {
-            var ISum = (decimal)db.CashIncome.Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
-            var ESum = (decimal)db.CashExpense.Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
+            var username = Convert.ToString(Session["User"]);
+            var ISum = (decimal)db.CashIncome.Where(c => c.UserName == username).Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
+            var ESum = (decimal)db.CashExpense.Where(c => c.UserName == username).Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
+
+            var total = ISum + ESum;
+            if (ISum == 0)
+            {
+                var query = db.CashExpense.ToList().Select(c => new
+                {
+                    IncomeP = (ISum / total * 100).ToString("f2"),
+                    ExpenseP = (ESum / total * 100).ToString("f2")
+                }).FirstOrDefault();
+                return Json(query, JsonRequestBehavior.AllowGet);
+            }
+            else if (ESum == 0)
+            {
+                var query = db.CashIncome.ToList().Select(c => new
+                {
+                    IncomeP = (ISum / total * 100).ToString("f2"),
+                    ExpenseP = (ESum / total * 100).ToString("f2")
+                }).FirstOrDefault();
+                return Json(query, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var query = db.CashIncome.ToList().Select(c => new
+                {
+                    IncomeP = (ISum / total * 100).ToString("f2"),
+                    ExpenseP = (ESum / total * 100).ToString("f2")
+                }).FirstOrDefault();
+                return Json(query, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //支出收入百分比 by Month
+        public ActionResult GetPiebyMonth(int? month)
+        {
+            var username = Convert.ToString(Session["User"]);
+            var ISum = (decimal)db.CashIncome.Where(c => c.UserName == username && c.InDate.Month==month).Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
+            var ESum = (decimal)db.CashExpense.Where(c => c.UserName == username && c.ExDate.Month == month).Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
 
             var total = ISum + ESum;
             if (ISum == 0)
@@ -245,10 +306,29 @@ namespace F1005.Areas.Cash.Controllers
         //收入餘額
         public ActionResult GetIncomeBalance()
         {
-            var query = db.CashIncome.ToList().Sum(c => c.InAmount);
+            var username = Convert.ToString(Session["User"]);
+            var query = Convert.ToInt32(db.CashIncome.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.InAmount)).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
+        //public ActionResult ExportToExcel()
+        //{
+        //    var gv = new GridView();
+        //    gv.DataSource = this.db.CashIncome.ToList();
+        //    gv.DataBind();
+        //    Response.ClearContent();
+        //    Response.Buffer = true;
+        //    Response.AddHeader("content-disposition", "attachment; filename=DemoExcel.xls");
+        //    Response.ContentType = "application/ms-excel";
+        //    Response.Charset = "";
+        //    StringWriter objStringWriter = new StringWriter();
+        //    HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+        //    gv.RenderControl(objHtmlTextWriter);
+        //    Response.Output.Write(objStringWriter.ToString());
+        //    Response.Flush();
+        //    Response.End();
+        //    return View("Index");
+        //}
 
     }
 }
