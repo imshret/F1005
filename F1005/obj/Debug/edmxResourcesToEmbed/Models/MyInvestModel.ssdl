@@ -24,6 +24,14 @@
     <Property Name="InDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="InNote" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="CurrencyName">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CurrencyClass" Type="nvarchar" MaxLength="50" />
+    <Property Name="CurrencyClassName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="CurrencyRate">
     <Key>
       <PropertyRef Name="CurrencyClass" />
@@ -43,7 +51,7 @@
     <Property Name="SerialNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="STID" Type="int" />
     <Property Name="UserID" Type="nvarchar" MaxLength="30" />
-    <Property Name="FundName" Type="nvarchar" MaxLength="30" />
+    <Property Name="FundName" Type="nvarchar" MaxLength="255" />
     <Property Name="BuyOrSell" Type="bit" />
     <Property Name="Fee" Type="float" />
     <Property Name="Units" Type="float" />
@@ -51,6 +59,25 @@
     <Property Name="NAV" Type="float" />
     <Property Name="CashFlow" Type="float" />
     <Property Name="RelateCash" Type="bit" Nullable="false" />
+    <Property Name="SellNAV" Type="float" />
+    <Property Name="CurrentNAV" Type="float" />
+  </EntityType>
+  <EntityType Name="fund_data">
+    <Key>
+      <PropertyRef Name="FundID" />
+    </Key>
+    <Property Name="日期" Type="nvarchar" MaxLength="255" />
+    <Property Name="MemberCode" Type="nvarchar" MaxLength="255" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
+    <Property Name="FundID" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="FundCode" Type="nvarchar" MaxLength="255" />
+    <Property Name="FundName" Type="nvarchar" MaxLength="255" />
+    <Property Name="FundNAV" Type="nvarchar" MaxLength="255" />
+    <Property Name="Fluctuate" Type="nvarchar" MaxLength="255" />
+    <Property Name="FluctuateRatio" Type="nvarchar" MaxLength="255" />
+    <Property Name="TypeCode" Type="nvarchar" MaxLength="255" />
+    <Property Name="Currancy" Type="nvarchar" MaxLength="255" />
+    <Property Name="BenifitCode" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="FXtradeTable">
     <Key>
@@ -85,6 +112,21 @@
     <Property Name="CashFlow" Type="int" />
     <Property Name="RelateCash" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="Stock_data">
+    <Key>
+      <PropertyRef Name="StockID" />
+    </Key>
+    <Property Name="StockID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="證券名稱" Type="nvarchar" MaxLength="255" />
+    <Property Name="成交股數" Type="nvarchar" MaxLength="255" />
+    <Property Name="成交金額" Type="nvarchar" MaxLength="255" />
+    <Property Name="開盤價" Type="nvarchar" MaxLength="255" />
+    <Property Name="最高價" Type="nvarchar" MaxLength="255" />
+    <Property Name="最低價" Type="nvarchar" MaxLength="255" />
+    <Property Name="收盤價" Type="nvarchar" MaxLength="255" />
+    <Property Name="漲跌價差" Type="nvarchar" MaxLength="255" />
+    <Property Name="成交筆數" Type="nvarchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="StockHistory">
     <Key>
       <PropertyRef Name="stockTradeID" />
@@ -100,6 +142,7 @@
     <Property Name="stockNetincome" Type="int" />
     <Property Name="stockNote" Type="nvarchar" MaxLength="300" />
     <Property Name="CashAccount" Type="bit" Nullable="false" />
+    <Property Name="stockLastAVG" Type="decimal" Precision="6" Scale="2" />
   </EntityType>
   <EntityType Name="StockIDList">
     <Key>
@@ -168,6 +211,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CurrencyName_CurrencyRate1">
+    <End Role="CurrencyRate" Type="Self.CurrencyRate" Multiplicity="0..1" />
+    <End Role="CurrencyName" Type="Self.CurrencyName" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CurrencyRate">
+        <PropertyRef Name="CurrencyClass" />
+      </Principal>
+      <Dependent Role="CurrencyName">
+        <PropertyRef Name="CurrencyClass" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Fund_Fund">
+    <End Role="Fund" Type="Self.Fund" Multiplicity="1" />
+    <End Role="Fund1" Type="Self.Fund" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Fund">
+        <PropertyRef Name="SerialNumber" />
+      </Principal>
+      <Dependent Role="Fund1">
+        <PropertyRef Name="SerialNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Fund_SummaryTable">
     <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1" />
     <End Role="Fund" Type="Self.Fund" Multiplicity="*" />
@@ -228,6 +295,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_StockHistory_Stock_data">
+    <End Role="Stock_data" Type="Self.Stock_data" Multiplicity="0..1" />
+    <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stock_data">
+        <PropertyRef Name="StockID" />
+      </Principal>
+      <Dependent Role="StockHistory">
+        <PropertyRef Name="stockID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_StockHistory_StockIDList">
     <End Role="StockIDList" Type="Self.StockIDList" Multiplicity="0..1" />
     <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
@@ -267,10 +346,13 @@
   <EntityContainer Name="MyInvestModelStoreContainer">
     <EntitySet Name="CashExpense" EntityType="Self.CashExpense" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CashIncome" EntityType="Self.CashIncome" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CurrencyName" EntityType="Self.CurrencyName" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CurrencyRate" EntityType="Self.CurrencyRate" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Fund" EntityType="Self.Fund" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="fund_data" EntityType="Self.fund_data" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FXtradeTable" EntityType="Self.FXtradeTable" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Insurances" EntityType="Self.Insurances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Stock_data" EntityType="Self.Stock_data" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StockHistory" EntityType="Self.StockHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StockIDList" EntityType="Self.StockIDList" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SummaryTable" EntityType="Self.SummaryTable" Schema="dbo" store:Type="Tables" />
@@ -283,6 +365,14 @@
     <AssociationSet Name="FK_CashIncome_SummaryTable" Association="Self.FK_CashIncome_SummaryTable">
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="CashIncome" EntitySet="CashIncome" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CurrencyName_CurrencyRate1" Association="Self.FK_CurrencyName_CurrencyRate1">
+      <End Role="CurrencyRate" EntitySet="CurrencyRate" />
+      <End Role="CurrencyName" EntitySet="CurrencyName" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fund_Fund" Association="Self.FK_Fund_Fund">
+      <End Role="Fund" EntitySet="Fund" />
+      <End Role="Fund1" EntitySet="Fund" />
     </AssociationSet>
     <AssociationSet Name="FK_Fund_SummaryTable" Association="Self.FK_Fund_SummaryTable">
       <End Role="SummaryTable" EntitySet="SummaryTable" />
@@ -303,6 +393,10 @@
     <AssociationSet Name="FK_Insurances_UsersData" Association="Self.FK_Insurances_UsersData">
       <End Role="UsersData" EntitySet="UsersData" />
       <End Role="Insurances" EntitySet="Insurances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockHistory_Stock_data" Association="Self.FK_StockHistory_Stock_data">
+      <End Role="Stock_data" EntitySet="Stock_data" />
+      <End Role="StockHistory" EntitySet="StockHistory" />
     </AssociationSet>
     <AssociationSet Name="FK_StockHistory_StockIDList" Association="Self.FK_StockHistory_StockIDList">
       <End Role="StockIDList" EntitySet="StockIDList" />

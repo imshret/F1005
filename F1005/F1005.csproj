@@ -48,17 +48,35 @@
     <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="ClosedXML, Version=0.93.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.93.1\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember.Signed, Version=1.3.0.0, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.Signed.1.3.0\lib\net45\FastMember.Signed.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -125,6 +143,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -177,6 +196,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\BStage\BStageAreaRegistration.cs" />
     <Compile Include="Areas\BStage\Controllers\BSController.cs" />
+    <Compile Include="Areas\BStage\Controllers\OverallViewModel.cs" />
+    <Compile Include="Areas\BStage\Models\BSViewModel.cs" />
     <Compile Include="Areas\Cash\CashAreaRegistration.cs" />
     <Compile Include="Areas\Cash\Controllers\CashExpensesController.cs" />
     <Compile Include="Areas\Cash\Controllers\CashIncomesController.cs" />
@@ -191,31 +212,13 @@
     <Compile Include="Areas\ForeignExchange\Controllers\TestHomeController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\TradeTablesController.cs" />
     <Compile Include="Areas\ForeignExchange\ForeignExchangeAreaRegistration.cs" />
-    <Compile Include="Areas\ForeignExchange\Models\Daily0905.cs">
-      <DependentUpon>FXModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\FXModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FXModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\FXModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FXModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\FXModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FXModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\ForeignExchange\Models\TradeTable.cs">
-      <DependentUpon>FXModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Areas\InsurancesandFund\Controllers\FundsController.cs" />
     <Compile Include="Areas\InsurancesandFund\InsurancesandFundAreaRegistration.cs" />
     <Compile Include="Areas\InsurancesandFund\Controllers\InsurancesController.cs" />
+    <Compile Include="Areas\InsurancesandFund\Models\FundViewModel.cs" />
+    <Compile Include="Areas\InsurancesandFund\Models\InsurancesViewModel.cs" />
     <Compile Include="Areas\InsurancesandFund\Models\IRRculculater.cs" />
+    <Compile Include="Areas\InsurancesandFund\Models\SelectListViewModel.cs" />
     <Compile Include="Areas\Main\Controllers\HomeController.cs" />
     <Compile Include="Areas\Main\Controllers\RssViewModel.cs" />
     <Compile Include="Areas\Main\MainAreaRegistration.cs" />
@@ -240,10 +243,16 @@
     <Compile Include="Models\CashIncome.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CurrencyName.cs">
+      <DependentUpon>MyInvestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CurrencyRate.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Fund.cs">
+      <DependentUpon>MyInvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\fund_data.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FXtradeTable.cs">
@@ -293,6 +302,9 @@
     <Compile Include="Models\StockIDList.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Stock_data.cs">
+      <DependentUpon>MyInvestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SummaryTable.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
@@ -320,16 +332,6 @@
     </Content>
     <Content Include="App_Data\FinalTerm_log.ldf">
       <DependentUpon>FinalTerm.mdf</DependentUpon>
-    </Content>
-    <Content Include="Areas\ForeignExchange\Models\FXModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FXModel.edmx</DependentUpon>
-      <LastGenOutput>FXModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\ForeignExchange\Models\FXModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FXModel.edmx</DependentUpon>
-      <LastGenOutput>FXModel.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Main\3DScroll\3Dsite.css" />
     <Content Include="Areas\Main\3DScroll\jquery.tiltedpage-scroll.js" />
@@ -623,13 +625,6 @@
     <Content Include="Areas\Stock\Views\Home\Index.cshtml" />
     <Content Include="Areas\Stock\Views\Shared\_StockBuyPartial.cshtml" />
     <Content Include="Areas\Stock\Views\Shared\_StockSellPartial.cshtml" />
-    <EntityDeploy Include="Areas\ForeignExchange\Models\FXModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FXModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Areas\ForeignExchange\Models\FXModel.edmx.diagram">
-      <DependentUpon>FXModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\ForeignExchange\Views\FX\History.cshtml" />
     <Content Include="Areas\ForeignExchange\Views\FX\Index.cshtml" />
     <Content Include="Areas\ForeignExchange\Views\FX\Jqgrid.cshtml" />
@@ -692,6 +687,8 @@
     <Content Include="Areas\BStage\Views\BS\Index.cshtml" />
     <Content Include="Areas\BStage\Views\BS\IndexIs.cshtml" />
     <Content Include="Areas\BStage\Views\BS\IndexFund.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
+    <Content Include="Areas\InsurancesandFund\Views\Funds\Sell.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -874,9 +871,9 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\BStage\Models\" />
     <Folder Include="Areas\BStage\Views\Shared\" />
     <Folder Include="Areas\Cash\Models\" />
+    <Folder Include="Areas\ForeignExchange\Models\" />
     <Folder Include="Areas\ForeignExchange\Views\Shared\" />
     <Folder Include="Areas\InsurancesandFund\Views\Shared\" />
     <Folder Include="Areas\Main\Models\" />

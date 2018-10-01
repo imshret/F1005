@@ -218,6 +218,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CurrencyName_CurrencyRate">
+
           <End Role="CurrencyRate" Type="Self.CurrencyRate" Multiplicity="0..1" />
           <End Role="CurrencyName" Type="Self.CurrencyName" Multiplicity="*" />
           <ReferentialConstraint>
@@ -229,6 +230,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+
         <Association Name="FK_Fund_Fund">
           <End Role="Fund" Type="Self.Fund" Multiplicity="1" />
           <End Role="Fund1" Type="Self.Fund" Multiplicity="0..1" />
@@ -472,6 +474,9 @@
             <End Role="UsersData" EntitySet="UsersData" />
             <End Role="Insurances" EntitySet="Insurances" />
           </AssociationSet>
+
+          <EntitySet Name="fund_data" EntityType="MyInvestModel.fund_data" />
+
           <AssociationSet Name="FK_Fund_Fund" Association="MyInvestModel.FK_Fund_Fund">
             <End Role="Fund" EntitySet="Fund" />
             <End Role="Fund1" EntitySet="Fund" />
@@ -482,13 +487,7 @@
             <End Role="Stock_data" EntitySet="Stock_data" />
             <End Role="StockHistory" EntitySet="StockHistory" />
           </AssociationSet>
-          <EntitySet Name="CurrencyRate" EntityType="MyInvestModel.CurrencyRate" />
-          <EntitySet Name="CurrencyName" EntityType="MyInvestModel.CurrencyName" />
-          <AssociationSet Name="FK_CurrencyName_CurrencyRate" Association="MyInvestModel.FK_CurrencyName_CurrencyRate">
-            <End Role="CurrencyRate" EntitySet="CurrencyRate" />
-            <End Role="CurrencyName" EntitySet="CurrencyName" />
-          </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <EntityType Name="CashExpense">
           <Key>
             <PropertyRef Name="ExCashID" />
@@ -649,6 +648,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CurrencyRate">
+          <Key>
+            <PropertyRef Name="CurrencyClass" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrencyClass" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CashBuy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CashSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OnlineBuy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OnlineSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CurrencyName" Relationship="MyInvestModel.FK_CurrencyName_CurrencyRate1" FromRole="CurrencyRate" ToRole="CurrencyName" />
+        </EntityType>
+
         <EntityType Name="FXtradeTable">
           <Key>
             <PropertyRef Name="Id" />
@@ -696,8 +709,7 @@
           <Property Name="RelateCash" Type="Boolean" Nullable="false" />
           <Property Name="SellNAV" Type="Double" />
           <Property Name="CurrentNAV" Type="Double" />
-          <NavigationProperty Name="Fund1" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund" ToRole="Fund1" />
-          <NavigationProperty Name="Fund2" Relationship="MyInvestModel.FK_Fund_Fund" FromRole="Fund1" ToRole="Fund" />
+
         </EntityType>
         <EntityType Name="Insurances">
           <Key>
@@ -767,6 +779,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+
         <Association Name="FK_Fund_Fund">
           <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="1" />
           <End Type="MyInvestModel.Fund" Role="Fund1" Multiplicity="0..1" />
@@ -795,7 +808,9 @@
           <Property Name="TypeCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Currancy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BenifitCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+
         </EntityType>
+
         <EntityType Name="Stock_data">
           <Key>
             <PropertyRef Name="StockID" />
@@ -812,6 +827,7 @@
           <Property Name="成交筆數" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="StockHistory" Relationship="MyInvestModel.FK_StockHistory_Stock_data" FromRole="Stock_data" ToRole="StockHistory" />
         </EntityType>
+
         <Association Name="FK_StockHistory_Stock_data">
           <End Type="MyInvestModel.Stock_data" Role="Stock_data" Multiplicity="0..1" />
           <End Type="MyInvestModel.StockHistory" Role="StockHistory" Multiplicity="*" />
@@ -1010,6 +1026,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CurrencyName">
+            <EntityTypeMapping TypeName="MyInvestModel.CurrencyName">
+              <MappingFragment StoreEntitySet="CurrencyName">
+                <ScalarProperty Name="CurrencyClassName" ColumnName="CurrencyClassName" />
+                <ScalarProperty Name="CurrencyClass" ColumnName="CurrencyClass" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="fund_data">
             <EntityTypeMapping TypeName="MyInvestModel.fund_data">
               <MappingFragment StoreEntitySet="fund_data">
@@ -1028,6 +1053,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+
           <EntitySetMapping Name="Stock_data">
             <EntityTypeMapping TypeName="MyInvestModel.Stock_data">
               <MappingFragment StoreEntitySet="Stock_data">

@@ -19,6 +19,11 @@ namespace F1005.Areas.Cash.Controllers
         {
             //var cashExpense = db.CashExpense.Include(c => c.SummaryTable);
             //return View(cashExpense.ToList());
+
+            if(Session["User"]==null)
+            {
+                Session["User"] = "msit119_one";
+            }
             return View();
         }
 
@@ -136,11 +141,11 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetAllExpense()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashExpense.ToList().Where(c => c.UserName == username).Select(c => new GetExpenseViewModel
+            var query = db.CashExpense.ToList().Where(c => c.UserName == username).OrderBy(c=>c.ExDate).Select(c => new GetExpenseViewModel
             {
                 ExCashID = c.ExCashID,
                 UserID = c.UserName,
-                ExCashType = ExpenseType.現金,
+                ExCashType = c.ExCashType,
                 ExAmount = c.ExAmount,
                 ExDate = c.ExDate.ToShortDateString(),
                 ExNote = c.ExNote
@@ -201,7 +206,8 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetExpenseHis()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashExpense.Where(c => c.UserName == username).ToList().Select(c => new ExpenseHisViewModel
+            var month = DateTime.Now.Month;
+            var query = db.CashExpense.ToList().Where(c => c.UserName == username && c.ExDate.Month==month).OrderBy(c=>c.ExDate).Select(c => new ExpenseHisViewModel
             {
                 Amount = c.ExAmount,
                 MyDate = c.ExDate.ToShortDateString()
@@ -211,10 +217,10 @@ namespace F1005.Areas.Cash.Controllers
 
         //Get Income History by Month
         [HttpGet]
-        public ActionResult GetExpenseHisByMonth(int? month)
+        public ActionResult GetExpenseHisByMonth(int? year, int? month)
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashExpense.Where(c => c.UserName == username && c.ExDate.Month == month).OrderBy(c => c.ExDate).ToList().Select(c => new ExpenseHisViewModel
+            var query = db.CashExpense.Where(c => c.UserName == username && c.ExDate.Year==year && c.ExDate.Month == month).OrderBy(c => c.ExDate).ToList().Select(c => new ExpenseHisViewModel
             {
                 Amount = c.ExAmount,
                 MyDate = c.ExDate.ToShortDateString()
@@ -227,7 +233,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetExpenseBalance()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashExpense.ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount);
+            var query = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount)).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
     }

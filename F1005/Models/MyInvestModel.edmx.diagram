@@ -25,14 +25,9 @@
         <AssociationConnector Association="MyInvestModel.FK_Fund_UsersData" />
         <AssociationConnector Association="MyInvestModel.FK_Insurances_Insurances" />
         <AssociationConnector Association="MyInvestModel.FK_Insurances_UsersData" />
+
+        <EntityTypeShape EntityType="MyInvestModel.fund_data" Width="1.5" PointX="10.375" PointY="4.75" />
         <AssociationConnector Association="MyInvestModel.FK_Fund_Fund" />
-        <EntityTypeShape EntityType="MyInvestModel.fund_data" Width="1.5" PointX="11" PointY="5.25" />
-        <EntityTypeShape EntityType="MyInvestModel.Stock_data" Width="1.5" PointX="11" PointY="0.5" />
-        <AssociationConnector Association="MyInvestModel.FK_StockHistory_Stock_data" />
-        <EntityTypeShape EntityType="MyInvestModel.CurrencyRate" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="MyInvestModel.CurrencyName" Width="1.5" PointX="2.875" PointY="1" />
-        <AssociationConnector Association="MyInvestModel.FK_CurrencyName_CurrencyRate" />
-        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

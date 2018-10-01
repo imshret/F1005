@@ -1,73 +1,11 @@
-﻿@model IEnumerable<F1005.Models.FXtradeTable>
-
-@{
+﻿@{
     ViewBag.Title = "IndexFX";
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutEZ.cshtml";
+    //Layout = null;
 }
+
 
 <h2>IndexFX</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrencyClass)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NTD)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USD)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExchargeRate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tax)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Tradetime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TradeClass)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.note)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SummaryTable.TradeType)
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CurrencyClass)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NTD)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USD)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExchargeRate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tradetime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TradeClass)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.note)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SummaryTable.TradeType)
-        </td>
-    </tr>
-}
-
-</table>
+<div>
+    <table id="GetFX" class="table table-striped table-bordered" style="width:100%"></table>
+</div>

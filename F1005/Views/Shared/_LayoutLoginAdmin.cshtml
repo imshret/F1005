@@ -62,7 +62,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("最近新增資訊", "Newly", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>                 
+                    <li>@Html.ActionLink("總數", "Recent", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>                 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -72,9 +72,10 @@
                             @*下拉箭頭*@
                             @*<span class="caret"></span>*@
                         </a>            
-                        <ul class="dropdown-menu" role="menu" style="text-align:center" id="MenuWidth">
-                            <li>@Html.ActionLink("修改密碼", "ChangePasswordAdmin", "Account")</li>
-                            <li>@Html.ActionLink("登出", "Logout", "Account")</li>
+                        <ul class="dropdown-menu" role="menu" style="text-align:center" id="MenuWidth">                           
+
+                            <li>@Html.ActionLink("修改密碼", "ChangePasswordAdmin", "Account", new { Area = "" }, null)</li>
+                            <li>@Html.ActionLink("登出", "Logout", "Account", new { Area = "" }, null)</li>
                         </ul>
                     </li>
                 </ul>

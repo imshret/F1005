@@ -35,9 +35,9 @@ namespace F1005.Models
         public virtual DbSet<FXtradeTable> FXtradeTable { get; set; }
         public virtual DbSet<Fund> Fund { get; set; }
         public virtual DbSet<Insurances> Insurances { get; set; }
+        public virtual DbSet<CurrencyName> CurrencyName { get; set; }
         public virtual DbSet<fund_data> fund_data { get; set; }
         public virtual DbSet<Stock_data> Stock_data { get; set; }
-        public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
-        public virtual DbSet<CurrencyName> CurrencyName { get; set; }
+
     }
 }
