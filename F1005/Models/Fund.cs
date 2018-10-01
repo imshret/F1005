@@ -25,8 +25,12 @@ namespace F1005.Models
         public Nullable<double> NAV { get; set; }
         public Nullable<double> CashFlow { get; set; }
         public bool RelateCash { get; set; }
+        public Nullable<double> SellNAV { get; set; }
+        public Nullable<double> CurrentNAV { get; set; }
     
         public virtual SummaryTable SummaryTable { get; set; }
         public virtual UsersData UsersData { get; set; }
+        public virtual Fund Fund1 { get; set; }
+        public virtual Fund Fund2 { get; set; }
     }
 }
