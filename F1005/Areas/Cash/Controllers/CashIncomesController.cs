@@ -147,7 +147,7 @@ namespace F1005.Areas.Cash.Controllers
                 InCashID = c.InCashID,
                 UserName = c.UserName,
                 InCashType = c.InCashType,
-                InAmount = c.InAmount,
+                InAmount = Convert.ToInt32(c.InAmount).ToString("c2"),
                 InDate = c.InDate.ToShortDateString(),
                 InNote = c.InNote
             });
@@ -312,24 +312,24 @@ namespace F1005.Areas.Cash.Controllers
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
-        //public ActionResult ExportToExcel()
-        //{
-        //    var gv = new GridView();
-        //    gv.DataSource = this.db.CashIncome.ToList();
-        //    gv.DataBind();
-        //    Response.ClearContent();
-        //    Response.Buffer = true;
-        //    Response.AddHeader("content-disposition", "attachment; filename=DemoExcel.xls");
-        //    Response.ContentType = "application/ms-excel";
-        //    Response.Charset = "";
-        //    StringWriter objStringWriter = new StringWriter();
-        //    HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
-        //    gv.RenderControl(objHtmlTextWriter);
-        //    Response.Output.Write(objStringWriter.ToString());
-        //    Response.Flush();
-        //    Response.End();
-        //    return View("Index");
-        //}
+        public ActionResult ExportToExcel()
+        {
+            var gv = new GridView();
+            gv.DataSource = this.db.CashIncome.ToList();
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=DemoExcel.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter objStringWriter = new StringWriter();
+            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+            gv.RenderControl(objHtmlTextWriter);
+            Response.Output.Write(objStringWriter.ToString());
+            Response.Flush();
+            Response.End();
+            return View("Index");
+        }
 
     }
 }
