@@ -299,22 +299,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\DBStockTest.mdf" />
-    <Content Include="App_Data\DBStockTest_log.ldf">
-      <DependentUpon>DBStockTest.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\FinalTerm.mdf" />
-    <Content Include="App_Data\FinalTermUsers.mdf" />
-    <Content Include="App_Data\FinalTermUsers_log.ldf">
-      <DependentUpon>FinalTermUsers.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\FinalTerm_log.ldf">
-      <DependentUpon>FinalTerm.mdf</DependentUpon>
-    </Content>
     <Content Include="Areas\Main\3DScroll\3Dsite.css" />
     <Content Include="Areas\Main\3DScroll\jquery.tiltedpage-scroll.js" />
     <Content Include="Areas\Main\3DScroll\tiltedpage-scroll.css" />
@@ -563,7 +547,6 @@
     <Content Include="Images\error.png" />
     <Content Include="Images\FX2.png" />
     <Content Include="Images\home.png" />
-    <Content Include="Images\stock.png" />
     <Content Include="Images\stock3.png" />
     <Content Include="Models\MyInvestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -835,6 +818,7 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Areas\BStage\Views\Shared\" />
     <Folder Include="Areas\Cash\Models\" />
     <Folder Include="Areas\ForeignExchange\Models\" />
