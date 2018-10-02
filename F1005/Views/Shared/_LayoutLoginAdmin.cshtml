@@ -17,7 +17,7 @@
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-
+                                                                
     <script>
 
         function ColorChange() {
@@ -36,15 +36,6 @@
             $("#ColorChangeO").css("width", "170px");
             $("#MenuWidth").css("width", "170px");
 
-            //var u = $("#ColorChange").val();
-            //if (u == null) {
-            //    //alert("123");
-            //    $("x").html(null);
-            //}
-            //else {
-            //    $("x1").html(null);
-            //}
-
         });
 
     </script>
@@ -62,7 +53,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("總數", "Recent", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>                 
+                    <li>@Html.ActionLink("總筆數", "Recent", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>                 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

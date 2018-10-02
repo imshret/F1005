@@ -27,7 +27,6 @@ namespace F1005.Models
     
         public virtual DbSet<CashExpense> CashExpense { get; set; }
         public virtual DbSet<CashIncome> CashIncome { get; set; }
-        public virtual DbSet<CurrencyName> CurrencyName { get; set; }
         public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
         public virtual DbSet<Fund> Fund { get; set; }
         public virtual DbSet<fund_data> fund_data { get; set; }

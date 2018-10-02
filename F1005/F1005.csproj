@@ -246,9 +246,6 @@
     <Compile Include="Models\CashIncome.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CurrencyName.cs">
-      <DependentUpon>MyInvestModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CurrencyRate.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
@@ -650,6 +647,7 @@
     <Content Include="Areas\BStage\Views\BS\IndexFund.cshtml" />
     <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Funds\Sell.cshtml" />
+    <Content Include="Areas\Stock\Views\Stock\_StockGetAllInvPartial.cshtml" />
     <EntityDeploy Include="Models\MyInvestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MyInvestModel.Designer.cs</LastGenOutput>
@@ -657,7 +655,6 @@
     <Content Include="Models\MyInvestModel.edmx.diagram">
       <DependentUpon>MyInvestModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Stock\Views\Stock\_StockGetAllInvPartial.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -812,12 +809,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Index2.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\LoginGoogle.cshtml" />
     <Content Include="Views\Shared\_LayoutLoginAdmin.cshtml" />
     <Content Include="Views\Account\Admin.cshtml" />
     <Content Include="Views\Account\ChangePasswordAdmin.cshtml" />

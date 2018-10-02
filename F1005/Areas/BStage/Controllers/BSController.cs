@@ -122,7 +122,7 @@ namespace F1005.Areas.BStage.Controllers
                          //UserName = c.SummaryTable.UserName,
                           CurrencyClass = c.CurrencyClass,
                           //Tradetime = c.Tradetime.Value.ToShortDateString(),
-                          //Tradetime = c.Tradetime,
+                          TradeDate = c.SummaryTable.TradeDate,
                           TradeClass = c.TradeClass,
                           note = c.note
                       });

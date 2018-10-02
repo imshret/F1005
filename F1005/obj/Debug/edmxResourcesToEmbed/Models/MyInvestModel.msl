@@ -27,15 +27,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="CurrencyName">
-      <EntityTypeMapping TypeName="MyInvestModel.CurrencyName">
-        <MappingFragment StoreEntitySet="CurrencyName">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Currency" ColumnName="Currency" />
-          <ScalarProperty Name="CurrencyClassName" ColumnName="CurrencyClassName" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="CurrencyRate">
       <EntityTypeMapping TypeName="MyInvestModel.CurrencyRate">
         <MappingFragment StoreEntitySet="CurrencyRate">
@@ -97,7 +88,6 @@
           <ScalarProperty Name="USD" ColumnName="USD" />
           <ScalarProperty Name="ExchargeRate" ColumnName="ExchargeRate" />
           <ScalarProperty Name="tax" ColumnName="tax" />
-          <ScalarProperty Name="Tradetime" ColumnName="Tradetime" />
           <ScalarProperty Name="TradeClass" ColumnName="TradeClass" />
           <ScalarProperty Name="note" ColumnName="note" />
         </MappingFragment>

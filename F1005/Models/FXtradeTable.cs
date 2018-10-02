@@ -21,7 +21,6 @@ namespace F1005.Models
         public Nullable<double> USD { get; set; }
         public Nullable<double> ExchargeRate { get; set; }
         public Nullable<double> tax { get; set; }
-        public Nullable<System.DateTime> Tradetime { get; set; }
         public string TradeClass { get; set; }
         public string note { get; set; }
     
