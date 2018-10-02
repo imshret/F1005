@@ -3444,3 +3444,4 @@ U:\F1005\F1005\obj\Debug\F1005.csproj.CoreCompileInputs.cache
 U:\F1005\F1005\obj\Debug\F1005.csproj.CopyComplete
 U:\F1005\F1005\obj\Debug\F1005.dll
 U:\F1005\F1005\obj\Debug\F1005.pdb
+D:\分享資料\F1005\F1005\obj\Debug\F1005.csprojAssemblyReference.cache
