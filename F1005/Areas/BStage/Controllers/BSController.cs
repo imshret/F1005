@@ -116,12 +116,12 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetFX()
         {
             var db = new F1005.Models.MyInvestEntities();   
-            var ret = db.FXtradeTable.ToList().Select(c => new BSViewModel     
+            var ret = db.FXtradeTable.ToList().Where(c=>c.TradeClass =="買入").Select(c => new BSViewModel     
                       {
                           UserName = c.SummaryTable.UserName,
                           CurrencyClass = c.CurrencyClass,                      
-                          TradeDate = c.SummaryTable.TradeDate.ToShortDateString(),
-                          TradeClass = c.TradeClass,
+                          TradeDate = c.SummaryTable.TradeDate.ToShortDateString(),        
+                          NTD = c.NTD,
                           note = c.note
                       });
             //dynamic retObject = new { data = ret.ToList() };
@@ -131,7 +131,7 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetIs()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = db.Insurances.ToList().Select(c => new BSViewModel
+            var ret = db.Insurances.ToList().Where(c=>c.CashFlow > 0).Select(c => new BSViewModel
             {
                 UserName = c.SummaryTable.UserName,
                 InsuranceName = c.InsuranceName,
@@ -139,6 +139,7 @@ namespace F1005.Areas.BStage.Controllers
                 WithdrawDate = c.WithdrawDate.ToShortDateString(),
                 PaymentPerYear = c.PaymentPerYear,
                 PayYear = c.PayYear,
+                CashFlow = c.CashFlow,
                 Withdrawal = c.Withdrawal
             });
             //dynamic retObject = new { data = ret.ToList() };
@@ -148,14 +149,15 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetFund()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = db.Fund.ToList().Select(c=> new BSViewModel
+            var ret = db.Fund.ToList().Where(c=>c.CashFlow>0).Select(c=> new BSViewModel
                       {
                           UserName = c.SummaryTable.UserName,
                           FundName = c.FundName,
                           Date = c.Date.ToShortDateString(),
                           NAV = c.NAV,
-                          Units = c.Units
-                      });
+                          Units = c.Units,
+                          CashFlowX = c.CashFlow
+                  });
             //dynamic retObject = new { data = ret.ToList() };
             return Json(ret, JsonRequestBehavior.AllowGet);
         }

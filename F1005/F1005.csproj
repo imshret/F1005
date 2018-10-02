@@ -800,7 +800,6 @@
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Shared\_LayoutLoginAdmin.cshtml" />
-    <Content Include="Views\Account\Admin.cshtml" />
     <Content Include="Views\Account\ChangePasswordAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutEZ.cshtml" />
   </ItemGroup>
