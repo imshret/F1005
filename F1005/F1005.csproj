@@ -545,6 +545,7 @@
     <Content Include="Images\correct.png" />
     <Content Include="Images\deposit2.png" />
     <Content Include="Images\error.png" />
+    <Content Include="Images\fund.png" />
     <Content Include="Images\FX2.png" />
     <Content Include="Images\home.png" />
     <Content Include="Images\stock3.png" />

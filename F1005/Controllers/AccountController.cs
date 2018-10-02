@@ -452,5 +452,12 @@ namespace F1005.Controllers
                 return View("Index2");
             }
         }
+
+        public ActionResult Logout()
+        {
+            Session["User"] =null;
+         
+            return RedirectToAction("Index", "Home");          
+        }
     }
 }
