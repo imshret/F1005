@@ -19,6 +19,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             var UID = Session["User"].ToString();
             var query = db.Fund.Where(F => F.UserID == UID);
             foreach (var item in query)
@@ -52,6 +57,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 
@@ -62,7 +72,10 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "FundName,Fee,Units,Date,NAV")] Fund fund)
         {
-         
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
 
             fund.BuyOrSell = true;
             fund.CashFlow = (fund.NAV * fund.Units) * (1 + fund.Fee / 100);
@@ -104,6 +117,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -123,6 +141,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "SerialNumber,UserID,FundName,BuyOrSell,Fee,Units,Date,NAV,CashFlow")] Fund fund)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(fund).State = EntityState.Modified;

@@ -20,9 +20,9 @@ namespace F1005.Areas.Cash.Controllers
         // GET: Cash/CashIncomes
         public ActionResult Index()
         {
-            if(Session["User"]==null)
+            if (Session["User"] == null)
             {
-                Session["User"] = "msit119_one";
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
             //var cashIncome = db.CashIncome.Include(c => c.SummaryTable);
             //return View(cashIncome.ToList());
@@ -158,6 +158,11 @@ namespace F1005.Areas.Cash.Controllers
         //Insert Income
         public ActionResult InsertIncome([Bind(Include = "STId,TradeType,TradeDate,UserName")] SummaryTable summaryTable, [Bind(Include = "InCashID,UserName,InCashType,InAmount,InDate,InNote")] CashIncome cashIncome)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             summaryTable.TradeType = cashIncome.InCashType;
             summaryTable.TradeDate = cashIncome.InDate;
             summaryTable.UserName = cashIncome.UserName;

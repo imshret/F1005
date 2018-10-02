@@ -33,6 +33,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [HttpPost]
         public ActionResult Withdraw(Insurances insurances)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             Insurances olddata = db.Insurances.Find(insurances.SerialNumber);
             olddata.Withdrawed = true;
             db.SaveChanges();
@@ -55,6 +60,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // 保險首頁
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View(db.Insurances.ToList());
         }
 
@@ -63,6 +73,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Insurances/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 
