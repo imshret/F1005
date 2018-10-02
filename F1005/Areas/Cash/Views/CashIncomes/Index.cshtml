@@ -10,9 +10,24 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-th-list"></i>  現金收入明細表</h2>
 	</div>
-	<div id="jsGridIncome"></div>
-	<div>
-		<h2 id="IncomeBalance"></h2>
+
+	<div class="panel panel-info">
+		<div class="panel-heading">現金收入明細表</div>
+		<div class="panel-body"><div id="jsGridIncome"></div></div>
+	</div>
+	<div class="panel panel-success" style="margin-left:500px;">
+		<div class="panel-heading">現金餘額</div>
+		<div class="panel-body">
+			<div>
+				<h2 id="IncomeBalance"></h2>
+			</div>
+			<div>
+				<h2 id="ExpenseBalance"></h2>
+			</div>
+			<div>
+				<h2 id="DiffBalance"></h2>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -53,7 +68,9 @@
 			GetIncomeHis();
 			LoadDoughnut();
 			LoadPie();
-			GetBalance();
+			GetIncomeBalance();
+			GetExpenseBalance();
+			GetDiff();
 
 
 		for(var i = 2000; i < 2021; i++)
@@ -66,13 +83,35 @@
 			
 		});
 
-		function GetBalance() {
+		function GetIncomeBalance() {
 			$.ajax({
 				type: "Get",
 				url:"@Url.Action("GetIncomeBalance", "CashIncomes")"
 			}).done(function (res) {
 				document.getElementById("IncomeBalance").innerHTML = "<h2>" + " 目前總收入:  " + res + "</h2>";
 				document.getElementById("IncomeBalance").setAttribute("class", "text-right text-success");
+			})
+		};
+
+		function GetExpenseBalance() {
+			$.ajax({
+				type: "Get",
+				url:"@Url.Action("GetExpenseBalance", "CashIncomes")"
+			}).done(function (res) {
+				document.getElementById("ExpenseBalance").innerHTML = "<h2>" + " 目前總支出:  " + res + "</h2>";
+				document.getElementById("ExpenseBalance").setAttribute("class", "text-right text-danger");
+			})
+		};
+
+		function GetDiff() {
+			$.ajax({
+				type: "Get",
+				url:"@Url.Action("GetDiff", "CashIncomes")"
+			}).done(function (res) {
+				document.getElementById("DiffBalance").innerHTML = "<h2>" + " 收支差額:  " + res + "</h2>";
+				document.getElementById("DiffBalance").setAttribute("class", "text-right text-default");
+
+				
 			})
 		};
 
@@ -179,7 +218,9 @@
 									GetIncomeHis();
 									LoadDoughnut();
 									LoadPie();
-									GetBalance();
+									GetIncomeBalance();
+									GetExpenseBalance();
+									GetDiff();
 									clearCanvas();
 								})
 							},
@@ -195,7 +236,9 @@
 									GetIncomeHis();
 									LoadDoughnut();
 									LoadPie();
-									GetBalance();
+									GetIncomeBalance();
+									GetExpenseBalance();
+									GetDiff();
 									clearCanvas();
 								});
 							},
@@ -212,7 +255,9 @@
 									GetIncomeHis();
 									LoadDoughnut();
 									LoadPie();
-									GetBalance();
+									GetIncomeBalance();
+									GetExpenseBalance();
+									GetDiff();
 									clearCanvas();
 								});
 							},
@@ -222,8 +267,8 @@
 							{ name: "InCashID", type: "text", title: "交易序號", width: 100, inserting: false },
 							{ name: "UserName", type: "text", title: "使用者代號", width: 100, inserting: false},
 							{ name: "InCashType", type: "text", title: "交易類別", width: 100, inserting: false},
-							{ name: "InAmount", type: "text", title: "收入金額", width: 100 },
-							{ name: "InDate", type: "date", title: "日期", width: 100 },
+							{ name: "InAmount", type: "text", title: "收入金額", width: 100, validate: "required" },
+							{ name: "InDate", type: "date", title: "日期", width: 100, validate: "required" },
 							{ name: "InNote", type: "text", title: "我的筆記", width: 100, sorting: false },
 							{ type: "control" }
 						],
@@ -350,40 +395,6 @@
 			context = container.getContext("2d");
 		}
 
-		function PieMonthChange(){
-			var d = document.getElementById("PieMonth").value;
-			var month = d.substring(0, 1);
-			$.ajax({
-            type: "Get",
-            url: "@Url.Action("GetPiebyMonth", "CashIncomes")/",
-			data: "month=" + month,
-            dataType: "json",
-            success: function (response) {
-				var ctxDoughnut = document.getElementById("Doughnut");
-                var DoughnutChart = new Chart(ctxDoughnut, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ["收入百分比","支出百分比"],
-                        datasets: [{
-							data: [response.IncomeP,response.ExpenseP],
-                            backgroundColor: [
-                                window.chartColors.blue,
-                                window.chartColors.red,
-                            ]
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        title: {
-                            display: true,
-                            fontSize: 26,
-                            text: '資產分布%'
-                        },
-                    }
-                })
-            }
-          });
-		};
 
 		//資產分布百分比甜甜圈
         //Draw Doughnut
@@ -413,7 +424,7 @@
                         title: {
                             display: true,
                             fontSize: 26,
-                            text: '資產分布%'
+                            text: '收入資產百分比'
                         },
                     }
                 })
@@ -446,8 +457,8 @@
                         datasets: [{
 							data: [response.IncomeP, response.ExpenseP],
                             backgroundColor: [
-                                window.chartColors.blue,
                                 window.chartColors.red,
+                                window.chartColors.blue,
                             ]
                         }],
                     },
@@ -456,7 +467,7 @@
                         title: {
                             display: true,
                             fontSize: 26,
-                            text: '資產分布%'
+							text: '支出資產百分比'
                         },
                     }
                 })

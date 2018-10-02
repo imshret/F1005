@@ -142,7 +142,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetAllIncome()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashIncome.ToList().Where(c => c.UserName == username).OrderBy(c=>c.InDate).Select(c => new GetIncomeViewModel
+            var query = db.CashIncome.ToList().Where(c => c.UserName == username).OrderBy(c=>c.InCashID).Select(c => new GetIncomeViewModel
             {
                 InCashID = c.InCashID,
                 UserName = c.UserName,
@@ -180,6 +180,10 @@ namespace F1005.Areas.Cash.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(cashIncome).State = EntityState.Modified;
+                //CashIncome CI = db.CashIncome.Where(c => c.InCashID == cashIncome.InCashID).Select(c=>c).SingleOrDefault();
+                //var stTable = db.SummaryTable.Where(c => c.STId == CI.OID).Select(c => c).SingleOrDefault();
+                //stTable.TradeDate = cashIncome.InDate;
+                //db.Entry(stTable).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -189,10 +193,9 @@ namespace F1005.Areas.Cash.Controllers
         //Delete Income
         public ActionResult DeleteIncome(int? id)
         {
-
             CashIncome obj = db.CashIncome.Find(id);
-            var username = db.SummaryTable.Where(c => c.STId == obj.OID).Select(c => c).SingleOrDefault();
-            db.SummaryTable.Remove(username);
+            var stTable = db.SummaryTable.Where(c => c.STId == obj.OID).Select(c => c).SingleOrDefault();
+            db.SummaryTable.Remove(stTable);
             db.CashIncome.Remove(obj);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -266,43 +269,6 @@ namespace F1005.Areas.Cash.Controllers
             }
         }
 
-        //支出收入百分比 by Month
-        public ActionResult GetPiebyMonth(int? month)
-        {
-            var username = Convert.ToString(Session["User"]);
-            var ISum = (decimal)db.CashIncome.Where(c => c.UserName == username && c.InDate.Month==month).Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
-            var ESum = (decimal)db.CashExpense.Where(c => c.UserName == username && c.ExDate.Month == month).Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
-
-            var total = ISum + ESum;
-            if (ISum == 0)
-            {
-                var query = db.CashExpense.ToList().Select(c => new
-                {
-                    IncomeP = (ISum / total * 100).ToString("f2"),
-                    ExpenseP = (ESum / total * 100).ToString("f2")
-                }).FirstOrDefault();
-                return Json(query, JsonRequestBehavior.AllowGet);
-            }
-            else if (ESum == 0)
-            {
-                var query = db.CashIncome.ToList().Select(c => new
-                {
-                    IncomeP = (ISum / total * 100).ToString("f2"),
-                    ExpenseP = (ESum / total * 100).ToString("f2")
-                }).FirstOrDefault();
-                return Json(query, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var query = db.CashIncome.ToList().Select(c => new
-                {
-                    IncomeP = (ISum / total * 100).ToString("f2"),
-                    ExpenseP = (ESum / total * 100).ToString("f2")
-                }).FirstOrDefault();
-                return Json(query, JsonRequestBehavior.AllowGet);
-            }
-        }
-
         //收入餘額
         public ActionResult GetIncomeBalance()
         {
@@ -311,6 +277,27 @@ namespace F1005.Areas.Cash.Controllers
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
+        //支出餘額
+        public ActionResult GetExpenseBalance()
+        {
+            var username = Convert.ToString(Session["User"]);
+            var query = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount)).ToString("c2");
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        //收支差額
+        public ActionResult GetDiff()
+        {
+            var username = Convert.ToString(Session["User"]);
+            var Income = Convert.ToInt32(db.CashIncome.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.InAmount));
+            var Expense = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount));
+            var query = ((decimal)Income - (decimal)Expense).ToString("c2");
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //匯出Excel
         //public ActionResult ExportToExcel()
         //{
         //    var gv = new GridView();

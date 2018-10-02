@@ -10,9 +10,24 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-th-list"></i>  現金支出明細表</h2>
 	</div>
-	<div id="jsGridExpense"></div>
-	<div>
-		<h2 id="ExpenseBalance"></h2>
+
+	<div class="panel panel-info">
+		<div class="panel-heading">現金支出明細表</div>
+		<div class="panel-body"><div id="jsGridExpense"></div></div>
+	</div>
+	<div class="panel panel-danger" style="margin-left:500px;">
+		<div class="panel-heading">現金餘額</div>
+		<div class="panel-body">
+			<div>
+				<h2 id="IncomeBalance"></h2>
+			</div>
+			<div>
+				<h2 id="ExpenseBalance"></h2>
+			</div>
+			<div>
+				<h2 id="DiffBalance"></h2>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -34,7 +49,9 @@
 		$(function () {
 			init();
 			GetExpenseHis();
-			GetBalance();
+			GetIncomeBalance();
+			GetExpenseBalance();
+			GetDiff();
 
 			for (var i = 2000; i < 2021; i++) {
 				var Yp = document.createElement("option")
@@ -44,13 +61,35 @@
 			}
 		});
 
-		function GetBalance() {
+		function GetIncomeBalance() {
+			$.ajax({
+				type: "Get",
+				url:"@Url.Action("GetIncomeBalance", "CashIncomes")"
+			}).done(function (res) {
+				document.getElementById("IncomeBalance").innerHTML = "<h2>" + " 目前總收入:  " + res + "</h2>";
+				document.getElementById("IncomeBalance").setAttribute("class", "text-right text-success");
+			})
+		};
+
+		function GetExpenseBalance() {
 			$.ajax({
 				type: "Get",
 				url:"@Url.Action("GetExpenseBalance", "CashExpenses")"
 			}).done(function (res) {
 				document.getElementById("ExpenseBalance").innerHTML = "<h2>" + " 目前總支出:  " + res + "</h2>";
 				document.getElementById("ExpenseBalance").setAttribute("class", "text-right text-danger");
+			})
+		};
+
+		function GetDiff() {
+			$.ajax({
+				type: "Get",
+				url:"@Url.Action("GetDiff", "CashIncomes")"
+			}).done(function (res) {
+				document.getElementById("DiffBalance").innerHTML = "<h2>" + " 收支差額:  " + res + "</h2>";
+				document.getElementById("DiffBalance").setAttribute("class", "text-right text-default");
+
+				
 			})
 		};
 
@@ -157,7 +196,9 @@
 									$("#jsGridExpense").jsGrid("loadData");
 									$('#xxx').notify("新增成功", "success", { position: "bottom" });
 									GetExpenseHis();
-									GetBalance();
+									GetIncomeBalance();
+									GetExpenseBalance();
+									GetDiff();
 									clearCanvas();
 								})
 							},
@@ -171,7 +212,9 @@
 									$("#jsGridExpense").jsGrid("loadData");
 									$('#xxx').notify("修改成功", "success", { position: "bottom" });
 									GetExpenseHis();
-									GetBalance();
+									GetIncomeBalance();
+									GetExpenseBalance();
+									GetDiff();
 									clearCanvas();
 								});
 							},
@@ -186,7 +229,9 @@
 									$("#jsGridExpense").jsGrid("loadData");
 									$('#xxx').notify("刪除成功", "success", { position: "bottom" });
 									GetExpenseHis();
-									GetBalance();
+									GetIncomeBalance();
+									GetExpenseBalance();
+									GetDiff();
 									clearCanvas();
 								});
 							},
@@ -196,8 +241,8 @@
 							{ name: "ExCashID", type: "text", title: "交易序號", width: 100, inserting: false },
 							{ name: "UserID", type: "text", title: "使用者代號", width: 100, inserting: false},
 							{ name: "ExCashType", type: "text", title: "交易類別", width: 100, inserting: false},
-							{ name: "ExAmount", type: "text", title: "支出金額", width: 100 },
-							{ name: "ExDate", type: "date", title: "日期", width: 100 },
+							{ name: "ExAmount", type: "text", title: "支出金額", width: 100, validate: "required"},
+							{ name: "ExDate", type: "date", title: "日期", width: 100, validate: "required" },
 							{ name: "ExNote", type: "text", title: "我的筆記", width: 100, sorting: false },
 							{ type: "control" }
 						],
