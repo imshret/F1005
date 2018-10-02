@@ -21,7 +21,6 @@ namespace F1005.Areas.BStage.Controllers
             return View();
         }
 
-
         public ActionResult IndexStock()
         {  
             MyInvestEntities db = new MyInvestEntities();
@@ -145,7 +144,6 @@ namespace F1005.Areas.BStage.Controllers
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
-
         public JsonResult GetFund()
         {
             var db = new F1005.Models.MyInvestEntities();
@@ -161,6 +159,7 @@ namespace F1005.Areas.BStage.Controllers
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
+        //後台NAV
         public ActionResult Recent()
         {
             return View();
@@ -171,8 +170,7 @@ namespace F1005.Areas.BStage.Controllers
             return View();
         }
 
-
-
+        //後台NAV繪圖
         public ActionResult chartpieX()
         {
             var db = new F1005.Models.MyInvestEntities();
@@ -195,13 +193,12 @@ namespace F1005.Areas.BStage.Controllers
         {
             var db = new F1005.Models.MyInvestEntities();
             var stockCount = db.StockHistory.Select(c => c.stockNetincome * -1).Sum().ToString(); ;
-            var FXCount = db.FXtradeTable.Count().ToString();
-            var InsuranceCount = db.Insurances.Count().ToString();
-            var FundCount = db.Fund.Count().ToString();
+            var FXCount = db.FXtradeTable.Where(c=>c.TradeClass == "買入").Select(c=>c.NTD).Sum().ToString();
+            var InsuranceCount = db.Insurances.Where(c => c.PurchaseOrWithdraw == true).Select(c => c.CashFlow * -1).Sum().ToString();
+            var FundCount = db.Fund.Where(c => c.BuyOrSell == true).Select(c => c.CashFlow).Sum().ToString();
 
             var query = db.StockHistory.Select(c => new OverallViewModel
-            {
-                //123
+            {                
                 X = stockCount,
                 XX = FXCount,
                 XXX = InsuranceCount,
@@ -209,7 +206,5 @@ namespace F1005.Areas.BStage.Controllers
             }).First();
             return Json(query, JsonRequestBehavior.AllowGet);
         }
-
-
     }
 }

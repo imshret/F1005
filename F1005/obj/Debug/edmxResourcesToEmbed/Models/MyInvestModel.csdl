@@ -38,6 +38,8 @@
     <Property Name="OnlineSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Date" Type="DateTime" Precision="0" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CurrencyRate1" Relationship="MyInvestModel.FK_CurrencyRate_CurrencyRate" FromRole="CurrencyRate" ToRole="CurrencyRate1" />
+    <NavigationProperty Name="CurrencyRate2" Relationship="MyInvestModel.FK_CurrencyRate_CurrencyRate" FromRole="CurrencyRate1" ToRole="CurrencyRate" />
   </EntityType>
   <EntityType Name="Fund">
     <Key>
@@ -58,23 +60,6 @@
     <Property Name="CurrentNAV" Type="Double" />
     <NavigationProperty Name="SummaryTable" Relationship="Self.FK_Fund_SummaryTable" FromRole="Fund" ToRole="SummaryTable" />
     <NavigationProperty Name="UsersData" Relationship="Self.FK_Fund_UsersData" FromRole="Fund" ToRole="UsersData" />
-  </EntityType>
-  <EntityType Name="fund_data">
-    <Key>
-      <PropertyRef Name="FundID" />
-    </Key>
-    <Property Name="日期" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="MemberCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="FundID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="FundCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="FundNAV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Fluctuate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="FluctuateRatio" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="TypeCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Currancy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="BenifitCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="FXtradeTable">
     <Key>
@@ -330,7 +315,6 @@
     <EntitySet Name="CashIncome" EntityType="Self.CashIncome" />
     <EntitySet Name="CurrencyRate" EntityType="Self.CurrencyRate" />
     <EntitySet Name="Fund" EntityType="Self.Fund" />
-    <EntitySet Name="fund_data" EntityType="Self.fund_data" />
     <EntitySet Name="FXtradeTable" EntityType="Self.FXtradeTable" />
     <EntitySet Name="Insurances" EntityType="Self.Insurances" />
     <EntitySet Name="Stock_data" EntityType="Self.Stock_data" />
@@ -383,6 +367,11 @@
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="FXtradeTable" EntitySet="FXtradeTable" />
     </AssociationSet>
+    <EntitySet Name="fund_data" EntityType="MyInvestModel.fund_data" />
+    <AssociationSet Name="FK_CurrencyRate_CurrencyRate" Association="MyInvestModel.FK_CurrencyRate_CurrencyRate">
+      <End Role="CurrencyRate" EntitySet="CurrencyRate" />
+      <End Role="CurrencyRate1" EntitySet="CurrencyRate" />
+    </AssociationSet>
   </EntityContainer>
   <Association Name="FK_FXtradeTable_SummaryTable">
     <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="1" />
@@ -393,6 +382,35 @@
       </Principal>
       <Dependent Role="FXtradeTable">
         <PropertyRef Name="SummaryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="fund_data">
+    <Key>
+      <PropertyRef Name="FundID" />
+    </Key>
+    <Property Name="Date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="MemberCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundNAV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Fluctuate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FluctuateRatio" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="TypeCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Currancy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BenifitCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_CurrencyRate_CurrencyRate">
+    <End Type="MyInvestModel.CurrencyRate" Role="CurrencyRate" Multiplicity="1" />
+    <End Type="MyInvestModel.CurrencyRate" Role="CurrencyRate1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="CurrencyRate">
+        <PropertyRef Name="CurrencyClass" />
+      </Principal>
+      <Dependent Role="CurrencyRate1">
+        <PropertyRef Name="CurrencyClass" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

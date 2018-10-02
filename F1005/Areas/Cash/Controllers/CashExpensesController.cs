@@ -20,10 +20,11 @@ namespace F1005.Areas.Cash.Controllers
             //var cashExpense = db.CashExpense.Include(c => c.SummaryTable);
             //return View(cashExpense.ToList());
 
-            if(Session["User"]==null)
+            if (Session["User"] == null)
             {
-                Session["User"] = "msit119_one";
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
+
             return View();
         }
 
@@ -156,6 +157,11 @@ namespace F1005.Areas.Cash.Controllers
         //Insert Expense
         public ActionResult InsertExpense([Bind(Include = "STId,TradeType,TradeDate,UserName")] SummaryTable summaryTable, [Bind(Include = "ExCashID,UserName,ExCashType,ExAmount,ExDate,ExNote")] CashExpense cashExpense)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             summaryTable.TradeType = cashExpense.ExCashType;
             summaryTable.TradeDate = cashExpense.ExDate;
             summaryTable.UserName = cashExpense.UserName;
@@ -180,6 +186,11 @@ namespace F1005.Areas.Cash.Controllers
         //Edit Expense
         public ActionResult EditExpense([Bind(Include = "ExCashID,UserID,ExCashType,ExAmount,ExDate,ExNote")] CashExpense cashExpense)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(cashExpense).State = EntityState.Modified;

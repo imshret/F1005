@@ -339,6 +339,11 @@ namespace F1005.Controllers
         // GET: /Account/ChangePassword
         public ActionResult ChangePassword()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             string u = Session["User"] as string;
             if (String.IsNullOrEmpty(u))
             {
@@ -391,57 +396,6 @@ namespace F1005.Controllers
                 ViewBag.Message = "原密碼錯誤";
                 return View("Index2");
             }
-        }
-
-        //SHOW出現有登入者
-        MyInvestEntities db = new MyInvestEntities();
-        // GET: /Account/Show
-        [AllowAnonymous]
-        public ActionResult Show()
-        {
-            return View(db.UsersData);
-        }
-
-        public ActionResult Logout()
-        {
-            Session["User"] = null;
-
-            return RedirectToAction("Index", "Home");
-            //return View("Index","Home");
-        }
-
-        public ActionResult LoginGoogle()
-        {
-            return View();
-        }
-
-
-        //public ActionResult Yes()
-        //{
-        //    string u = Session["User"] as string;
-        //    if (String.IsNullOrEmpty(u))
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    return View();
-        //    //return View("Index","Home");
-        //}
-
-        public ActionResult Admin()
-        {
-            string u = Session["User"] as string;
-            if (String.IsNullOrEmpty(u))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            var data = db.UsersData.Select(c => new LoginViewModel
-            {
-                UserName = c.UserName,
-                Password = c.Password,
-                Email = c.Email
-            });
-
-            return View(data);
         }
 
         public ActionResult ChangePasswordAdmin()

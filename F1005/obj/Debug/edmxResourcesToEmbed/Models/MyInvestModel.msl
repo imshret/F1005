@@ -60,24 +60,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="fund_data">
-      <EntityTypeMapping TypeName="MyInvestModel.fund_data">
-        <MappingFragment StoreEntitySet="fund_data">
-          <ScalarProperty Name="日期" ColumnName="日期" />
-          <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
-          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-          <ScalarProperty Name="FundID" ColumnName="FundID" />
-          <ScalarProperty Name="FundCode" ColumnName="FundCode" />
-          <ScalarProperty Name="FundName" ColumnName="FundName" />
-          <ScalarProperty Name="FundNAV" ColumnName="FundNAV" />
-          <ScalarProperty Name="Fluctuate" ColumnName="Fluctuate" />
-          <ScalarProperty Name="FluctuateRatio" ColumnName="FluctuateRatio" />
-          <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
-          <ScalarProperty Name="Currancy" ColumnName="Currancy" />
-          <ScalarProperty Name="BenifitCode" ColumnName="BenifitCode" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="FXtradeTable">
       <EntityTypeMapping TypeName="MyInvestModel.FXtradeTable">
         <MappingFragment StoreEntitySet="FXtradeTable">
@@ -190,6 +172,24 @@
           <ScalarProperty Name="FXValue" ColumnName="FXValue" />
           <ScalarProperty Name="InsuranceValue" ColumnName="InsuranceValue" />
           <ScalarProperty Name="FundValue" ColumnName="FundValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="fund_data">
+      <EntityTypeMapping TypeName="MyInvestModel.fund_data">
+        <MappingFragment StoreEntitySet="fund_data">
+          <ScalarProperty Name="BenifitCode" ColumnName="BenifitCode" />
+          <ScalarProperty Name="Currancy" ColumnName="Currancy" />
+          <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+          <ScalarProperty Name="FluctuateRatio" ColumnName="FluctuateRatio" />
+          <ScalarProperty Name="Fluctuate" ColumnName="Fluctuate" />
+          <ScalarProperty Name="FundNAV" ColumnName="FundNAV" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="FundCode" ColumnName="FundCode" />
+          <ScalarProperty Name="FundID" ColumnName="FundID" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

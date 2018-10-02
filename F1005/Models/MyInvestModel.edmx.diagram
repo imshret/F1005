@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="MyInvestModel.CashIncome" Width="1.5" PointX="5.25" PointY="20.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MyInvestModel.CurrencyRate" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MyInvestModel.Fund" Width="1.5" PointX="5.25" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyInvestModel.fund_data" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MyInvestModel.FXtradeTable" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MyInvestModel.Insurances" Width="1.5" PointX="8.25" PointY="13.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MyInvestModel.Stock_data" Width="1.5" PointX="6" PointY="24.75" IsExpanded="true" />
@@ -29,6 +28,8 @@
         <AssociationConnector Association="MyInvestModel.FK_StockHistory_SummaryTable" ManuallyRouted="false" />
         <AssociationConnector Association="MyInvestModel.FK_SummaryTable_UsersData" ManuallyRouted="false" />
         <AssociationConnector Association="MyInvestModel.FK_FXtradeTable_SummaryTable" />
+        <EntityTypeShape EntityType="MyInvestModel.fund_data" Width="1.5" PointX="3.375" PointY="4.75" />
+        <AssociationConnector Association="MyInvestModel.FK_CurrencyRate_CurrencyRate" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
