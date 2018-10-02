@@ -75,7 +75,6 @@
                         { title: 'InAmount', data: "InAmount" },
                         { title: 'InDate', data: "InDate" },
                         { title: 'InNote', data: "InNote" }
-
                     ]
                 });
 
@@ -99,8 +98,6 @@
                         { title: 'stockPrice', data: "stockPrice" },
                         { title: 'stockAmount', data: "stockAmount" },
                         { title: 'stockNote', data: "stockNote" }
-
-
                     ]
                 });
 
@@ -113,13 +110,12 @@
                         { title: 'TradeDate', data: "TradeDate" },
                         { title: 'TradeClass', data: "TradeClass" },
                         { title: 'note', data: "note" }
-                      
-
                     ]
                 });
 
                 var datatable = $('#GetIs').DataTable({
-                    ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
                         { title: 'UserName', data: "UserName" },
                         { title: 'InsuranceName', data: "InsuranceName" },
@@ -128,12 +124,12 @@
                         { title: 'PaymentPerYear', data: "PaymentPerYear" },
                         { title: 'PayYear', data: "PayYear" },
                         { title: 'Withdrawal', data: "Withdrawal" }
-
                     ]
                 });
 
                 var datatable = $('#GetFund').DataTable({
-                    ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
                         { title: 'UserName', data: "UserName" },
                         { title: 'FundName', data: "FundName" },
@@ -142,6 +138,7 @@
                         { title: 'Units', data: "Units" }
                     ]
                 });
+
             }
             $(function () {
                 LoadData();
