@@ -201,6 +201,7 @@ namespace F1005.Areas.BStage.Controllers
 
             var query = db.StockHistory.Select(c => new OverallViewModel
             {
+                //123
                 X = stockCount,
                 XX = FXCount,
                 XXX = InsuranceCount,
