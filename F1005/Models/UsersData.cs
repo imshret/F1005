@@ -17,9 +17,9 @@ namespace F1005.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UsersData()
         {
-            this.SummaryTable = new HashSet<SummaryTable>();
             this.Fund = new HashSet<Fund>();
             this.Insurances = new HashSet<Insurances>();
+            this.SummaryTable = new HashSet<SummaryTable>();
         }
     
         public int Id { get; set; }
@@ -35,10 +35,10 @@ namespace F1005.Models
         public Nullable<double> FundValue { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SummaryTable> SummaryTable { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Fund> Fund { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Insurances> Insurances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SummaryTable> SummaryTable { get; set; }
     }
 }

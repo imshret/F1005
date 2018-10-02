@@ -4,201 +4,192 @@
     <EntitySetMapping Name="CashExpense">
       <EntityTypeMapping TypeName="MyInvestModel.CashExpense">
         <MappingFragment StoreEntitySet="CashExpense">
-          <ScalarProperty Name="ExNote" ColumnName="ExNote" />
-          <ScalarProperty Name="ExDate" ColumnName="ExDate" />
-          <ScalarProperty Name="ExAmount" ColumnName="ExAmount" />
-          <ScalarProperty Name="ExCashType" ColumnName="ExCashType" />
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="OID" ColumnName="OID" />
           <ScalarProperty Name="ExCashID" ColumnName="ExCashID" />
+          <ScalarProperty Name="OID" ColumnName="OID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="ExCashType" ColumnName="ExCashType" />
+          <ScalarProperty Name="ExAmount" ColumnName="ExAmount" />
+          <ScalarProperty Name="ExDate" ColumnName="ExDate" />
+          <ScalarProperty Name="ExNote" ColumnName="ExNote" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CashIncome">
       <EntityTypeMapping TypeName="MyInvestModel.CashIncome">
         <MappingFragment StoreEntitySet="CashIncome">
-          <ScalarProperty Name="InNote" ColumnName="InNote" />
-          <ScalarProperty Name="InDate" ColumnName="InDate" />
-          <ScalarProperty Name="InAmount" ColumnName="InAmount" />
-          <ScalarProperty Name="InCashType" ColumnName="InCashType" />
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="OID" ColumnName="OID" />
           <ScalarProperty Name="InCashID" ColumnName="InCashID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StockHistory">
-      <EntityTypeMapping TypeName="MyInvestModel.StockHistory">
-        <MappingFragment StoreEntitySet="StockHistory">
-          <ScalarProperty Name="stockLastAVG" ColumnName="stockLastAVG" />
-          <ScalarProperty Name="CashAccount" ColumnName="CashAccount" />
-          <ScalarProperty Name="stockNote" ColumnName="stockNote" />
-          <ScalarProperty Name="stockNetincome" ColumnName="stockNetincome" />
-          <ScalarProperty Name="stockTax" ColumnName="stockTax" />
-          <ScalarProperty Name="stockFee" ColumnName="stockFee" />
-          <ScalarProperty Name="stockTP" ColumnName="stockTP" />
-          <ScalarProperty Name="stockAmount" ColumnName="stockAmount" />
-          <ScalarProperty Name="stockPrice" ColumnName="stockPrice" />
-          <ScalarProperty Name="stockID" ColumnName="stockID" />
-          <ScalarProperty Name="STId" ColumnName="STId" />
-          <ScalarProperty Name="stockTradeID" ColumnName="stockTradeID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StockIDList">
-      <EntityTypeMapping TypeName="MyInvestModel.StockIDList">
-        <MappingFragment StoreEntitySet="StockIDList">
-          <ScalarProperty Name="stockLastPrice" ColumnName="stockLastPrice" />
-          <ScalarProperty Name="stockName" ColumnName="stockName" />
-          <ScalarProperty Name="stockID" ColumnName="stockID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SummaryTable">
-      <EntityTypeMapping TypeName="MyInvestModel.SummaryTable">
-        <MappingFragment StoreEntitySet="SummaryTable">
+          <ScalarProperty Name="OID" ColumnName="OID" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
-          <ScalarProperty Name="TradeType" ColumnName="TradeType" />
-          <ScalarProperty Name="STId" ColumnName="STId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="MyInvestModel.sysdiagrams">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="definition" ColumnName="definition" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="name" ColumnName="name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="UsersData">
-      <EntityTypeMapping TypeName="MyInvestModel.UsersData">
-        <MappingFragment StoreEntitySet="UsersData">
-          <ScalarProperty Name="FundValue" ColumnName="FundValue" />
-          <ScalarProperty Name="InsuranceValue" ColumnName="InsuranceValue" />
-          <ScalarProperty Name="FXValue" ColumnName="FXValue" />
-          <ScalarProperty Name="StockValue" ColumnName="StockValue" />
-          <ScalarProperty Name="CashValue" ColumnName="CashValue" />
-          <ScalarProperty Name="AnyOne" ColumnName="AnyOne" />
-          <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="InCashType" ColumnName="InCashType" />
+          <ScalarProperty Name="InAmount" ColumnName="InAmount" />
+          <ScalarProperty Name="InDate" ColumnName="InDate" />
+          <ScalarProperty Name="InNote" ColumnName="InNote" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CurrencyRate">
       <EntityTypeMapping TypeName="MyInvestModel.CurrencyRate">
         <MappingFragment StoreEntitySet="CurrencyRate">
-          <ScalarProperty Name="Date" ColumnName="Date" />
-          <ScalarProperty Name="OnlineSell" ColumnName="OnlineSell" />
-          <ScalarProperty Name="OnlineBuy" ColumnName="OnlineBuy" />
-          <ScalarProperty Name="CashSell" ColumnName="CashSell" />
-          <ScalarProperty Name="CashBuy" ColumnName="CashBuy" />
-          <ScalarProperty Name="CurrencyClass" ColumnName="CurrencyClass" />
           <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="FXtradeTable">
-      <EntityTypeMapping TypeName="MyInvestModel.FXtradeTable">
-        <MappingFragment StoreEntitySet="FXtradeTable">
-          <ScalarProperty Name="note" ColumnName="note" />
-          <ScalarProperty Name="TradeClass" ColumnName="TradeClass" />
-          <ScalarProperty Name="Tradetime" ColumnName="Tradetime" />
-          <ScalarProperty Name="tax" ColumnName="tax" />
-          <ScalarProperty Name="ExchargeRate" ColumnName="ExchargeRate" />
-          <ScalarProperty Name="USD" ColumnName="USD" />
-          <ScalarProperty Name="NTD" ColumnName="NTD" />
           <ScalarProperty Name="CurrencyClass" ColumnName="CurrencyClass" />
-          <ScalarProperty Name="SummaryId" ColumnName="SummaryId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CashBuy" ColumnName="CashBuy" />
+          <ScalarProperty Name="CashSell" ColumnName="CashSell" />
+          <ScalarProperty Name="OnlineBuy" ColumnName="OnlineBuy" />
+          <ScalarProperty Name="OnlineSell" ColumnName="OnlineSell" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Fund">
       <EntityTypeMapping TypeName="MyInvestModel.Fund">
         <MappingFragment StoreEntitySet="Fund">
-          <ScalarProperty Name="CurrentNAV" ColumnName="CurrentNAV" />
-          <ScalarProperty Name="SellNAV" ColumnName="SellNAV" />
-          <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
-          <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
-          <ScalarProperty Name="NAV" ColumnName="NAV" />
-          <ScalarProperty Name="Date" ColumnName="Date" />
-          <ScalarProperty Name="Units" ColumnName="Units" />
-          <ScalarProperty Name="Fee" ColumnName="Fee" />
-          <ScalarProperty Name="BuyOrSell" ColumnName="BuyOrSell" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="STID" ColumnName="STID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="FundName" ColumnName="FundName" />
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="STID" ColumnName="STID" />
-          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Insurances">
-      <EntityTypeMapping TypeName="MyInvestModel.Insurances">
-        <MappingFragment StoreEntitySet="Insurances">
-          <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
+          <ScalarProperty Name="BuyOrSell" ColumnName="BuyOrSell" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
+          <ScalarProperty Name="Units" ColumnName="Units" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="NAV" ColumnName="NAV" />
           <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
-          <ScalarProperty Name="Withdrawed" ColumnName="Withdrawed" />
-          <ScalarProperty Name="Withdrawal" ColumnName="Withdrawal" />
-          <ScalarProperty Name="PurchaseOrWithdraw" ColumnName="PurchaseOrWithdraw" />
-          <ScalarProperty Name="PayYear" ColumnName="PayYear" />
-          <ScalarProperty Name="PaymentPerYear" ColumnName="PaymentPerYear" />
-          <ScalarProperty Name="WithdrawDate" ColumnName="WithdrawDate" />
-          <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
-          <ScalarProperty Name="InsuranceName" ColumnName="InsuranceName" />
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="STID" ColumnName="STID" />
-          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CurrencyName">
-      <EntityTypeMapping TypeName="MyInvestModel.CurrencyName">
-        <MappingFragment StoreEntitySet="CurrencyName">
-          <ScalarProperty Name="CurrencyClassName" ColumnName="CurrencyClassName" />
-          <ScalarProperty Name="CurrencyClass" ColumnName="CurrencyClass" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
+          <ScalarProperty Name="SellNAV" ColumnName="SellNAV" />
+          <ScalarProperty Name="CurrentNAV" ColumnName="CurrentNAV" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="fund_data">
       <EntityTypeMapping TypeName="MyInvestModel.fund_data">
         <MappingFragment StoreEntitySet="fund_data">
-          <ScalarProperty Name="BenifitCode" ColumnName="BenifitCode" />
-          <ScalarProperty Name="Currancy" ColumnName="Currancy" />
-          <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
-          <ScalarProperty Name="FluctuateRatio" ColumnName="FluctuateRatio" />
-          <ScalarProperty Name="Fluctuate" ColumnName="Fluctuate" />
-          <ScalarProperty Name="FundNAV" ColumnName="FundNAV" />
-          <ScalarProperty Name="FundName" ColumnName="FundName" />
-          <ScalarProperty Name="FundCode" ColumnName="FundCode" />
-          <ScalarProperty Name="FundID" ColumnName="FundID" />
-          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-          <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
           <ScalarProperty Name="日期" ColumnName="日期" />
+          <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="FundID" ColumnName="FundID" />
+          <ScalarProperty Name="FundCode" ColumnName="FundCode" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="FundNAV" ColumnName="FundNAV" />
+          <ScalarProperty Name="Fluctuate" ColumnName="Fluctuate" />
+          <ScalarProperty Name="FluctuateRatio" ColumnName="FluctuateRatio" />
+          <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+          <ScalarProperty Name="Currancy" ColumnName="Currancy" />
+          <ScalarProperty Name="BenifitCode" ColumnName="BenifitCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FXtradeTable">
+      <EntityTypeMapping TypeName="MyInvestModel.FXtradeTable">
+        <MappingFragment StoreEntitySet="FXtradeTable">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SummaryId" ColumnName="SummaryId" />
+          <ScalarProperty Name="CurrencyClass" ColumnName="CurrencyClass" />
+          <ScalarProperty Name="NTD" ColumnName="NTD" />
+          <ScalarProperty Name="USD" ColumnName="USD" />
+          <ScalarProperty Name="ExchargeRate" ColumnName="ExchargeRate" />
+          <ScalarProperty Name="tax" ColumnName="tax" />
+          <ScalarProperty Name="TradeClass" ColumnName="TradeClass" />
+          <ScalarProperty Name="note" ColumnName="note" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Insurances">
+      <EntityTypeMapping TypeName="MyInvestModel.Insurances">
+        <MappingFragment StoreEntitySet="Insurances">
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="STID" ColumnName="STID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="InsuranceName" ColumnName="InsuranceName" />
+          <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+          <ScalarProperty Name="WithdrawDate" ColumnName="WithdrawDate" />
+          <ScalarProperty Name="PaymentPerYear" ColumnName="PaymentPerYear" />
+          <ScalarProperty Name="PayYear" ColumnName="PayYear" />
+          <ScalarProperty Name="PurchaseOrWithdraw" ColumnName="PurchaseOrWithdraw" />
+          <ScalarProperty Name="Withdrawal" ColumnName="Withdrawal" />
+          <ScalarProperty Name="Withdrawed" ColumnName="Withdrawed" />
+          <ScalarProperty Name="CashFlow" ColumnName="CashFlow" />
+          <ScalarProperty Name="RelateCash" ColumnName="RelateCash" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Stock_data">
       <EntityTypeMapping TypeName="MyInvestModel.Stock_data">
         <MappingFragment StoreEntitySet="Stock_data">
-          <ScalarProperty Name="成交筆數" ColumnName="成交筆數" />
-          <ScalarProperty Name="漲跌價差" ColumnName="漲跌價差" />
-          <ScalarProperty Name="收盤價" ColumnName="收盤價" />
-          <ScalarProperty Name="最低價" ColumnName="最低價" />
-          <ScalarProperty Name="最高價" ColumnName="最高價" />
-          <ScalarProperty Name="開盤價" ColumnName="開盤價" />
-          <ScalarProperty Name="成交金額" ColumnName="成交金額" />
-          <ScalarProperty Name="成交股數" ColumnName="成交股數" />
-          <ScalarProperty Name="證券名稱" ColumnName="證券名稱" />
           <ScalarProperty Name="StockID" ColumnName="StockID" />
+          <ScalarProperty Name="證券名稱" ColumnName="證券名稱" />
+          <ScalarProperty Name="成交股數" ColumnName="成交股數" />
+          <ScalarProperty Name="成交金額" ColumnName="成交金額" />
+          <ScalarProperty Name="開盤價" ColumnName="開盤價" />
+          <ScalarProperty Name="最高價" ColumnName="最高價" />
+          <ScalarProperty Name="最低價" ColumnName="最低價" />
+          <ScalarProperty Name="收盤價" ColumnName="收盤價" />
+          <ScalarProperty Name="漲跌價差" ColumnName="漲跌價差" />
+          <ScalarProperty Name="成交筆數" ColumnName="成交筆數" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockHistory">
+      <EntityTypeMapping TypeName="MyInvestModel.StockHistory">
+        <MappingFragment StoreEntitySet="StockHistory">
+          <ScalarProperty Name="stockTradeID" ColumnName="stockTradeID" />
+          <ScalarProperty Name="STId" ColumnName="STId" />
+          <ScalarProperty Name="stockID" ColumnName="stockID" />
+          <ScalarProperty Name="stockPrice" ColumnName="stockPrice" />
+          <ScalarProperty Name="stockAmount" ColumnName="stockAmount" />
+          <ScalarProperty Name="stockTP" ColumnName="stockTP" />
+          <ScalarProperty Name="stockFee" ColumnName="stockFee" />
+          <ScalarProperty Name="stockTax" ColumnName="stockTax" />
+          <ScalarProperty Name="stockNetincome" ColumnName="stockNetincome" />
+          <ScalarProperty Name="stockNote" ColumnName="stockNote" />
+          <ScalarProperty Name="CashAccount" ColumnName="CashAccount" />
+          <ScalarProperty Name="stockLastAVG" ColumnName="stockLastAVG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockIDList">
+      <EntityTypeMapping TypeName="MyInvestModel.StockIDList">
+        <MappingFragment StoreEntitySet="StockIDList">
+          <ScalarProperty Name="stockID" ColumnName="stockID" />
+          <ScalarProperty Name="stockName" ColumnName="stockName" />
+          <ScalarProperty Name="stockLastPrice" ColumnName="stockLastPrice" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SummaryTable">
+      <EntityTypeMapping TypeName="MyInvestModel.SummaryTable">
+        <MappingFragment StoreEntitySet="SummaryTable">
+          <ScalarProperty Name="STId" ColumnName="STId" />
+          <ScalarProperty Name="TradeType" ColumnName="TradeType" />
+          <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="MyInvestModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersData">
+      <EntityTypeMapping TypeName="MyInvestModel.UsersData">
+        <MappingFragment StoreEntitySet="UsersData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
+          <ScalarProperty Name="AnyOne" ColumnName="AnyOne" />
+          <ScalarProperty Name="CashValue" ColumnName="CashValue" />
+          <ScalarProperty Name="StockValue" ColumnName="StockValue" />
+          <ScalarProperty Name="FXValue" ColumnName="FXValue" />
+          <ScalarProperty Name="InsuranceValue" ColumnName="InsuranceValue" />
+          <ScalarProperty Name="FundValue" ColumnName="FundValue" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

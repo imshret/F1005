@@ -27,8 +27,8 @@ namespace F1005.Models
         public bool CashAccount { get; set; }
         public Nullable<decimal> stockLastAVG { get; set; }
     
+        public virtual Stock_data Stock_data { get; set; }
         public virtual StockIDList StockIDList { get; set; }
         public virtual SummaryTable SummaryTable { get; set; }
-        public virtual Stock_data Stock_data { get; set; }
     }
 }

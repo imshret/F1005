@@ -11,17 +11,27 @@ namespace F1005.Areas.ForeignExchange.Controllers
     {
         private MyInvestEntities db = new MyInvestEntities();
         // GET: FX
+        //外匯買賣首頁
         public ActionResult Index()
         {
             //MyInvestEntities dc = new MyInvestEntities();
-            ViewBag.CurrencyRate = new SelectList(db.CurrencyRate, "OnlineSell", "CurrencyClass");
+            //傳給外匯買賣的外幣DropDownList
+            var cr = db.CurrencyRate
+                  .Select(s => new SelectListItem
+                  {
+                      Value = s.OnlineSell,
+                      Text = s.CurrencyClass + " (" + s.Name + ")"
+                  });
+            ViewBag.CurrencyRate = new SelectList(cr, "Value", "Text");
+            //ViewBag.CurrencyRate = new SelectList(db.CurrencyRate, "OnlineSell", "Name");
             return View();
         }
+        //現在匯率
         public ActionResult History()
         {
             return View();
         }
-
+        //匯率轉換
         public ActionResult ExchangeRates()
         {
             return View();
