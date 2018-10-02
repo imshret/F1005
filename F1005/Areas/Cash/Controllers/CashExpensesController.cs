@@ -142,7 +142,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetAllExpense()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashExpense.ToList().Where(c => c.UserName == username).OrderBy(c=>c.ExDate).Select(c => new GetExpenseViewModel
+            var query = db.CashExpense.ToList().Where(c => c.UserName == username).OrderBy(c=>c.ExCashID).Select(c => new GetExpenseViewModel
             {
                 ExCashID = c.ExCashID,
                 UserID = c.UserName,
@@ -168,6 +168,7 @@ namespace F1005.Areas.Cash.Controllers
             db.SummaryTable.Add(summaryTable);
             if (ModelState.IsValid)
             {
+                cashExpense.OID = summaryTable.STId;
                 db.CashExpense.Add(cashExpense);
                 try
                 {
@@ -239,12 +240,29 @@ namespace F1005.Areas.Cash.Controllers
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
+        //收入餘額
+        public ActionResult GetIncomeBalance()
+        {
+            var username = Convert.ToString(Session["User"]);
+            var query = Convert.ToInt32(db.CashIncome.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.InAmount)).ToString("c2");
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
 
         //支出餘額
         public ActionResult GetExpenseBalance()
         {
             var username = Convert.ToString(Session["User"]);
             var query = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount)).ToString("c2");
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+
+        //收支差額
+        public ActionResult GetDiff()
+        {
+            var username = Convert.ToString(Session["User"]);
+            var Income = Convert.ToInt32(db.CashIncome.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.InAmount));
+            var Expense = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount));
+            var query = ((decimal)Income - (decimal)Expense).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
     }

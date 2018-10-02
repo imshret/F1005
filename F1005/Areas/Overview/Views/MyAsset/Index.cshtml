@@ -1,0 +1,68 @@
+﻿
+@{
+	ViewBag.Title = "Index";
+}
+
+@*jsGrid Table*@
+<div class="container" style="background-color:lavenderblush">
+	<div class="jumbotron">
+		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-th-list"></i>  個人資產配置百分比</h2>
+	</div>
+
+	<div id="jsGridIncome"></div>
+</div>
+
+
+@section scripts{
+	<script>
+		$(function () {
+			LoadPie();
+		});
+
+		//資產分布百分比圓餅圖
+        //Draw Pie
+        function LoadPie() {
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetPie", "Overview")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                var TypeAsset = [];
+                var AssetPG = [];
+                for (var i = 0; i <= response.length - 1; i++) {
+                    TypeAsset.push(response[i].MyType);
+                    AssetPG.push(response[i].Percentage)
+                };
+				var ctxDoughnut = document.getElementById("Pie");
+                var DoughnutChart = new Chart(ctxDoughnut, {
+                    type: 'pie',
+                    data: {
+                        labels: TypeAsset,
+                        datasets: [{
+                            data: AssetPG,
+                            backgroundColor: [
+                                window.chartColors.red,
+                                window.chartColors.blue,
+                                window.chartColors.orange,
+                                window.chartColors.yellow,
+                                window.chartColors.green,
+                            ]
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '資產分布%'
+                        },
+                    }
+                })
+            }
+        });
+        };
+
+	</script>
+	}
+
