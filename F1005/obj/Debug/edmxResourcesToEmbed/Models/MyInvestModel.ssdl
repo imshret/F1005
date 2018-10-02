@@ -24,14 +24,6 @@
     <Property Name="InDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="InNote" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <EntityType Name="CurrencyName">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="CurrencyClass" Type="nvarchar" MaxLength="50" />
-    <Property Name="CurrencyClassName" Type="nvarchar" MaxLength="50" />
-  </EntityType>
   <EntityType Name="CurrencyRate">
     <Key>
       <PropertyRef Name="CurrencyClass" />
@@ -43,6 +35,7 @@
     <Property Name="OnlineBuy" Type="nvarchar" MaxLength="50" />
     <Property Name="OnlineSell" Type="nvarchar" MaxLength="50" />
     <Property Name="Date" Type="date" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Fund">
     <Key>
@@ -90,7 +83,6 @@
     <Property Name="USD" Type="float" />
     <Property Name="ExchargeRate" Type="float" />
     <Property Name="tax" Type="float" />
-    <Property Name="Tradetime" Type="datetime2" Precision="7" />
     <Property Name="TradeClass" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="note" Type="nvarchar(max)" />
   </EntityType>
@@ -188,7 +180,9 @@
     <Property Name="FundValue" Type="float" />
   </EntityType>
   <Association Name="FK_CashExpense_SummaryTable">
-    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="CashExpense" Type="Self.CashExpense" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SummaryTable">
@@ -208,30 +202,6 @@
       </Principal>
       <Dependent Role="CashIncome">
         <PropertyRef Name="OID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CurrencyName_CurrencyRate1">
-    <End Role="CurrencyRate" Type="Self.CurrencyRate" Multiplicity="0..1" />
-    <End Role="CurrencyName" Type="Self.CurrencyName" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CurrencyRate">
-        <PropertyRef Name="CurrencyClass" />
-      </Principal>
-      <Dependent Role="CurrencyName">
-        <PropertyRef Name="CurrencyClass" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Fund_Fund">
-    <End Role="Fund" Type="Self.Fund" Multiplicity="1" />
-    <End Role="Fund1" Type="Self.Fund" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Fund">
-        <PropertyRef Name="SerialNumber" />
-      </Principal>
-      <Dependent Role="Fund1">
-        <PropertyRef Name="SerialNumber" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -259,7 +229,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_FXtradeTable_SummaryTable1">
+  <Association Name="FK_FXtradeTable_SummaryTable">
     <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
     <End Role="FXtradeTable" Type="Self.FXtradeTable" Multiplicity="*" />
     <ReferentialConstraint>
@@ -272,7 +242,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Insurances_Insurances">
-    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Insurances" Type="Self.Insurances" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SummaryTable">
@@ -346,7 +318,6 @@
   <EntityContainer Name="MyInvestModelStoreContainer">
     <EntitySet Name="CashExpense" EntityType="Self.CashExpense" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CashIncome" EntityType="Self.CashIncome" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CurrencyName" EntityType="Self.CurrencyName" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CurrencyRate" EntityType="Self.CurrencyRate" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Fund" EntityType="Self.Fund" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="fund_data" EntityType="Self.fund_data" Schema="dbo" store:Type="Tables" />
@@ -366,14 +337,6 @@
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="CashIncome" EntitySet="CashIncome" />
     </AssociationSet>
-    <AssociationSet Name="FK_CurrencyName_CurrencyRate1" Association="Self.FK_CurrencyName_CurrencyRate1">
-      <End Role="CurrencyRate" EntitySet="CurrencyRate" />
-      <End Role="CurrencyName" EntitySet="CurrencyName" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Fund_Fund" Association="Self.FK_Fund_Fund">
-      <End Role="Fund" EntitySet="Fund" />
-      <End Role="Fund1" EntitySet="Fund" />
-    </AssociationSet>
     <AssociationSet Name="FK_Fund_SummaryTable" Association="Self.FK_Fund_SummaryTable">
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="Fund" EntitySet="Fund" />
@@ -382,7 +345,7 @@
       <End Role="UsersData" EntitySet="UsersData" />
       <End Role="Fund" EntitySet="Fund" />
     </AssociationSet>
-    <AssociationSet Name="FK_FXtradeTable_SummaryTable1" Association="Self.FK_FXtradeTable_SummaryTable1">
+    <AssociationSet Name="FK_FXtradeTable_SummaryTable" Association="Self.FK_FXtradeTable_SummaryTable">
       <End Role="SummaryTable" EntitySet="SummaryTable" />
       <End Role="FXtradeTable" EntitySet="FXtradeTable" />
     </AssociationSet>

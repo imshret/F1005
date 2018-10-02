@@ -69,19 +69,17 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetCashI()
         {
             var db = new F1005.Models.MyInvestEntities();
-
-            var ret = db.CashIncome.Select(c => new BSViewModel
+            var ret = db.CashIncome.ToList().Select(c => new BSViewModel
             {
-                UserName = c.SummaryTable.UserName,
+                UserName = c.UserName,
                 InCashType = c.InCashType,
                 InAmount = c.InAmount,
-                InDate = c.InDate,
+                InDate = c.InDate.ToShortDateString(),
                 InNote = c.InNote
             });
-                     
 
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetCashE()
@@ -89,11 +87,11 @@ namespace F1005.Areas.BStage.Controllers
             var db = new F1005.Models.MyInvestEntities();
             var ret = db.CashExpense.ToList().Select(c => new BSViewModel
             {
-                          UserName = c.UserName,
-                          ExCashType = c.ExCashType,
-                          ExAmount = c.ExAmount,
-                          ExDate = c.ExDate.ToShortDateString(),
-                          ExNote = c.ExNote           
+                UserName = c.UserName,
+                ExCashType = c.ExCashType,
+                ExAmount = c.ExAmount,
+                ExDate = c.ExDate.ToShortDateString(),
+                ExNote = c.ExNote
             });
             //dynamic retObject = new { data = ret.ToList() };
             return Json(ret, JsonRequestBehavior.AllowGet);
@@ -117,53 +115,50 @@ namespace F1005.Areas.BStage.Controllers
 
         public JsonResult GetFX()
         {
-            var db = new F1005.Models.MyInvestEntities();
-            var ret = from c in db.FXtradeTable
-                      select new BSViewModel
+            var db = new F1005.Models.MyInvestEntities();   
+            var ret = db.FXtradeTable.ToList().Select(c => new BSViewModel     
                       {
                           UserName = c.SummaryTable.UserName,
-                          CurrencyClass = c.CurrencyClass,
-                          Tradetime = c.Tradetime,
+                          CurrencyClass = c.CurrencyClass,                      
+                          TradeDate = c.SummaryTable.TradeDate.ToShortDateString(),
                           TradeClass = c.TradeClass,
                           note = c.note
-                      };
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+                      });
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetIs()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = from c in db.Insurances
-                      select new BSViewModel
-                      {
-                          UserName = c.SummaryTable.UserName,
-                          InsuranceName = c.InsuranceName,
-                          PurchaseDate = c.PurchaseDate,
-                          WithdrawDate = c.WithdrawDate,
-                          PaymentPerYear = c.PaymentPerYear,
-                          PayYear = c.PayYear,
-                          Withdrawal = c.Withdrawal
-                      };
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            var ret = db.Insurances.ToList().Select(c => new BSViewModel
+            {
+                UserName = c.SummaryTable.UserName,
+                InsuranceName = c.InsuranceName,
+                PurchaseDate = c.PurchaseDate.ToShortDateString(),
+                WithdrawDate = c.WithdrawDate.ToShortDateString(),
+                PaymentPerYear = c.PaymentPerYear,
+                PayYear = c.PayYear,
+                Withdrawal = c.Withdrawal
+            });
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
 
         public JsonResult GetFund()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = from c in db.Fund
-                      select new BSViewModel
+            var ret = db.Fund.ToList().Select(c=> new BSViewModel
                       {
                           UserName = c.SummaryTable.UserName,
                           FundName = c.FundName,
-                          Date = c.Date,
+                          Date = c.Date.ToShortDateString(),
                           NAV = c.NAV,
                           Units = c.Units
-                      };
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+                      });
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Recent()
@@ -171,32 +166,12 @@ namespace F1005.Areas.BStage.Controllers
             return View();
         }
 
-        public JsonResult chartpie()
+        public ActionResult AllSum()
         {
-            var db = new F1005.Models.MyInvestEntities();
-            var x = "msit119_one";
-
-            //var one = "10";
-            //var two = "8";
-            //var three = "6";
-            //var four = "4";
-            //var five = "2";
-            //var qq = new[{ "111":one,"222":"10"}];
-            //var result2 = new [{"股票":one}, {"外匯":two }];
-            //var result2 = new System.Linq.IQueryable
-            //{
-            //    TypeName = "股票",
-            //    Nums = one,
-            //};
-
-
-            var result = db.FXtradeTable.Where(c => c.SummaryTable.UserName == x).GroupBy(c => c.CurrencyClass, c => c.NTD, (CurrencyClass, NTD) => new
-            {
-                Currency = CurrencyClass,
-                NTD = NTD.Sum()
-            });
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return View();
         }
+
+
 
         public ActionResult chartpieX()
         {
@@ -219,26 +194,20 @@ namespace F1005.Areas.BStage.Controllers
         public ActionResult chartpieXX()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var res = db.FXtradeTable.Count().ToString();
+            var stockCount = db.StockHistory.Select(c => c.stockNetincome * -1).Sum().ToString(); ;
+            var FXCount = db.FXtradeTable.Count().ToString();
+            var InsuranceCount = db.Insurances.Count().ToString();
+            var FundCount = db.Fund.Count().ToString();
 
-            return Content(res);
-        }
-
-
-        public ActionResult chartpieXXX()
-        {
-            var db = new F1005.Models.MyInvestEntities();
-            var res = db.Insurances.Count().ToString();      
-            
-            return Content(res);
-        }
-
-        public ActionResult chartpieXXXX()
-        {
-            var db = new F1005.Models.MyInvestEntities();
-            var res = db.Fund.Count().ToString();
-
-            return Content(res);
+            var query = db.StockHistory.Select(c => new OverallViewModel
+            {
+                //123
+                X = stockCount,
+                XX = FXCount,
+                XXX = InsuranceCount,
+                XXXX = FundCount
+            }).First();
+            return Json(query, JsonRequestBehavior.AllowGet);
         }
 
 

@@ -3,21 +3,25 @@
     ViewBag.Title = "Recent";
 }
 
-<h3>資產分布比例</h3>
+<h3>X</h3>
+<div style="margin:0px auto; text-align:center">
+    <h2>資產分布比例</h2>
+ </div>
 <canvas id="chart"></canvas>
 
 @section styles
 {
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    }
+}
 
 @section scripts
 {
 
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    @*<script src="~/Scripts/Chart.min.js"></script>
-        <script src="~/Scripts/Utility.js"></script>
-        <script src="~/Scripts/Colors.js"></script>*@
+
     <script>
         var label = ["股票", "外匯" ,"儲蓄險" ,"基金"];
 
