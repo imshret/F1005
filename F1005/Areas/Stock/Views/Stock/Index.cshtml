@@ -5,6 +5,12 @@
 
 
 <div class="row">
+    <div class="container-fluid" style="width:98%;">
+        <h2>目前現金資產</h2>
+        <input type="text" id="CashAcc" disabled style="font-size:x-large" />
+    </div>
+
+
     <div class="col-md-12">
         <ul class="nav nav-tabs">
             <li class="nav-item active">
@@ -69,7 +75,7 @@
                         @Html.Partial("_StockGetAllPartial");
                     </div>
                     <div class="tab-pane fade" id="InvTable" role="tabpanel">
-                        @*@Html.Partial("_StockSellPartial")*@
+                        @Html.Partial("_StockGetAllInvPartial")
 
                     </div>
                     <div class="tab-pane fade" id="NetincomeTable" role="tabpanel">
@@ -364,8 +370,8 @@
 						height: "400px",
 
 						//filtering: true,
-						inserting: true,
-						editing: true,
+						inserting: false,
+						editing: false,
 						sorting: true,
 						paging: true,
 						autoload: true,
@@ -447,17 +453,72 @@
 							{ name: "stockTax", type: "text", title: "證交稅", width: 100 },
 							{ name: "stockNetincome", type: "text", title: "資金收付", width: 100 },
 							{ name: "stockNote", type: "text", title: "筆記", width: 100 },
-							{ type: "control" }
+                            { type: "control", editButton: false, deleteButton: false,  }
 						],
 
 					});
 				}).fail(function (err) {
 					alert("Error");
-				});
-		}
+                });
+
+        }
+
+                function LoadJsGrid2() {
+			$.ajax({
+					type: "Get",
+					url: "@Url.Action("GetAllInv", "Stock")",
+				}).done(function (res) {
+					var MyDateField = function (config) {
+						jsGrid.Field.call(this, config);
+				};
+
+                    $("#jsGridInv").jsGrid({
+						width: "100%",
+						height: "400px",
+
+						//filtering: true,
+						inserting: false,
+						editing: false,
+						sorting: true,
+						paging: true,
+                        autoload: true,
+
+                       pageSize: 5,
+						pageButtonCount: 5,
+						deleteConfirm: "確定要刪除這筆資料?",
+						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
+						pagePrevText: "上一頁",
+						pageNextText: "下一頁",
+						pageFirstText: "第一頁",
+						pageLastText: "最終頁",
+						noDataContent: "目前沒有紀錄",
+
+						data: res,
+
+
+						fields: [
+                            { name: "stockname", type: "text", title: "個股名稱", width: 100 },
+                            { name: "stockamount", type: "text", title: "庫存數量(股)", width: 100 },
+                            { name: "avgcost", type: "text", title: "每股成本", width: 100 },
+                            { name: "stocklastprice", type: "text", title: "最新收盤價", width: 100 },
+                            { name: "pv", type: "text", title: "個股現值", width: 100 },
+
+                            { type: "control", deleteButton: false, editButton: false,}
+						],
+
+					});
+				}).fail(function (err) {
+					alert("Error");
+                });
+
+        }
+
+
+
 
 		$(document).ready(function () {
-			LoadJsGrid();
+            LoadJsGrid();
+            LoadJsGrid2();
 		});
 
     </script>

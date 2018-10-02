@@ -70,7 +70,7 @@
     <script>
 
             function LoadData() {
-                @*var datatable = $('#GetCashI').DataTable({
+                var datatable = $('#GetCashI').DataTable({
                     ajax: "@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)",
                     "ajax": { "url":"@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
@@ -81,7 +81,7 @@
                         { title: 'InNote', data: "InNote" }                 
         
                     ]
-                });*@
+                });
 
                 var datatable = $('#GetCashE').DataTable({
                     @*ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",*@
@@ -110,7 +110,7 @@
 
                 var datatable = $('#GetFX').DataTable({
                     @*ajax: "@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)",*@
-                    "ajax": { "url":"@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)","dataSrc":""},
+                    "ajax": { "url":"@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
                         { title: 'UserName', data: "UserName" },   
                         { title: 'CurrencyClass', data: "CurrencyClass" },
