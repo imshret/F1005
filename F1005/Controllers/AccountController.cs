@@ -145,11 +145,13 @@ namespace F1005.Controllers
 
                 Session["User"] = model.UserName;
 
+                if (Session["User"].ToString() =="msit119")
+                {
+                    return RedirectToRoute("BStage_default", new { Controller = "BS", Action = "Index" });
+                }
+                
                 //執行Home控制器的Login動作方法
-                return RedirectToRoute("Main_default", new { Controller = "Home", Action = "Index" });
-            //}
-            //ViewBag.Message = "此帳號或電子郵件己有人使用，註冊失敗";
-            //return View();
+                return RedirectToRoute("Main_default", new { Controller = "Home", Action = "Index" });                
         }
 
         [HttpPost]
@@ -205,7 +207,6 @@ namespace F1005.Controllers
                 client.Dispose();
                 msg.Dispose();
 
-
                 System.Timers.Timer timer = new System.Timers.Timer();
 
                 timer.Enabled = true;
@@ -234,12 +235,10 @@ namespace F1005.Controllers
             {
                 return Content("Cor");
             }
-
             return Content("Err");
         }
 
         // GET: /Account/ForgotPassword
-        [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
@@ -295,25 +294,13 @@ namespace F1005.Controllers
                 client.EnableSsl = true; //gmail預設開啟驗證
                 client.Send(msg); //寄出信件
                 client.Dispose();
-                msg.Dispose();
-
-                //System.Timers.Timer timer = new System.Timers.Timer();
-
-                //timer.Enabled = true;
-                //timer.Interval = 3000000; // 5分鐘後驗證碼失效
-                //timer.Start();
-                //timer.Elapsed += Timer_Elapsed;
-                //timer.AutoReset = false;
-
-                //return RedirectToAction("ConfirmEmail","Account");                     
+                msg.Dispose();                       
 
                 byte[] enc = System.Text.Encoding.Default.GetBytes(code);
                 HashAlgorithm ha = HashAlgorithm.Create("SHA256");
                 byte[] ans = ha.ComputeHash(enc);
 
-                item.Password = BitConverter.ToString(ans);
-
-                //item.Password = code;
+                item.Password = BitConverter.ToString(ans);   
 
                 try
                 {
@@ -330,8 +317,7 @@ namespace F1005.Controllers
             }
             else
             {
-                ViewBag.Message = "查無此人，請確認使用者名稱或Email正確";
-                //return View("Index2");
+                ViewBag.Message = "查無此人，請確認使用者名稱或Email正確";       
                 return View();
             }
         }
@@ -400,6 +386,11 @@ namespace F1005.Controllers
 
         public ActionResult ChangePasswordAdmin()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             string u = Session["User"] as string;
             if (String.IsNullOrEmpty(u))
             {

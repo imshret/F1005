@@ -26,14 +26,15 @@ namespace F1005.Areas.BStage.Models
         public string stockNote { get; set; }
         public Nullable<int> stockNetincome { get; set; }
 
-        public string CurrencyClass { get; set; }
-        public string TradeClass { get; set; }
+        public string CurrencyClass { get; set; }    
+        public Nullable<double> NTD { get; set; }
         public string note { get; set; }
 
         public string InsuranceName { get; set; }
         public string PurchaseDate { get; set; }
         public string WithdrawDate { get; set; }
         public Nullable<int> PaymentPerYear { get; set; }
+        public Nullable<int> CashFlow { get; set; }
         public Nullable<int> PayYear { get; set; }   
         public Nullable<int> Withdrawal { get; set; }
         
@@ -41,6 +42,7 @@ namespace F1005.Areas.BStage.Models
         public string Date { get; set; }
         public Nullable<double> NAV { get; set; }
         public Nullable<double> Units { get; set; }
+        public Nullable<double> CashFlowX { get; set; }
 
         public virtual SummaryTable SummaryTable { get; set; }
     }
