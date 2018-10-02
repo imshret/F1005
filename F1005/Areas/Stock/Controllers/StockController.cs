@@ -1,4 +1,5 @@
-﻿using F1005.Models;
+﻿using F1005.Areas.Stock.Models;
+using F1005.Models;
 
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,12 @@ namespace F1005.Areas.Stock.Controllers
                 //存入股票交易紀錄表
                 stockHistory.STId = id;
                 stockHistory.stockAmount = stockHistory.stockAmount * 1000;
+                AVGCalculator calculator = new AVGCalculator();
+                string _username = Session["User"].ToString();
+                string _searchid = stockHistory.stockID.ToString();
+                int _invchange = (int)stockHistory.stockAmount;
+                int _cashflow = (int)stockHistory.stockNetincome;
+                stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
                 ViewBag.Alert = "alert('新增成功')";
@@ -65,6 +72,7 @@ namespace F1005.Areas.Stock.Controllers
                 db.SummaryTable.Add(summaryTable);
                 db.SaveChanges();
                 var id = db.SummaryTable.Select(c => c.STId).ToList().LastOrDefault();
+
                 //存入現金帳戶
                 CashIncome cashincome = new CashIncome();
                 cashincome.OID = id;
@@ -75,11 +83,14 @@ namespace F1005.Areas.Stock.Controllers
                 cashincome.InNote = "賣出股票";
                 db.CashIncome.Add(cashincome);
                 db.SaveChanges();
-
-
                 //存入股票交易記錄表
-
-                stockHistory.stockAmount = stockHistory.stockAmount * 1000;
+                stockHistory.stockAmount = stockHistory.stockAmount * (-1000);
+                AVGCalculator calculator = new AVGCalculator();
+                string _username = Session["User"].ToString();
+                string _searchid = stockHistory.stockID.ToString();
+                int _invchange = (int)stockHistory.stockAmount;
+                int _cashflow = (int)stockHistory.stockNetincome;
+                stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 stockHistory.STId = id;
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
@@ -96,18 +107,16 @@ namespace F1005.Areas.Stock.Controllers
             //計算總剩餘庫存量
             var username = Session["User"].ToString();
 
-            var BuyInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
-            var SellInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome > 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
-            BuyInv = (BuyInv != null) ? BuyInv : 0;
-            SellInv = (SellInv != null) ? SellInv : 0;
-            var TotalInv = BuyInv - SellInv;
+            var Invsum = db.StockHistory.Where(m => m.stockID == searchid & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
+            Invsum = (Invsum != null) ? Invsum : 0;
+
             //買進記錄按日期排序
-            var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
+            var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockAmount > 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
 
             Decimal TotalCost = 0;
-            Decimal _tempinv = (Decimal)TotalInv;
+            Decimal _tempinv = (Decimal)Invsum;
 
-            if (TotalInv > 0)
+            if (Invsum > 0)
             {
                 //從近一筆開始累加               
                 foreach (var item in BuyList)
@@ -115,6 +124,7 @@ namespace F1005.Areas.Stock.Controllers
                     Decimal iteminv = (Decimal)item.stockAmount;
                     if (iteminv <= _tempinv)
                     {
+
                         TotalCost = (Decimal)(TotalCost + item.stockNetincome * (-1));
                         _tempinv = _tempinv - iteminv;
                     }
@@ -124,13 +134,13 @@ namespace F1005.Areas.Stock.Controllers
                         break;
                     }
                 }
-                Decimal Avgcost = (Decimal)(TotalCost / (TotalInv));
+                Decimal Avgcost = (Decimal)(TotalCost / (Invsum));
 
 
                 List<InvData> InvDatas = new List<InvData>
                 {
                     new InvData{
-                        Inv=(Decimal)(TotalInv/1000),
+                        Inv=(Decimal)(Invsum),
                         Avgcost =Avgcost,
                     }
                 };
@@ -146,25 +156,23 @@ namespace F1005.Areas.Stock.Controllers
         }
 
 
+        //查詢除息庫存數量與成本
         [HttpGet]
         public JsonResult EXDCost(string searchid)
         {
             //計算總剩餘庫存量
             var username = Session["User"].ToString();
-            //summaryTable.UserName = username;
-            var BuyInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
-            var SellInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome > 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
-            BuyInv = (BuyInv != null) ? BuyInv : 0;
-            SellInv = (SellInv != null) ? SellInv : 0;
-            var TotalInv = BuyInv - SellInv
-                ;
+
+            var Invsum = db.StockHistory.Where(m => m.stockID == searchid & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
+            Invsum = (Invsum != null) ? Invsum : 0;
+
             //買進記錄按日期排序
-            var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
+            var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockAmount > 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
 
             Decimal TotalCost = 0;
-            Decimal _tempinv = (Decimal)TotalInv;
+            Decimal _tempinv = (Decimal)Invsum;
 
-            if (TotalInv > 0)
+            if (Invsum > 0)
             {
                 //從近一筆開始累加               
                 foreach (var item in BuyList)
@@ -172,6 +180,7 @@ namespace F1005.Areas.Stock.Controllers
                     Decimal iteminv = (Decimal)item.stockAmount;
                     if (iteminv <= _tempinv)
                     {
+
                         TotalCost = (Decimal)(TotalCost + item.stockNetincome * (-1));
                         _tempinv = _tempinv - iteminv;
                     }
@@ -181,15 +190,16 @@ namespace F1005.Areas.Stock.Controllers
                         break;
                     }
                 }
-                Decimal Avgcost = (Decimal)(TotalCost / (TotalInv));
+                Decimal Avgcost = (Decimal)(TotalCost / (Invsum));
+
+
                 List<InvData> InvDatas = new List<InvData>
                 {
                     new InvData{
-                        Inv=(Decimal)(TotalInv/1000),
+                        Inv=(Decimal)(Invsum),
                         Avgcost =Avgcost,
                     }
                 };
-
                 return Json(InvDatas, JsonRequestBehavior.AllowGet);
                 //return Content(InvDatas);
             }
@@ -206,19 +216,17 @@ namespace F1005.Areas.Stock.Controllers
         {
             //計算總剩餘庫存量
             var username = Session["User"].ToString();
-            //summaryTable.UserName = username;
-            var BuyInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
-            var SellInv = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome > 0 & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
-            BuyInv = (BuyInv != null) ? BuyInv : 0;
-            SellInv = (SellInv != null) ? SellInv : 0;
-            var TotalInv = BuyInv - SellInv;
+
+            var Invsum = db.StockHistory.Where(m => m.stockID == searchid & m.SummaryTable.UserName == username).Sum(s => s.stockAmount);
+            Invsum = (Invsum != null) ? Invsum : 0;
+
             //買進記錄按日期排序
-            var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockNetincome < 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
+            var BuyList = db.StockHistory.Where(m => m.stockID == searchid & m.stockAmount > 0).OrderByDescending(t => t.SummaryTable.TradeDate).ToArray();
 
             Decimal TotalCost = 0;
-            Decimal _tempinv = (Decimal)TotalInv;
+            Decimal _tempinv = (Decimal)Invsum;
 
-            if (TotalInv > 0)
+            if (Invsum > 0)
             {
                 //從近一筆開始累加               
                 foreach (var item in BuyList)
@@ -226,6 +234,7 @@ namespace F1005.Areas.Stock.Controllers
                     Decimal iteminv = (Decimal)item.stockAmount;
                     if (iteminv <= _tempinv)
                     {
+
                         TotalCost = (Decimal)(TotalCost + item.stockNetincome * (-1));
                         _tempinv = _tempinv - iteminv;
                     }
@@ -235,12 +244,13 @@ namespace F1005.Areas.Stock.Controllers
                         break;
                     }
                 }
-                Decimal Avgcost = (Decimal)(TotalCost / (TotalInv));
+                Decimal Avgcost = (Decimal)(TotalCost / (Invsum));
+
 
                 List<InvData> InvDatas = new List<InvData>
                 {
                     new InvData{
-                        Inv=(Decimal)(TotalInv/1000),
+                        Inv=(Decimal)(Invsum),
                         Avgcost =Avgcost,
                     }
                 };
@@ -282,6 +292,12 @@ namespace F1005.Areas.Stock.Controllers
 
                 //存入股票交易紀錄表
                 stockHistory.STId = id;
+                AVGCalculator calculator = new AVGCalculator();
+                string _username = Session["User"].ToString();
+                string _searchid = stockHistory.stockID.ToString();
+                int _invchange = (int)stockHistory.stockAmount;
+                int _cashflow = (int)stockHistory.stockNetincome;
+                stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
 
@@ -308,6 +324,12 @@ namespace F1005.Areas.Stock.Controllers
 
                 var id = db.SummaryTable.Select(c => c.STId).ToList().LastOrDefault();
                 stockHistory.STId = id;
+                AVGCalculator calculator = new AVGCalculator();
+                string _username = Session["User"].ToString();
+                string _searchid = stockHistory.stockID.ToString();
+                int _invchange = (int)stockHistory.stockAmount;
+                int _cashflow = (int)stockHistory.stockNetincome;
+                stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
 
@@ -352,7 +374,7 @@ namespace F1005.Areas.Stock.Controllers
 
             var query = db.StockHistory.ToList().Where(c => c.SummaryTable.UserName == username).Select(c => new GetAllListViewModel
             {
-                stockID = c.stockID,
+                stockID = $"({c.stockID}){c.Stock_data.證券名稱}",
                 stockPrice = c.stockPrice,
                 stockAmount = c.stockAmount,
                 stockTP = c.stockTP,
@@ -365,10 +387,93 @@ namespace F1005.Areas.Stock.Controllers
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
+        //顯示user股票庫存
+        public ActionResult GetAllInv()
+        {
+
+            AVGCalculator calculator = new AVGCalculator();
+            var username = Session["User"].ToString();
+
+            var InvList = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => c.stockAmount, (id, amount) => new
+            {
+                stockid = id,
+
+                stockamount = amount.Sum(),
+
+            });
+
+
+            var InvList2 = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => new InvViewModel
+            {
+                stockid = c.Stock_data.StockID,
+                stockname = c.Stock_data.證券名稱,
+                amount = c.stockAmount,
+                name = c.SummaryTable.TradeType,
+                avgcost = c.stockLastAVG,
+                pv = c.Stock_data.收盤價
+
+
+            }, (id, invVM) => new
+            {
+                stockid = invVM.Select(c => c.stockid).FirstOrDefault(),
+                stockname = "(" + invVM.Select(c => c.stockid).FirstOrDefault() + ")" + invVM.Select(c => c.stockname).FirstOrDefault(),
+                stockamount = invVM.Select(c => c.amount).Sum(),
+
+                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
+
+
+            });
+            List<InvViewModel2> testmodel = new List<InvViewModel2>();
+            foreach (var item in InvList2)
+            {
+                testmodel.Add(new InvViewModel2
+                {
+                    stockname = item.stockname,
+                    stockamount = item.stockamount,
+                    avgcost = calculator.GetAvg2(username, item.stockid).ToString("c2"),
+                    stocklastprice = (Convert.ToDecimal(item.stockpv)).ToString("C2"),
+                    pv = (Convert.ToDecimal(item.stockamount) * Convert.ToDecimal(item.stockpv)).ToString("C0"),
+
+                });
+
+            }
+
+
+            return Json(testmodel, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
+
+    internal class InvViewModel2
+    {
+        public string stockname { get; set; }
+        public int? stockamount { get; set; }
+        public string avgcost { get; set; }
+        public string stocklastprice { get; set; }
+        public string pv { get; set; }
+
+    }
+
+    public class InvViewModel
+    {
+        public DateTime date { get; set; }
+
+        public string stockid { get; set; }
+        public string stockname { get; set; }
+        public int? amount { get; set; }
+        public decimal? avgcost { get; set; }
+        public string name { get; set; }
+        public string pv { get; set; }
+
+    }
+
     public class InvData
     {
         public Decimal Inv { get; set; }
         public Decimal Avgcost { get; set; }
+
+
+
     }
 }

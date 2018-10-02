@@ -66,28 +66,28 @@ namespace F1005.Areas.BStage.Controllers
             return View();
         }
 
-        //public JsonResult GetCashI()
-        //{
-        //    var db = new F1005.Models.MyInvestEntities();
-        //    var ret = db.CashIncome.ToList().Select(c => new BSViewModel
-        //    {
-        //        UserName = c.SummaryTable.UserName,
-        //        InCashType = c.InCashType,
-        //        InAmount = c.InAmount,
-        //        InDate = c.InDate,
-        //        InNote = c.InNote
-        //    });                    
+        public JsonResult GetCashI()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var ret = db.CashIncome.ToList().Select(c => new BSViewModel
+            {
+                UserName = c.UserName,
+                InCashType = c.InCashType,
+                InAmount = c.InAmount,
+                InDate = c.InDate.ToShortDateString(),
+                InNote = c.InNote
+            });
 
-        //    //dynamic retObject = new { data = ret.ToList() };
-        //    return Json(ret, JsonRequestBehavior.AllowGet);
-        //}
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult GetCashE()
         {
             var db = new F1005.Models.MyInvestEntities();
             var ret = db.CashExpense.ToList().Select(c => new BSViewModel
             {
-                UserName = c.UserName,
+                //UserName = c.SummaryTable.UserName,
                 ExCashType = c.ExCashType,
                 ExAmount = c.ExAmount,
                 ExDate = c.ExDate.ToShortDateString(),
@@ -103,7 +103,7 @@ namespace F1005.Areas.BStage.Controllers
             var ret = from c in db.StockHistory
                       select new BSViewModel
                       {
-                          UserName = c.SummaryTable.UserName,
+                          //UserName = c.SummaryTable.UserName,
                           stockID = c.stockID,
                           stockPrice = c.stockPrice,
                           stockAmount = c.stockAmount,
@@ -119,15 +119,15 @@ namespace F1005.Areas.BStage.Controllers
    
             var ret = db.FXtradeTable.ToList().Select(c => new BSViewModel     
                       {
-                          UserName = c.SummaryTable.UserName,
+                         //UserName = c.SummaryTable.UserName,
                           CurrencyClass = c.CurrencyClass,
-                         //Tradetime = c.Tradetime.ToShortDateString(),
-                          Tradetime = c.Tradetime,
+                          //Tradetime = c.Tradetime.Value.ToShortDateString(),
+                          //Tradetime = c.Tradetime,
                           TradeClass = c.TradeClass,
                           note = c.note
                       });
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetIs()
@@ -135,7 +135,7 @@ namespace F1005.Areas.BStage.Controllers
             var db = new F1005.Models.MyInvestEntities();
             var ret = db.Insurances.ToList().Select(c => new BSViewModel
                       {
-                          UserName = c.SummaryTable.UserName,
+                          //UserName = c.SummaryTable.UserName,
                           InsuranceName = c.InsuranceName,
                           PurchaseDate = c.PurchaseDate.ToShortDateString(),
                           WithdrawDate = c.WithdrawDate.ToShortDateString(),
@@ -143,8 +143,8 @@ namespace F1005.Areas.BStage.Controllers
                           PayYear = c.PayYear,
                           Withdrawal = c.Withdrawal
                       });
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -160,8 +160,8 @@ namespace F1005.Areas.BStage.Controllers
                           NAV = c.NAV,
                           Units = c.Units
                       };
-            dynamic retObject = new { data = ret.ToList() };
-            return Json(retObject, JsonRequestBehavior.AllowGet);
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Recent()

@@ -15,7 +15,7 @@ namespace F1005.Areas.BStage.Models
                 
         public string InCashType { get; set; }
         public Nullable<int> InAmount { get; set; }
-        public System.DateTime InDate { get; set; }
+        public string InDate { get; set; }
         public string InNote { get; set; }
 
 
@@ -26,8 +26,8 @@ namespace F1005.Areas.BStage.Models
         
 
         public string CurrencyClass { get; set; }
-        //public Nullable<string> Tradetime { get; set; }
-        public Nullable<System.DateTime> Tradetime { get; set; }
+        public string Tradetime { get; set; }
+        //public Nullable<System.DateTime> Tradetime { get; set; }
         public string TradeClass { get; set; }
         public string note { get; set; }
 
@@ -43,6 +43,6 @@ namespace F1005.Areas.BStage.Models
         public Nullable<double> NAV { get; set; }
         public Nullable<double> Units { get; set; }
 
-
+        public virtual SummaryTable SummaryTable { get; set; }
     }
 }
