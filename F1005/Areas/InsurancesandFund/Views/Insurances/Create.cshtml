@@ -19,7 +19,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.InsuranceName, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control", id = "InsuranceName" } })
+					@Html.EditorFor(model => model.InsuranceName, new { htmlAttributes = new { @class = "form-control", id = "InsuranceName", placeholder = "請輸入保險名稱" } })
 					@Html.ValidationMessageFor(model => model.InsuranceName, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.PaymentPerYear, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					@Html.EditorFor(model => model.PaymentPerYear, new { htmlAttributes = new { @class = "form-control", id = "PaymentPerYear" } })
+					@Html.EditorFor(model => model.PaymentPerYear, new { htmlAttributes = new { @class = "form-control", id = "PaymentPerYear", placeholder = "請輸入年繳保費" } })
 					@Html.ValidationMessageFor(model => model.PaymentPerYear, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.PayYear, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					@Html.EditorFor(model => model.PayYear, new { htmlAttributes = new { @class = "form-control", id = "PayYear" } })
+					@Html.EditorFor(model => model.PayYear, new { htmlAttributes = new { @class = "form-control", id = "PayYear", placeholder = "請輸入繳費年期" } })
 					@Html.ValidationMessageFor(model => model.PayYear, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.Withdrawal, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					@Html.EditorFor(model => model.Withdrawal, new { htmlAttributes = new { @class = "form-control", id = "Withdrawal"} })
+					@Html.EditorFor(model => model.Withdrawal, new { htmlAttributes = new { @class = "form-control", id = "Withdrawal", placeholder = "請輸入領回解約金" } })
 					@Html.ValidationMessageFor(model => model.Withdrawal, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -67,13 +67,12 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.RelateCash, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					<div class="col-md-6">
-						@Html.RadioButtonFor(model => model.RelateCash, true, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })
-						<span>是,我想從現金資產扣款</span>
+					<div >
+						<span>@Html.RadioButtonFor(model => model.RelateCash, true, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })是,我想從現金資產扣款</span>
 					</div>
-					<div class="col-md-6">
-						@Html.RadioButtonFor(model => model.RelateCash, false, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })
-						<span>否,直接加入這筆保單</span>
+					<div >
+					
+						<span>	@Html.RadioButtonFor(model => model.RelateCash, false, new { htmlAttributes = new { @class = "form-control", id = "RelateCash" } })否,直接加入這筆保單</span>
 					</div>
 						@Html.ValidationMessageFor(model => model.RelateCash, "", new { @class = "text-danger" })
 					</div>

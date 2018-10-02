@@ -41,6 +41,10 @@ namespace F1005.Models
             {
                 yield return new ValidationResult("贖回單位數大於已持有單位數", new string[] { "Units" });
             }
+            if (Fee < 0||Fee>3)
+            {
+                yield return new ValidationResult("手續費應該介於0%至3%間", new string[] { "Fee" });
+            }
         }
     }
 

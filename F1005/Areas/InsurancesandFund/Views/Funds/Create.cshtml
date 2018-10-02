@@ -4,73 +4,78 @@
 	ViewBag.Title = "Create";
 }
 
-<h2>新增基金</h2>
-<form>
-	<p>請選擇基金公司</p>
-	<!--給定這id，等等需要用他填入學院資料,onchange內動到這element會呼叫裡面的方法
-	this.selectedIndex是選到第幾項的值(0開始)傳入當參數-->
-	<select id="CompanyList" ></select>
-	<br>
-	<br>
-	<p>請選擇基金</p>
-	<select id="FundList"></select><!--給定這id，等等需要用他填入對應的系所資料-->
-</form>
 
 @using (Html.BeginForm())
 {
 	@Html.AntiForgeryToken()
 
-	<div class="form-horizontal">
-		<hr />
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+	<hr />
+	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.FundName, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control" ,id="FundName" } })
-				@Html.ValidationMessageFor(model => model.FundName, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.Units, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.Units, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Units, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-				@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-
-		<div class="form-group">
-			<div class="col-md-offset-2 col-md-10">
-				<input type="submit" value="確定加入" class="btn btn-default" />
-			</div>
+	<div class="form-group">
+		<label class="control-label col-md-2">基金公司</label>
+		<div class="col-md-10">
+			<select id="CompanyList" class="form-control"></select>
 		</div>
 	</div>
+
+	<div class="form-group">
+		<label class="control-label col-md-2">選擇基金</label>
+		<div class="col-md-10">
+			<select id="FundList" class="form-control"></select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.FundName, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control", id = "FundName", placeholder = "請由上方選擇基金名稱" } })
+			@Html.ValidationMessageFor(model => model.FundName, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入手續費%" } })
+			@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入購買淨值" } })
+			@Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Units, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.Units, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入單位數" } })
+			@Html.ValidationMessageFor(model => model.Units, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date", placeholder = "請選擇交易日期" } })
+			@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+
+
+
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" value="確定加入" class="btn btn-default" />
+		</div>
+	</div>
+</div>
 }
 
 <div>
@@ -132,9 +137,12 @@
 		getCompanylist()
 		var company = document.getElementById("CompanyList")
 		company.addEventListener("change", getFundList)
-
 		var Fund = document.getElementById("FundList")
 		Fund.addEventListener("change", getfundName)
+
+		company.selectedIndex = 0;
+		Fund.selectedIndex = 0
+
 	});
 
 	</script>
