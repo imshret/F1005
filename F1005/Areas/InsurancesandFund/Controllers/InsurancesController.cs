@@ -219,7 +219,7 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         public ActionResult DeleteInsurances(int? id)
         {
             Insurances obj = db.Insurances.Find(id);
-            var STdata = db.SummaryTable.Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
+            var STdata = db.SummaryTable.ToList().Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
 
             db.Insurances.Remove(obj);
        

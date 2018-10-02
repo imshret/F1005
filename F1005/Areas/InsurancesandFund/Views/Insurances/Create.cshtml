@@ -1,9 +1,16 @@
 ﻿@model F1005.Models.Insurances
 
-@section Styles
+@section styles
 	{
 	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-
+	<style>
+		#PurchaseDate {
+			resize: none;
+		}
+		#WithdrawDate {
+			resize: none;
+		}
+	</style>
 }
 	<div class="col-lg-12">
 		@using (Html.BeginForm())
@@ -92,7 +99,7 @@
 			<h4 style="font-family:'Microsoft JhengHei'" id="IRR">	</h4>
 			<div class="container" style="background-color:lavenderblush">
 				<div class="col-md-6 " id="xx">
-					<canvas id="IRRchart"></canvas>
+					<canvas id="IRRchart" style="background-color:transparent"></canvas>
 				</div>
 			</div>
 		</div>

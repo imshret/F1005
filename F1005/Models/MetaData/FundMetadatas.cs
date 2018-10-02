@@ -23,7 +23,7 @@ namespace F1005.Models
         [Display(Name = "交易日期")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = false)]
         public System.DateTime Date { get; set; }
-        [Display(Name = "淨值")]
+        [Display(Name = "買入淨值")]
         public double NAV { get; set; }
         [Display(Name = "現金流")]
         public double CashFlow { get; set; }
