@@ -22,8 +22,5 @@ namespace F1005.Models
         public string OnlineSell { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public string Name { get; set; }
-    
-        public virtual CurrencyRate CurrencyRate1 { get; set; }
-        public virtual CurrencyRate CurrencyRate2 { get; set; }
     }
 }
