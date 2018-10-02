@@ -24,7 +24,7 @@ namespace F1005.Areas.BStage.Models
         public Nullable<decimal> stockPrice { get; set; }
         public Nullable<int> stockAmount { get; set; }
         public string stockNote { get; set; }
-        
+        public Nullable<int> stockNetincome { get; set; }
 
         public string CurrencyClass { get; set; }
         public string TradeClass { get; set; }

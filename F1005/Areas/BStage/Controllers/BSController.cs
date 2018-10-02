@@ -106,7 +106,8 @@ namespace F1005.Areas.BStage.Controllers
                           stockID = c.stockID,
                           stockPrice = c.stockPrice,
                           stockAmount = c.stockAmount,
-                          stockNote = c.stockNote
+                          stockNote = c.stockNote,
+                          stockNetincome = c.stockNetincome
                       };
             dynamic retObject = new { data = ret.ToList() };
             return Json(retObject, JsonRequestBehavior.AllowGet);
