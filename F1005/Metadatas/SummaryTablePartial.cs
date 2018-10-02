@@ -19,6 +19,7 @@ namespace F1005.Models
         public int STId { get; set; }
         [Display(Name = "交易類別")]
         public string TradeType { get; set; }
+        [Required(ErrorMessage = "**日期錯誤!")]
         [Display(Name = "交易時間")]
         public System.DateTime TradeDate { get; set; }
         [Display(Name = "使用者名稱")]
