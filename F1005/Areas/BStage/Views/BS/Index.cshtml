@@ -8,17 +8,14 @@
 @section styles
 {
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-
 }
 
-@*<input id="ff" type="text" />
-<input id="btn" type="button" value="搜尋" />*@
 
 <div class="col-md-12">
     <ul class="nav nav-tabs">
         <li class="nav-item active">
             <a class="nav-link disabled" href="#PageCash" data-toggle="tab" role="tab">現金</a>
-        </li>        
+        </li>
         <li class="nav-item">
             <a class="nav-link disabled" href="#PageStock" data-toggle="tab" role="tab">股票</a>
         </li>
@@ -40,7 +37,7 @@
         <div class="tab-pane active" id="PageCash" role="tabpanel">
             <span>@Html.Action("IndexCashI", "BS")</span>
             <span>@Html.Action("IndexCashE", "BS")</span>
-        </div>           
+        </div>
 
         <div class="tab-pane fade" id="PageStock" role="tabpanel">
             <span>@Html.Action("IndexStock", "BS")</span>
@@ -64,7 +61,6 @@
 
 @section scripts
     {
-
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 
     <script>
@@ -74,12 +70,11 @@
                     ajax: "@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)",
                     "ajax": { "url":"@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UserName', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },
                         { title: 'InCashType', data: "InCashType" },
                         { title: 'InAmount', data: "InAmount" },
                         { title: 'InDate', data: "InDate" },
-                        { title: 'InNote', data: "InNote" }                 
-        
+                        { title: 'InNote', data: "InNote" }
                     ]
                 });
 
@@ -87,24 +82,22 @@
                     @*ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",*@
                     "ajax": { "url":"@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UserName', data: "UserName" },    
+                        { title: 'UserName', data: "UserName" },
                         { title: 'ExCashType', data: "ExCashType" },
                         { title: 'ExAmount', data: "ExAmount" },
                         { title: 'ExDate', data: "ExDate" },
-                        { title: 'ExNote', data: "ExNote" }                           
+                        { title: 'ExNote', data: "ExNote" }
                     ]
                 });
 
                 var datatable = $('#GetStock').DataTable({
                     ajax: "@Url.Action("GetStock", "BS", new { Area = "BStage" }, null)",
                     columns: [
-                        { title: 'UserName', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },
                         { title: 'stockID', data: "stockID" },
                         { title: 'stockPrice', data: "stockPrice" },
                         { title: 'stockAmount', data: "stockAmount" },
-                        { title: 'stockNote', data: "stockNote" } 
-
-
+                        { title: 'stockNote', data: "stockNote" }
                     ]
                 });
 
@@ -112,74 +105,44 @@
                     @*ajax: "@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)",*@
                     "ajax": { "url":"@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UserName', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },
                         { title: 'CurrencyClass', data: "CurrencyClass" },
-                        { title: 'Tradetime', data: "Tradetime" },
+                        { title: 'TradeDate', data: "TradeDate" },
                         { title: 'TradeClass', data: "TradeClass" },
-                        { title: 'note', data: "note" } 
-
+                        { title: 'note', data: "note" }
                     ]
                 });
 
                 var datatable = $('#GetIs').DataTable({
-                    ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UserName', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },
                         { title: 'InsuranceName', data: "InsuranceName" },
                         { title: 'PurchaseDate', data: "PurchaseDate" },
                         { title: 'WithdrawDate', data: "WithdrawDate" },
                         { title: 'PaymentPerYear', data: "PaymentPerYear" },
                         { title: 'PayYear', data: "PayYear" },
                         { title: 'Withdrawal', data: "Withdrawal" }
-
                     ]
                 });
 
-                
                 var datatable = $('#GetFund').DataTable({
-                    ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
-                        { title: 'UserName', data: "UserName" },   
+                        { title: 'UserName', data: "UserName" },
                         { title: 'FundName', data: "FundName" },
                         { title: 'Date', data: "Date" },
                         { title: 'NAV', data: "NAV" },
                         { title: 'Units', data: "Units" }
-
                     ]
                 });
+
             }
             $(function () {
                 LoadData();
             });
     </script>
 }
-
-
-
-
-
-
-@*<div class="col-lg-12">
-        <span>@Html.Action("IndexCashI", "BS")</span>
-    </div>
-
-    <div class="col-lg-12">
-        <span>@Html.Action("IndexCashE", "BS")</span>
-    </div>
-
-    <div class="col-lg-12">
-        <span>@Html.Action("IndexStock", "BS")</span>
-    </div>
-
-    <div class="col-lg-12">
-        <span>@Html.Action("IndexFX", "BS")</span>
-    </div>
-
-    <div class="col-lg-12">
-        <span>@Html.Action("IndexIs", "BS")</span>
-    </div>
-
-    <div class="col-lg-12">
-        <span>@Html.Action("IndexFund", "BS")</span>
-    </div>*@
 

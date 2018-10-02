@@ -14,12 +14,6 @@ namespace F1005.Models
     
     public partial class CurrencyRate
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CurrencyRate()
-        {
-            this.CurrencyName = new HashSet<CurrencyName>();
-        }
-    
         public int ID { get; set; }
         public string CurrencyClass { get; set; }
         public string CashBuy { get; set; }
@@ -28,8 +22,5 @@ namespace F1005.Models
         public string OnlineSell { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public string Name { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CurrencyName> CurrencyName { get; set; }
     }
 }

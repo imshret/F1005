@@ -6,6 +6,7 @@ namespace F1005.Areas.BStage.Models
     public class BSViewModel
     {     
         public string UserName { get; set; }
+        public string TradeDate { get; set; }
 
         public string ExCashType { get; set; }
         public Nullable<int> ExAmount { get; set; }
@@ -26,8 +27,6 @@ namespace F1005.Areas.BStage.Models
         
 
         public string CurrencyClass { get; set; }
-        public string Tradetime { get; set; }
-        //public Nullable<System.DateTime> Tradetime { get; set; }
         public string TradeClass { get; set; }
         public string note { get; set; }
 
@@ -39,7 +38,7 @@ namespace F1005.Areas.BStage.Models
         public Nullable<int> Withdrawal { get; set; }
         
         public string FundName { get; set; }
-        public System.DateTime Date { get; set; }
+        public string Date { get; set; }
         public Nullable<double> NAV { get; set; }
         public Nullable<double> Units { get; set; }
 

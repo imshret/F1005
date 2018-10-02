@@ -90,7 +90,7 @@ namespace F1005.Controllers
                     if (model.UserName == "msit119")
                     {
                         Session["User"] = model.UserName;
-                        return RedirectToAction("Admin");
+                        return RedirectToRoute("BStage_default", new { Controller = "BS", Action = "Index" });
                     }
                     else
                     {

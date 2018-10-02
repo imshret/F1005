@@ -45,6 +45,8 @@
 	</div>
 </div>
 
+<button onclick="Export()">Export Excel</button>
+
 
 @section scripts{
 	<script>
@@ -462,7 +464,18 @@
                 })
             }
         });
-      };
+		};
+
+		function Export(){
+			$.ajax({
+				type: "Post",
+				url:"@Url.Action("ExportToExcel", "CashIncomes")",
+			}).done(function (res) {
+				alert("success");
+			}).fail(function (err) {
+				alert("fail");
+				});
+		}
 
 
 	</script>

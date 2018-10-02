@@ -146,7 +146,7 @@ namespace F1005.Areas.Cash.Controllers
                 ExCashID = c.ExCashID,
                 UserID = c.UserName,
                 ExCashType = c.ExCashType,
-                ExAmount = c.ExAmount,
+                ExAmount = Convert.ToInt32(c.ExAmount).ToString("c2"),
                 ExDate = c.ExDate.ToShortDateString(),
                 ExNote = c.ExNote
             });
