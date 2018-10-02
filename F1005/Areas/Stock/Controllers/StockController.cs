@@ -381,7 +381,8 @@ namespace F1005.Areas.Stock.Controllers
             //回傳現金帳戶狀態
             if (cashaccount >= 0)
             {
-                return Json(cashaccount, JsonRequestBehavior.AllowGet);
+               string  Cash= cashaccount.Value.ToString("c2");
+                return Json(Cash, JsonRequestBehavior.AllowGet);
                 //return Content(InvDatas);
             }
             else
@@ -435,16 +436,12 @@ namespace F1005.Areas.Stock.Controllers
                 avgcost = c.stockLastAVG,
                 pv = c.Stock_data.收盤價
 
-
             }, (id, invVM) => new
             {
                 stockid = invVM.Select(c => c.stockid).FirstOrDefault(),
                 stockname = "(" + invVM.Select(c => c.stockid).FirstOrDefault() + ")" + invVM.Select(c => c.stockname).FirstOrDefault(),
                 stockamount = invVM.Select(c => c.amount).Sum(),
-
                 stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
-
-
             });
             List<InvViewModel2> testmodel = new List<InvViewModel2>();
             foreach (var item in InvList2)
@@ -460,9 +457,67 @@ namespace F1005.Areas.Stock.Controllers
                 });
 
             }
-
-
             return Json(testmodel, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCurrentDoughnut()
+        {
+            AVGCalculator calculator = new AVGCalculator();
+            var username = Session["User"].ToString();
+
+            var InvList = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => c.stockAmount, (id, amount) => new
+            {
+                stockid = id,
+
+                stockamount = amount.Sum(),
+
+            });
+
+
+            var InvList2 = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => new InvViewModel
+            {
+                stockid = c.Stock_data.StockID,
+                stockname = c.Stock_data.證券名稱,
+                amount = c.stockAmount,
+                name = c.SummaryTable.TradeType,
+                avgcost = c.stockLastAVG,
+                pv = c.Stock_data.收盤價
+
+            }, (id, invVM) => new
+            {
+                stockid = invVM.Select(c => c.stockid).FirstOrDefault(),
+                stockname = "(" + invVM.Select(c => c.stockid).FirstOrDefault() + ")" + invVM.Select(c => c.stockname).FirstOrDefault(),
+                stockamount = invVM.Select(c => c.amount).Sum(),
+                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
+
+                
+            });
+            List<InvViewModel2> testmodel = new List<InvViewModel2>();
+            foreach (var item in InvList2)
+            {
+                testmodel.Add(new InvViewModel2
+                {
+                    stockname = item.stockname,
+                    pvDoughnut = (Convert.ToDecimal(item.stockamount) * Convert.ToDecimal(item.stockpv)),
+
+                });
+
+            }
+            decimal pvtotal = 0;
+            foreach(var item in testmodel)
+            {
+                pvtotal = pvtotal + (decimal)item.pvDoughnut;
+            };
+            var query = InvList2.ToList().Select(c => new
+            {
+                stockname = c.stockname,
+                percentage =(((Convert.ToDecimal(c.stockpv) * Convert.ToDecimal(c.stockamount) )/ pvtotal)*100).ToString("f2")
+            }
+            );
+
+
+
+            return Json(query, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -475,6 +530,7 @@ namespace F1005.Areas.Stock.Controllers
         public string avgcost { get; set; }
         public string stocklastprice { get; set; }
         public string pv { get; set; }
+        public decimal? pvDoughnut { get; set; }
 
     }
 

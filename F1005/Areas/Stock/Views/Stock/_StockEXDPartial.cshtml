@@ -39,7 +39,7 @@
 
                 @Html.Label("除息日期")@Html.ValidationMessageFor(m => m.SummaryTable.TradeDate, null, new { @style = "color:orangered" })
                 @*@Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "EXDate", @Value = "2018-09-20" })*@
-                @Html.EditorFor(m => m.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", @id = "EXDate", @type = "date" } })
+                @Html.EditorFor(m => m.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", @id = "EXDDate", @type = "date" } })
 
 
             </div>

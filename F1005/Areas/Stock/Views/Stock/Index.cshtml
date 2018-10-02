@@ -51,7 +51,7 @@
             <div class="col-md-12">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#AccountTabel" data-toggle="tab" role="tab">股票帳戶概覽</a>
+                        <a class="nav-link disabled" href="#AccountTable" data-toggle="tab" role="tab">股票帳戶概覽</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#TradeDataTable" data-toggle="tab" role="tab">交易記錄總覽</a>
@@ -67,7 +67,8 @@
                 <div class="tab-content " id="myTabContent">
 
                     <div class="tab-pane fade" id="AccountTable" role="tabpanel">
-                        @*@Html.Partial("_StockAccountTable")*@
+                        @Html.Partial("_StockGetPie")
+         
                     </div>
 
                     <div class="tab-pane fade" id="TradeDataTable" role="tabpanel">
@@ -99,8 +100,11 @@
         $("#UserName").val("@Session["User"]");
         $("#UserName2").val("@Session["User"]");
         $("#UserName3").val("@Session["User"]");
-          $("#UserName4").val("@Session["User"]");
-
+        $("#UserName4").val("@Session["User"]");
+        $("#StockbuyDate").css("resize", "none");
+        $("#StocksellDate").css("resize", "none");
+        $("#EXDDate").css("resize", "none");
+        $("#EXSDate").css("resize", "none");
 
 
 
@@ -307,6 +311,7 @@
         function CalculateEXSD() {
             //現金收入=0
             //報酬率=每股現金股利/成本
+
             //資料表欄位:股數=0、金額=每股現金股利
             //除息後每股成本=參與除息每股成本-每股現金股利
 
@@ -315,16 +320,71 @@
             var StockSDivInv = document.getElementById("EXSDivInv").value;  //參與除息庫存
             var StockSDivAvc = document.getElementById("EXSDivAvc").value;  //參與除息每股成本
             var StockSDivInvN = ((StockDiv / 10)*1000 + parseInt(StockSDivInv*1000));
-
             document.getElementById("StockSDivNetincome").value = 0;
             document.getElementById("StockSDivR").value ="NA";
-
             document.getElementById("StockSDivInvN").value = parseFloat(StockSDivInvN / 1000).toFixed(3);
             document.getElementById("StockSDivAvcN").value = ((StockSDivInv * StockSDivAvc*1000) / (StockSDivInvN)).toFixed(2);
             document.getElementById("StockDivDiff").value = parseInt(StockSDivInvN - StockSDivInv*1000);
 
 
         }
+
+
+
+                //資產分布百分比圓餅圖
+        //Draw Pie
+        function LoadPie() {
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetCurrentDoughnut", "Stock")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                var datalabels = [];
+                var data = [];
+ 
+
+                for (var i = 0; i < response.length; i++) {
+                    datalabels.push(response[i].stockname);
+                    data.push(response[i].percentage);
+                }
+                var ctxDoughnut = document.getElementById("GetCurrentDoughnut2");
+                var DoughnutChart = new Chart(ctxDoughnut, {
+                    type: 'pie',
+                    data: {
+                        labels: datalabels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                window.chartColors.blue,
+                                window.chartColors.red,
+                                window.chartColors.green,
+                                window.chartColors.yellow,
+                                window.chartColors.orange,
+                                window.chartColors.gray,
+                                window.chartColors.purple,
+                            ]
+                        }],
+                        fontSize:12,
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '持股市值百分比%'
+                        },
+                    }
+                })
+            }
+        });
+		};
+
+
+
+
+
+
 
         function LoadJsGrid() {
 			$.ajax({
@@ -390,7 +450,7 @@
 						noDataContent: "目前沒有紀錄",
 
 						data: res,
-                        
+
 						fields: [
 							{ name: "stockDate", type: "text", title: "交易日期", width: 100 },
 							{ name: "stockID", type: "text", title: "股票代碼", width: 100 },
@@ -467,6 +527,7 @@
 		$(document).ready(function () {
             LoadJsGrid();
             LoadJsGrid2();
+            LoadPie();
 
 		});
 
