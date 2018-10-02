@@ -281,9 +281,6 @@
     <Compile Include="Models\StockHistory.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StockIDList.cs">
-      <DependentUpon>MyInvestModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Stock_data.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
@@ -632,6 +629,8 @@
     <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Funds\Sell.cshtml" />
     <Content Include="Areas\Stock\Views\Stock\_StockGetAllInvPartial.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\AllSum.cshtml" />
+    <Content Include="Areas\Main\Views\Home\IndexX.cshtml" />
     <EntityDeploy Include="Models\MyInvestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MyInvestModel.Designer.cs</LastGenOutput>
@@ -639,8 +638,6 @@
     <Content Include="Models\MyInvestModel.edmx.diagram">
       <DependentUpon>MyInvestModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\BStage\Views\BS\AllSum.cshtml" />
-    <Content Include="Areas\Main\Views\Home\IndexX.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
