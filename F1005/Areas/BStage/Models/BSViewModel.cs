@@ -6,7 +6,7 @@ namespace F1005.Areas.BStage.Models
     public class BSViewModel
     {     
         public string UserName { get; set; }
-        public System.DateTime TradeDate { get; set; }
+        public string TradeDate { get; set; }
 
         public string ExCashType { get; set; }
         public Nullable<int> ExAmount { get; set; }
@@ -24,23 +24,25 @@ namespace F1005.Areas.BStage.Models
         public Nullable<decimal> stockPrice { get; set; }
         public Nullable<int> stockAmount { get; set; }
         public string stockNote { get; set; }
-        
+        public Nullable<int> stockNetincome { get; set; }
 
-        public string CurrencyClass { get; set; }
-        public string TradeClass { get; set; }
+        public string CurrencyClass { get; set; }    
+        public Nullable<double> NTD { get; set; }
         public string note { get; set; }
 
         public string InsuranceName { get; set; }
         public string PurchaseDate { get; set; }
         public string WithdrawDate { get; set; }
         public Nullable<int> PaymentPerYear { get; set; }
+        public Nullable<int> CashFlow { get; set; }
         public Nullable<int> PayYear { get; set; }   
         public Nullable<int> Withdrawal { get; set; }
         
         public string FundName { get; set; }
-        public System.DateTime Date { get; set; }
+        public string Date { get; set; }
         public Nullable<double> NAV { get; set; }
         public Nullable<double> Units { get; set; }
+        public Nullable<double> CashFlowX { get; set; }
 
         public virtual SummaryTable SummaryTable { get; set; }
     }

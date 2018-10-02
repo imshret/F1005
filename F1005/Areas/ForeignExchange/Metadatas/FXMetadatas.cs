@@ -27,8 +27,6 @@ namespace F1005.Models
         public Nullable<double> ExchargeRate { get; set; }
         [Display(Name = "優惠匯率")]
         public Nullable<double> tax { get; set; }
-        [Display(Name = "交易時間")]
-        public Nullable<System.DateTime> Tradetime { get; set; }
         [Display(Name = "交易類別")]
         public string TradeClass { get; set; }
         [Display(Name = "備註")]

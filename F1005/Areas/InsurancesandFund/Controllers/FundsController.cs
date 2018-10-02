@@ -19,6 +19,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             var UID = Session["User"].ToString();
             var query = db.Fund.Where(F => F.UserID == UID);
             foreach (var item in query)
@@ -52,6 +57,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 
@@ -62,7 +72,10 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "FundName,Fee,Units,Date,NAV")] Fund fund)
         {
-         
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
 
             fund.BuyOrSell = true;
             fund.CashFlow = (fund.NAV * fund.Units) * (1 + fund.Fee / 100);
@@ -70,6 +83,17 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             db.SummaryTable.Add(ST);
             fund.UserID = Session["User"].ToString();
             fund.STID = db.SummaryTable.Select(s => s.STId).ToList().LastOrDefault();
+
+            CashExpense CE = new CashExpense
+            {
+                UserName = fund.UserID,
+                OID = fund.STID,
+                ExCashType = "基金",
+                ExDate = fund.Date,
+                ExAmount = Convert.ToInt32(fund.CashFlow),
+                ExNote = "基金申購"
+            };
+            db.CashExpense.Add(CE);
             if (ModelState.IsValid)
             {
                 db.Fund.Add(fund);
@@ -104,6 +128,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         // GET: Funds/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -123,6 +152,11 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "SerialNumber,UserID,FundName,BuyOrSell,Fee,Units,Date,NAV,CashFlow")] Fund fund)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(fund).State = EntityState.Modified;
@@ -184,19 +218,31 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         [HttpPost]
         public ActionResult Sell( Fund fund)
         {
-            Fund olddata =  db.Fund.Find(fund.SerialNumber);
-            olddata.Units = olddata.Units-fund.Units;
-            db.SaveChanges();
-            fund.BuyOrSell = false;
-            fund.CashFlow = (fund.SellNAV * fund.Units) * (1 + fund.Fee / 100);
-            SummaryTable ST = new SummaryTable { UserName = Session["User"].ToString(), TradeDate = fund.Date, TradeType = "基金" };
-            db.SummaryTable.Add(ST);
-            fund.SerialNumber = 0;
-            fund.UserID = Session["User"].ToString();
-            fund.STID = db.SummaryTable.Select(s => s.STId).ToList().LastOrDefault();
+           
             if (ModelState.IsValid)
             {
+                Fund olddata = db.Fund.Find(fund.SerialNumber);
+                olddata.Units = olddata.Units - fund.Units;
+                db.SaveChanges();
+                fund.BuyOrSell = false;
+                fund.CashFlow = (fund.SellNAV * fund.Units) * (1 + fund.Fee / 100);
+                SummaryTable ST = new SummaryTable { UserName = Session["User"].ToString(), TradeDate = fund.Date, TradeType = "基金" };
+                db.SummaryTable.Add(ST);
+                fund.SerialNumber = 0;
+                fund.UserID = Session["User"].ToString();
+                fund.STID = db.SummaryTable.Select(s => s.STId).ToList().LastOrDefault();
                 db.Fund.Add(fund);
+
+                CashIncome CI = new CashIncome
+                {
+                    UserName = fund.UserID,
+                    InCashType = "基金",
+                    OID = fund.STID,
+                    InAmount = Convert.ToInt32(fund.CashFlow),
+                    InDate = fund.Date,
+                    InNote = "基金贖回"
+                };
+                db.CashIncome.Add(CI);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -261,6 +307,20 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             var STdata = db.SummaryTable.Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
             db.SummaryTable.Remove(STdata);
             db.Fund.Remove(obj);
+
+            if (obj.BuyOrSell == true)
+            {
+                var arr = db.CashExpense.Where(C => C.OID == obj.STID).Select(C => C).ToArray();
+                db.CashExpense.Remove(arr[0]);
+                db.SummaryTable.Remove(STdata);
+            }
+            else
+            {
+                var arr = db.CashIncome.Where(C => C.OID == obj.STID).Select(C => C).ToArray();
+                db.CashIncome.Remove(arr[0]);
+                db.SummaryTable.Remove(STdata);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

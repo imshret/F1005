@@ -15,6 +15,11 @@ namespace F1005.Areas.Stock.Controllers
         // GET: Stock
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
         //買進股票
@@ -22,6 +27,10 @@ namespace F1005.Areas.Stock.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateStockBuy([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote,CashAccount")]StockHistory stockHistory)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
 
             if (ModelState.IsValid)
             {
@@ -64,6 +73,10 @@ namespace F1005.Areas.Stock.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateStockSell([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
             //([Bind(Include = "TradeType,date,userID")]
             //[Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]
             if (ModelState.IsValid)
@@ -270,6 +283,11 @@ namespace F1005.Areas.Stock.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateEXD([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             //([Bind(Include = "TradeType,date,userID")]
             //[Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote"])
             if (ModelState.IsValid)
@@ -314,6 +332,11 @@ namespace F1005.Areas.Stock.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateEXS([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             //([Bind(Include = "TradeType,date,userID")]
             //[Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")
             if (ModelState.IsValid)
@@ -472,8 +495,5 @@ namespace F1005.Areas.Stock.Controllers
     {
         public Decimal Inv { get; set; }
         public Decimal Avgcost { get; set; }
-
-
-
     }
 }

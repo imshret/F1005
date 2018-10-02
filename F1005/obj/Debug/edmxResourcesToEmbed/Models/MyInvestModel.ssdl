@@ -59,7 +59,7 @@
     <Key>
       <PropertyRef Name="FundID" />
     </Key>
-    <Property Name="日期" Type="nvarchar" MaxLength="255" />
+    <Property Name="Date" Type="nvarchar" MaxLength="255" />
     <Property Name="MemberCode" Type="nvarchar" MaxLength="255" />
     <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
     <Property Name="FundID" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -135,14 +135,6 @@
     <Property Name="stockNote" Type="nvarchar" MaxLength="300" />
     <Property Name="CashAccount" Type="bit" Nullable="false" />
     <Property Name="stockLastAVG" Type="decimal" Precision="6" Scale="2" />
-  </EntityType>
-  <EntityType Name="StockIDList">
-    <Key>
-      <PropertyRef Name="stockID" />
-    </Key>
-    <Property Name="stockID" Type="nvarchar" MaxLength="10" Nullable="false" />
-    <Property Name="stockName" Type="nvarchar" MaxLength="10" />
-    <Property Name="stockLastPrice" Type="decimal" Precision="6" Scale="2" />
   </EntityType>
   <EntityType Name="SummaryTable">
     <Key>
@@ -279,18 +271,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_StockHistory_StockIDList">
-    <End Role="StockIDList" Type="Self.StockIDList" Multiplicity="0..1" />
-    <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="StockIDList">
-        <PropertyRef Name="stockID" />
-      </Principal>
-      <Dependent Role="StockHistory">
-        <PropertyRef Name="stockID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_StockHistory_SummaryTable">
     <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
     <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
@@ -325,7 +305,6 @@
     <EntitySet Name="Insurances" EntityType="Self.Insurances" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Stock_data" EntityType="Self.Stock_data" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StockHistory" EntityType="Self.StockHistory" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="StockIDList" EntityType="Self.StockIDList" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SummaryTable" EntityType="Self.SummaryTable" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UsersData" EntityType="Self.UsersData" Schema="dbo" store:Type="Tables" />
@@ -359,10 +338,6 @@
     </AssociationSet>
     <AssociationSet Name="FK_StockHistory_Stock_data" Association="Self.FK_StockHistory_Stock_data">
       <End Role="Stock_data" EntitySet="Stock_data" />
-      <End Role="StockHistory" EntitySet="StockHistory" />
-    </AssociationSet>
-    <AssociationSet Name="FK_StockHistory_StockIDList" Association="Self.FK_StockHistory_StockIDList">
-      <End Role="StockIDList" EntitySet="StockIDList" />
       <End Role="StockHistory" EntitySet="StockHistory" />
     </AssociationSet>
     <AssociationSet Name="FK_StockHistory_SummaryTable" Association="Self.FK_StockHistory_SummaryTable">

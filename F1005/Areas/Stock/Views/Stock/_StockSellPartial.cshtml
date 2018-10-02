@@ -4,6 +4,7 @@
         <div class="col-md-12">
             <input id="Button1" type="button" value="查詢庫存與成本" class="btn btn-info" onclick="SearchInv()" />
             <input id="Button2" type="button" value="計算獲利" class="btn btn-info" onclick="CalculateProfit()" />
+            <spin id="inv-error">
         </div>
 
     </div>
@@ -22,7 +23,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.stockID)
+                    @Html.LabelFor(m => m.stockID)@Html.ValidationMessageFor(m => m.stockID, null, new { @style = "color:orangered" })
                     @*<label for="Stockbuyid">股票代碼</label>*@
                     @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StocksellID" })
                     @*<input type="text" class="form-control" id="StocksellID" />*@
@@ -30,10 +31,11 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.SummaryTable.TradeDate)
+                    @Html.LabelFor(m => m.SummaryTable.TradeDate)@Html.ValidationMessageFor(m => m.SummaryTable.TradeDate, null, new { @style = "color:orangered" })
                     @*<label for="Stockbuyid">交易日期</label>*@
-                    @Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "StocksellDate", @Value = "2018-09-20" })
-                    @*<input type="text" class="form-control" id="StocksellDate" />*@
+                    @*@Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "StocksellDate", @Value = "2018-09-20" })*@
+                    @Html.EditorFor(m => m.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", @id = "StocksellDate", @type = "date" } })
+                    
                 </div>
             </div>
             <div class="col-md-6">
@@ -50,7 +52,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.stockAmount)
+                    @Html.LabelFor(m => m.stockAmount)@Html.ValidationMessageFor(m => m.stockAmount, null, new { @style = "color:orangered" })
                     @*<label for="Stockbuyid">賣出數量(張)</label>*@
                     @Html.TextBoxFor(m => m.stockAmount, null, new { @class = "form-control", @id = "StocksellAmount" })
                     @*<input type="text" class="form-control" id="StocksellAmount" oninput="CalculateCost()" />*@
@@ -58,7 +60,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.stockPrice)
+                    @Html.LabelFor(m => m.stockPrice)@Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered" })
                     @*<label for="Stockbuyid">賣出價格</label>*@
                     @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "StocksellPrice" })
                     @*<input type="text" class="form-control" id="StocksellPrice" oninput="CalculateCost()" />*@
@@ -100,7 +102,7 @@
 
             <div class="col-md-6">
                 <div class="form-group">
-                    <lable for="StockSellProfit">損益</lable>
+                    <lable for="StockSellProfit">損益</lable>@Html.ValidationMessageFor(m=>m.stockNetincome,null,new { @style = "color:orangered" })
                     <input type="text" class="form-control" id="StockSellProfit" readonly="" />
                    
                 </div>
@@ -116,15 +118,15 @@
                     <input type="text" class="form-control" id="StocksellReturnrate" readonly="" />
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(m => m.stockNote)
                     @Html.TextBoxFor(m => m.stockNote, null, new { @class = "form-control", @id = "StocksellNote" })
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-12">
-                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-right" />
+                <div class="col-md-6">
+                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-left"style="margin-top:25px" />
                 </div>
             </div>
         }

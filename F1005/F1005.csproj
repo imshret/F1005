@@ -281,9 +281,6 @@
     <Compile Include="Models\StockHistory.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StockIDList.cs">
-      <DependentUpon>MyInvestModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Stock_data.cs">
       <DependentUpon>MyInvestModel.tt</DependentUpon>
     </Compile>
@@ -299,22 +296,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\DBStockTest.mdf" />
-    <Content Include="App_Data\DBStockTest_log.ldf">
-      <DependentUpon>DBStockTest.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\FinalTerm.mdf" />
-    <Content Include="App_Data\FinalTermUsers.mdf" />
-    <Content Include="App_Data\FinalTermUsers_log.ldf">
-      <DependentUpon>FinalTermUsers.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\FinalTerm_log.ldf">
-      <DependentUpon>FinalTerm.mdf</DependentUpon>
-    </Content>
     <Content Include="Areas\Main\3DScroll\3Dsite.css" />
     <Content Include="Areas\Main\3DScroll\jquery.tiltedpage-scroll.js" />
     <Content Include="Areas\Main\3DScroll\tiltedpage-scroll.css" />
@@ -561,9 +542,9 @@
     <Content Include="Images\correct.png" />
     <Content Include="Images\deposit2.png" />
     <Content Include="Images\error.png" />
+    <Content Include="Images\fund.png" />
     <Content Include="Images\FX2.png" />
     <Content Include="Images\home.png" />
-    <Content Include="Images\stock.png" />
     <Content Include="Images\stock3.png" />
     <Content Include="Models\MyInvestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -648,6 +629,8 @@
     <Content Include="Areas\BStage\Views\BS\Recent.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Funds\Sell.cshtml" />
     <Content Include="Areas\Stock\Views\Stock\_StockGetAllInvPartial.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\AllSum.cshtml" />
+    <Content Include="Areas\Main\Views\Home\IndexX.cshtml" />
     <EntityDeploy Include="Models\MyInvestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MyInvestModel.Designer.cs</LastGenOutput>
@@ -814,7 +797,6 @@
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Shared\_LayoutLoginAdmin.cshtml" />
-    <Content Include="Views\Account\Admin.cshtml" />
     <Content Include="Views\Account\ChangePasswordAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutEZ.cshtml" />
   </ItemGroup>
@@ -835,6 +817,7 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Areas\BStage\Views\Shared\" />
     <Folder Include="Areas\Cash\Models\" />
     <Folder Include="Areas\ForeignExchange\Models\" />

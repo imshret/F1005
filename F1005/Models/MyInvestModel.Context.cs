@@ -34,7 +34,6 @@ namespace F1005.Models
         public virtual DbSet<Insurances> Insurances { get; set; }
         public virtual DbSet<Stock_data> Stock_data { get; set; }
         public virtual DbSet<StockHistory> StockHistory { get; set; }
-        public virtual DbSet<StockIDList> StockIDList { get; set; }
         public virtual DbSet<SummaryTable> SummaryTable { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<UsersData> UsersData { get; set; }

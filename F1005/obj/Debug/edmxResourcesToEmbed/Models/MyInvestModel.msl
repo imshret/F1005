@@ -63,7 +63,7 @@
     <EntitySetMapping Name="fund_data">
       <EntityTypeMapping TypeName="MyInvestModel.fund_data">
         <MappingFragment StoreEntitySet="fund_data">
-          <ScalarProperty Name="日期" ColumnName="日期" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
           <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
           <ScalarProperty Name="FundID" ColumnName="FundID" />
@@ -143,15 +143,6 @@
           <ScalarProperty Name="stockNote" ColumnName="stockNote" />
           <ScalarProperty Name="CashAccount" ColumnName="CashAccount" />
           <ScalarProperty Name="stockLastAVG" ColumnName="stockLastAVG" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StockIDList">
-      <EntityTypeMapping TypeName="MyInvestModel.StockIDList">
-        <MappingFragment StoreEntitySet="StockIDList">
-          <ScalarProperty Name="stockID" ColumnName="stockID" />
-          <ScalarProperty Name="stockName" ColumnName="stockName" />
-          <ScalarProperty Name="stockLastPrice" ColumnName="stockLastPrice" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

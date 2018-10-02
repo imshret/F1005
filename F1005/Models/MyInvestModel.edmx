@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MyInvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MyInvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CashExpense">
           <Key>
             <PropertyRef Name="ExCashID" />
@@ -64,7 +64,7 @@
           <Key>
             <PropertyRef Name="FundID" />
           </Key>
-          <Property Name="日期" Type="nvarchar" MaxLength="255" />
+          <Property Name="Date" Type="nvarchar" MaxLength="255" />
           <Property Name="MemberCode" Type="nvarchar" MaxLength="255" />
           <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
           <Property Name="FundID" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -140,14 +140,6 @@
           <Property Name="stockNote" Type="nvarchar" MaxLength="300" />
           <Property Name="CashAccount" Type="bit" Nullable="false" />
           <Property Name="stockLastAVG" Type="decimal" Precision="6" Scale="2" />
-        </EntityType>
-        <EntityType Name="StockIDList">
-          <Key>
-            <PropertyRef Name="stockID" />
-          </Key>
-          <Property Name="stockID" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="stockName" Type="nvarchar" MaxLength="10" />
-          <Property Name="stockLastPrice" Type="decimal" Precision="6" Scale="2" />
         </EntityType>
         <EntityType Name="SummaryTable">
           <Key>
@@ -284,18 +276,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_StockHistory_StockIDList">
-          <End Role="StockIDList" Type="Self.StockIDList" Multiplicity="0..1" />
-          <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockIDList">
-              <PropertyRef Name="stockID" />
-            </Principal>
-            <Dependent Role="StockHistory">
-              <PropertyRef Name="stockID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_StockHistory_SummaryTable">
           <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
           <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
@@ -330,7 +310,6 @@
           <EntitySet Name="Insurances" EntityType="Self.Insurances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stock_data" EntityType="Self.Stock_data" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StockHistory" EntityType="Self.StockHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="StockIDList" EntityType="Self.StockIDList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SummaryTable" EntityType="Self.SummaryTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersData" EntityType="Self.UsersData" Schema="dbo" store:Type="Tables" />
@@ -366,10 +345,6 @@
             <End Role="Stock_data" EntitySet="Stock_data" />
             <End Role="StockHistory" EntitySet="StockHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK_StockHistory_StockIDList" Association="Self.FK_StockHistory_StockIDList">
-            <End Role="StockIDList" EntitySet="StockIDList" />
-            <End Role="StockHistory" EntitySet="StockHistory" />
-          </AssociationSet>
           <AssociationSet Name="FK_StockHistory_SummaryTable" Association="Self.FK_StockHistory_SummaryTable">
             <End Role="SummaryTable" EntitySet="SummaryTable" />
             <End Role="StockHistory" EntitySet="StockHistory" />
@@ -379,7 +354,8 @@
             <End Role="SummaryTable" EntitySet="SummaryTable" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyInvestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -446,7 +422,7 @@
           <Key>
             <PropertyRef Name="FundID" />
           </Key>
-          <Property Name="日期" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MemberCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FundID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
@@ -472,7 +448,7 @@
           <Property Name="tax" Type="Double" />
           <Property Name="TradeClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_FXtradeTable_SummaryTable" FromRole="FXtradeTable" ToRole="SummaryTable" />
+          <NavigationProperty Name="SummaryTable" Relationship="Self.FK_FXtradeTable_SummaryTable" FromRole="FXtradeTable" ToRole="SummaryTable" />
         </EntityType>
         <EntityType Name="Insurances">
           <Key>
@@ -527,17 +503,7 @@
           <Property Name="CashAccount" Type="Boolean" Nullable="false" />
           <Property Name="stockLastAVG" Type="Decimal" Precision="6" Scale="2" />
           <NavigationProperty Name="Stock_data" Relationship="Self.FK_StockHistory_Stock_data" FromRole="StockHistory" ToRole="Stock_data" />
-          <NavigationProperty Name="StockIDList" Relationship="Self.FK_StockHistory_StockIDList" FromRole="StockHistory" ToRole="StockIDList" />
           <NavigationProperty Name="SummaryTable" Relationship="Self.FK_StockHistory_SummaryTable" FromRole="StockHistory" ToRole="SummaryTable" />
-        </EntityType>
-        <EntityType Name="StockIDList">
-          <Key>
-            <PropertyRef Name="stockID" />
-          </Key>
-          <Property Name="stockID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="stockName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="stockLastPrice" Type="Decimal" Precision="6" Scale="2" />
-          <NavigationProperty Name="StockHistory" Relationship="Self.FK_StockHistory_StockIDList" FromRole="StockIDList" ToRole="StockHistory" />
         </EntityType>
         <EntityType Name="SummaryTable">
           <Key>
@@ -550,10 +516,10 @@
           <NavigationProperty Name="CashExpense" Relationship="Self.FK_CashExpense_SummaryTable" FromRole="SummaryTable" ToRole="CashExpense" />
           <NavigationProperty Name="CashIncome" Relationship="Self.FK_CashIncome_SummaryTable" FromRole="SummaryTable" ToRole="CashIncome" />
           <NavigationProperty Name="Fund" Relationship="Self.FK_Fund_SummaryTable" FromRole="SummaryTable" ToRole="Fund" />
+          <NavigationProperty Name="FXtradeTable" Relationship="Self.FK_FXtradeTable_SummaryTable" FromRole="SummaryTable" ToRole="FXtradeTable" />
           <NavigationProperty Name="Insurances" Relationship="Self.FK_Insurances_Insurances" FromRole="SummaryTable" ToRole="Insurances" />
           <NavigationProperty Name="StockHistory" Relationship="Self.FK_StockHistory_SummaryTable" FromRole="SummaryTable" ToRole="StockHistory" />
           <NavigationProperty Name="UsersData" Relationship="Self.FK_SummaryTable_UsersData" FromRole="SummaryTable" ToRole="UsersData" />
-          <NavigationProperty Name="FXtradeTable" Relationship="MyInvestModel.FK_FXtradeTable_SummaryTable" FromRole="SummaryTable" ToRole="FXtradeTable" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -634,6 +600,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FXtradeTable_SummaryTable">
+          <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
+          <End Role="FXtradeTable" Type="Self.FXtradeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SummaryTable">
+              <PropertyRef Name="STId" />
+            </Principal>
+            <Dependent Role="FXtradeTable">
+              <PropertyRef Name="SummaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Insurances_Insurances">
           <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -666,18 +644,6 @@
           <ReferentialConstraint>
             <Principal Role="Stock_data">
               <PropertyRef Name="StockID" />
-            </Principal>
-            <Dependent Role="StockHistory">
-              <PropertyRef Name="stockID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockHistory_StockIDList">
-          <End Role="StockIDList" Type="Self.StockIDList" Multiplicity="0..1" />
-          <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockIDList">
-              <PropertyRef Name="stockID" />
             </Principal>
             <Dependent Role="StockHistory">
               <PropertyRef Name="stockID" />
@@ -718,7 +684,6 @@
           <EntitySet Name="Insurances" EntityType="Self.Insurances" />
           <EntitySet Name="Stock_data" EntityType="Self.Stock_data" />
           <EntitySet Name="StockHistory" EntityType="Self.StockHistory" />
-          <EntitySet Name="StockIDList" EntityType="Self.StockIDList" />
           <EntitySet Name="SummaryTable" EntityType="Self.SummaryTable" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="UsersData" EntityType="Self.UsersData" />
@@ -738,6 +703,10 @@
             <End Role="UsersData" EntitySet="UsersData" />
             <End Role="Fund" EntitySet="Fund" />
           </AssociationSet>
+          <AssociationSet Name="FK_FXtradeTable_SummaryTable" Association="Self.FK_FXtradeTable_SummaryTable">
+            <End Role="SummaryTable" EntitySet="SummaryTable" />
+            <End Role="FXtradeTable" EntitySet="FXtradeTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_Insurances_Insurances" Association="Self.FK_Insurances_Insurances">
             <End Role="SummaryTable" EntitySet="SummaryTable" />
             <End Role="Insurances" EntitySet="Insurances" />
@@ -750,10 +719,6 @@
             <End Role="Stock_data" EntitySet="Stock_data" />
             <End Role="StockHistory" EntitySet="StockHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK_StockHistory_StockIDList" Association="Self.FK_StockHistory_StockIDList">
-            <End Role="StockIDList" EntitySet="StockIDList" />
-            <End Role="StockHistory" EntitySet="StockHistory" />
-          </AssociationSet>
           <AssociationSet Name="FK_StockHistory_SummaryTable" Association="Self.FK_StockHistory_SummaryTable">
             <End Role="SummaryTable" EntitySet="SummaryTable" />
             <End Role="StockHistory" EntitySet="StockHistory" />
@@ -762,23 +727,7 @@
             <End Role="UsersData" EntitySet="UsersData" />
             <End Role="SummaryTable" EntitySet="SummaryTable" />
           </AssociationSet>
-          <AssociationSet Name="FK_FXtradeTable_SummaryTable" Association="MyInvestModel.FK_FXtradeTable_SummaryTable">
-            <End Role="SummaryTable" EntitySet="SummaryTable" />
-            <End Role="FXtradeTable" EntitySet="FXtradeTable" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_FXtradeTable_SummaryTable">
-          <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="1" />
-          <End Type="MyInvestModel.FXtradeTable" Role="FXtradeTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SummaryTable">
-              <PropertyRef Name="STId" />
-            </Principal>
-            <Dependent Role="FXtradeTable">
-              <PropertyRef Name="SummaryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -847,7 +796,7 @@
           <EntitySetMapping Name="fund_data">
             <EntityTypeMapping TypeName="MyInvestModel.fund_data">
               <MappingFragment StoreEntitySet="fund_data">
-                <ScalarProperty Name="日期" ColumnName="日期" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="MemberCode" ColumnName="MemberCode" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="FundID" ColumnName="FundID" />
@@ -927,15 +876,6 @@
                 <ScalarProperty Name="stockNote" ColumnName="stockNote" />
                 <ScalarProperty Name="CashAccount" ColumnName="CashAccount" />
                 <ScalarProperty Name="stockLastAVG" ColumnName="stockLastAVG" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StockIDList">
-            <EntityTypeMapping TypeName="MyInvestModel.StockIDList">
-              <MappingFragment StoreEntitySet="StockIDList">
-                <ScalarProperty Name="stockID" ColumnName="stockID" />
-                <ScalarProperty Name="stockName" ColumnName="stockName" />
-                <ScalarProperty Name="stockLastPrice" ColumnName="stockLastPrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

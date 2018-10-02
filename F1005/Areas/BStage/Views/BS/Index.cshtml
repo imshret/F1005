@@ -8,6 +8,7 @@
 @section styles
 {
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" />
 }
 
 
@@ -62,6 +63,11 @@
 @section scripts
     {
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
 
     <script>
 
@@ -75,8 +81,15 @@
                         { title: 'InAmount', data: "InAmount" },
                         { title: 'InDate', data: "InDate" },
                         { title: 'InNote', data: "InNote" }
-
-                    ]
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
                 });
 
                 var datatable = $('#GetCashE').DataTable({
@@ -88,7 +101,15 @@
                         { title: 'ExAmount', data: "ExAmount" },
                         { title: 'ExDate', data: "ExDate" },
                         { title: 'ExNote', data: "ExNote" }
-                    ]
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
                 });
 
                 var datatable = $('#GetStock').DataTable({
@@ -98,10 +119,17 @@
                         { title: 'stockID', data: "stockID" },
                         { title: 'stockPrice', data: "stockPrice" },
                         { title: 'stockAmount', data: "stockAmount" },
+                        { title: 'stockNetincome', data: "stockNetincome" },
                         { title: 'stockNote', data: "stockNote" }
-
-
-                    ]
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
                 });
 
                 var datatable = $('#GetFX').DataTable({
@@ -110,16 +138,23 @@
                     columns: [
                         { title: 'UserName', data: "UserName" },
                         { title: 'CurrencyClass', data: "CurrencyClass" },
-                        { title: 'TradeDate', data: "TradeDate" },
-                        { title: 'TradeClass', data: "TradeClass" },
+                        { title: 'TradeDate', data: "TradeDate" },                  
+                        { title: 'Cost', data: "NTD" },
                         { title: 'note', data: "note" }
-                      
-
-                    ]
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
                 });
 
                 var datatable = $('#GetIs').DataTable({
-                    ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
                         { title: 'UserName', data: "UserName" },
                         { title: 'InsuranceName', data: "InsuranceName" },
@@ -127,21 +162,41 @@
                         { title: 'WithdrawDate', data: "WithdrawDate" },
                         { title: 'PaymentPerYear', data: "PaymentPerYear" },
                         { title: 'PayYear', data: "PayYear" },
+                        { title: 'Cost', data: "CashFlow" },
                         { title: 'Withdrawal', data: "Withdrawal" }
-
-                    ]
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
                 });
 
                 var datatable = $('#GetFund').DataTable({
-                    ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",
+                    @*ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)","dataSrc":""},
                     columns: [
                         { title: 'UserName', data: "UserName" },
                         { title: 'FundName', data: "FundName" },
                         { title: 'Date', data: "Date" },
                         { title: 'NAV', data: "NAV" },
-                        { title: 'Units', data: "Units" }
-                    ]
+                        { title: 'Units', data: "Units" },
+                        { title: 'Cost', data: "CashFlowX" }
+                        
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
                 });
+
             }
             $(function () {
                 LoadData();

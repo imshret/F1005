@@ -5,7 +5,7 @@
         public int InCashID { get; set; }
         public string UserName { get; set; }
         public string InCashType { get; set; }
-        public int? InAmount { get; set; }
+        public string InAmount { get; set; }
         public string InDate { get; set; }
         public string InNote { get; set; }
     }

@@ -14,7 +14,7 @@ namespace F1005.Models
     
     public partial class fund_data
     {
-        public string 日期 { get; set; }
+        public string Date { get; set; }
         public string MemberCode { get; set; }
         public string CompanyName { get; set; }
         public string FundID { get; set; }
