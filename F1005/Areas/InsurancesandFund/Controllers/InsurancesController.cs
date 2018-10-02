@@ -41,7 +41,6 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             Insurances olddata = db.Insurances.Find(insurances.SerialNumber);
             olddata.Withdrawed = true;
             db.SaveChanges();
-
             insurances.CashFlow = insurances.Withdrawal;
             insurances.PurchaseOrWithdraw = false;
             insurances.Withdrawed = true;
@@ -54,6 +53,17 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             insurances.STID = id;
             db.Insurances.Add(insurances);
             db.SaveChanges();
+
+            CashIncome CI = new CashIncome
+            {
+                OID = id,
+                UserName = insurances.UserID,
+                InCashType = "保險",
+                InAmount = insurances.CashFlow,
+                InDate = insurances.WithdrawDate,
+                InNote = insurances.InsuranceName+"解約金"
+            };
+            db.CashIncome.Add(CI);
             return RedirectToAction("Index");
         }
 
@@ -115,6 +125,7 @@ namespace F1005.Areas.InsurancesandFund.Controllers
                 CE.ExDate = ST.TradeDate;
                 CE.ExCashType = ST.TradeType;
                 CE.OID = id;
+                CE.ExNote = insurances.InsuranceName + "支出";
 
                 db.CashExpense.Add(CE);
                 db.SaveChanges();
@@ -125,63 +136,8 @@ namespace F1005.Areas.InsurancesandFund.Controllers
             return View(insurances);
         }
 
-        // GET: Insurances/Edit/5
-        //編輯保單
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Insurances insurances = db.Insurances.Find(id);
-            if (insurances == null)
-            {
-                return HttpNotFound();
-            }
-            return View(insurances);
-        }
+     
 
-        // POST: Insurances/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SerialNumber,UserID,InsuranceName,PurchaseDate,WithdrawDate,PaymentPerYear,PayYear,PurchaseOrWithdraw,CashFlow,Withdrawal")] Insurances insurances)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(insurances).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(insurances);
-        }
-
-        // GET: Insurances/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Insurances insurances = db.Insurances.Find(id);
-            if (insurances == null)
-            {
-                return HttpNotFound();
-            }
-            return View(insurances);
-        }
-
-        // POST: Insurances/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Insurances insurances = db.Insurances.Find(id);
-            db.Insurances.Remove(insurances);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -254,6 +210,23 @@ namespace F1005.Areas.InsurancesandFund.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            var stdata = db.SummaryTable.Find(insurance.STID);
+            if (insurance.PurchaseOrWithdraw == true)
+            {
+                stdata.TradeDate = insurance.PurchaseDate;
+                var arr = db.CashExpense.Where(C => C.OID == insurance.STID).Select(C => C).ToArray();
+                arr[0].ExAmount = insurance.CashFlow;
+                arr[0].ExDate = insurance.PurchaseDate;
+            }
+            else
+            {
+                stdata.TradeDate = insurance.WithdrawDate;
+                var arr = db.CashIncome.Where(C => C.OID == insurance.STID).Select(C => C).ToArray();
+                arr[0].InAmount = -insurance.CashFlow;
+                arr[0].InDate = insurance.PurchaseDate;
+            }
+          
+
             return View(insurance);
         }
 
@@ -261,9 +234,24 @@ namespace F1005.Areas.InsurancesandFund.Controllers
         public ActionResult DeleteInsurances(int? id)
         {
             Insurances obj = db.Insurances.Find(id);
-            var STdata = db.SummaryTable.Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
-            db.SummaryTable.Remove(STdata);
+            var STdata = db.SummaryTable.ToList().Where(c => c.STId == obj.STID).Select(c => c).SingleOrDefault();
+
             db.Insurances.Remove(obj);
+       
+
+            if (obj.PurchaseOrWithdraw == true)
+            {
+                var arr = db.CashExpense.Where(C => C.OID == obj.STID).Select(C => C).ToArray();
+                db.CashExpense.Remove(arr[0]);
+                db.SummaryTable.Remove(STdata);
+            }
+            else
+            {
+                var arr = db.CashIncome.Where(C => C.OID == obj.STID).Select(C => C).ToArray();
+                db.CashIncome.Remove(arr[0]);
+                db.SummaryTable.Remove(STdata);
+            }
+            
             db.SaveChanges();
             return RedirectToAction("Index");
         }
