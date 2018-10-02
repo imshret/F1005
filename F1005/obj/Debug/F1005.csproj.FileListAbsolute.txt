@@ -3317,7 +3317,6 @@ D:\分享資料\F1005\F1005\bin\System.IO.Packaging.dll
 D:\分享資料\F1005\F1005\bin\ClosedXML.xml
 D:\分享資料\F1005\F1005\bin\DocumentFormat.OpenXml.xml
 D:\分享資料\F1005\F1005\bin\ExcelNumberFormat.xml
-D:\分享資料\F1005\F1005\obj\Debug\F1005.csprojAssemblyReference.cache
 U:\F1005\F1005\bin\ApplicationInsights.config
 U:\F1005\F1005\bin\F1005.dll.config
 U:\F1005\F1005\bin\F1005.dll

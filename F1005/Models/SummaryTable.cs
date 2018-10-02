@@ -20,9 +20,9 @@ namespace F1005.Models
             this.CashExpense = new HashSet<CashExpense>();
             this.CashIncome = new HashSet<CashIncome>();
             this.Fund = new HashSet<Fund>();
-            this.FXtradeTable = new HashSet<FXtradeTable>();
             this.Insurances = new HashSet<Insurances>();
             this.StockHistory = new HashSet<StockHistory>();
+            this.FXtradeTable = new HashSet<FXtradeTable>();
         }
     
         public int STId { get; set; }
@@ -37,11 +37,11 @@ namespace F1005.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Fund> Fund { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FXtradeTable> FXtradeTable { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Insurances> Insurances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockHistory> StockHistory { get; set; }
         public virtual UsersData UsersData { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FXtradeTable> FXtradeTable { get; set; }
     }
 }
