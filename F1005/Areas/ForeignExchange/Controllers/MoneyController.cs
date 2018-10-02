@@ -47,13 +47,14 @@ namespace F1005.Areas.ForeignExchange.Controllers
 
 
         [System.Web.Mvc.HttpGet]
-        public ActionResult Getnowfc()
+        public JsonResult Getnowfc()
         {
             var rec = this.Request.QueryString.ToString();
             var db = new MyInvestEntities();
-            var ret = from c in db.CurrencyRate
-                      where c.CurrencyClass.Contains(rec)
-                      select c.OnlineSell;
+            var ret = db.CurrencyRate.Where(c => c.CurrencyClass == rec).Select(c => c.OnlineSell);
+            //var ret = from c in db.CurrencyRate
+            //          where c.CurrencyClass.Contains(rec)
+            //          select c.OnlineSell;
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
     }

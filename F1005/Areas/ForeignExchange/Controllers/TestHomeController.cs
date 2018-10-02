@@ -1,8 +1,15 @@
 ﻿using F1005.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -87,7 +94,7 @@ namespace F1005.Areas.ForeignExchange.Controllers
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
-
+        //jsgrid
         public JsonResult chartpie()
         {
             var x = Session["User"].ToString();
@@ -98,11 +105,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
             });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        //外幣淨值圖
         public JsonResult chartpie1()
         {
             var x = Session["User"].ToString();
-            var result = dc.FXtradeTable.Where(c => c.SummaryTable.UserName == x).GroupBy(c => c.CurrencyClass, c => c.USD ,(CurrencyClass, USD) => new
+            var result = dc.FXtradeTable.Where(c => c.SummaryTable.UserName == x).GroupBy(c => c.CurrencyClass, c => c.USD, (CurrencyClass, USD) => new
             {
                 Currency = CurrencyClass,
                 USD = USD.Sum()
