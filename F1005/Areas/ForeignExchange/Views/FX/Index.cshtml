@@ -8,8 +8,8 @@
     <div class="row">
         <div class="col-md-12" style="padding:0px 0px 10px 0px;">
             <div class="btn-group">
-                <button type="button" class="btn-sb btn-primary" id="btnbuy">買入</button>
-                <button type="button" class="btn-sb btn-primary" id="btnsell">賣出</button>
+                <button type="button" class="btn-sb btn-info" id="btnbuy">買入</button>
+                <button type="button" class="btn-sb btn-info" id="btnsell">賣出</button>
             </div>
         </div>
         <div class="row">
@@ -199,7 +199,9 @@
             }
             //確認紐
             function btncheck() {
+                //tf:是否連動現金帳戶
                 var tf = document.getElementById("tf").checked;
+                //checkcash:
                 var checkcash = localStorage.cash - $('#r4').val();
                 if (checkcash < 0 && tf == false)
                 {

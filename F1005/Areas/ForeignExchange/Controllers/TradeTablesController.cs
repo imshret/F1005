@@ -50,17 +50,15 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create( FXtradeTable tradeTable, SummaryTable summaryTable)
+        public ActionResult Create( FXtradeTable tradeTable, SummaryTable summaryTable,UsersData usersData)
         {
             if (ModelState.IsValid)
             {
-                //var x = Session["User"].ToString();
-                //var x = "5566";
-                //summaryTable.UserName = x; 
+                //存總表
                 db.SummaryTable.Add(summaryTable);
                 db.SaveChanges();
 
-                //summaryTable.UserName = x;
+                //存外匯交易表
                 var uid = db.SummaryTable.Select(c => c.STId).ToList().LastOrDefault();
                 tradeTable.SummaryId = uid;
                 db.FXtradeTable.Add(tradeTable);
@@ -97,6 +95,25 @@ namespace F1005.Areas.ForeignExchange.Controllers
                     db.CashExpense.Add(cashexpense);
                     db.SaveChanges();
                 }
+
+
+                //更新個人資產表
+                TestHomeController th = new TestHomeController();
+                var name = summaryTable.UserName;
+                var ud = th.GetUsersData(name);
+
+                usersData.FXValue = th.SaveUserdata(name);
+                usersData.UserName = ud[0].UserName;
+                var cv = Math.Abs(tradeTable.NTD.Value);
+                usersData.CashValue = ud[0].CashValue-tradeTable.NTD;
+                usersData.InsuranceValue = ud[0].InsuranceValue;
+                usersData.StockValue = ud[0].StockValue;
+                usersData.FundValue = ud[0].FundValue;
+                usersData.Email = ud[0].Email;
+                usersData.Password = ud[0].Password;
+                db.Entry(usersData).State = EntityState.Modified;
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(tradeTable);
