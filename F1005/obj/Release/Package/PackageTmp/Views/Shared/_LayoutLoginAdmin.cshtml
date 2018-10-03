@@ -10,6 +10,14 @@
 
     @RenderSection("styles", required: false)
 
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+                                                                
     <script>
 
         function ColorChange() {
@@ -18,7 +26,7 @@
 
         function ColorChangeO() {
             $("#ColorChange").css("color", "darkgray");
-        } 
+        }
 
         $(function () {
             $("#ColorChangeO").mouseover(ColorChange);
@@ -26,16 +34,7 @@
             $("#ColorChangeO").click(ColorChange);
 
             $("#ColorChangeO").css("width", "170px");
-            $("#MenuWidth").css("width", "170px");     
-
-            //var u = $("#ColorChange").val();
-            //if (u == null) {
-            //    //alert("123");
-            //    $("x").html(null);
-            //}
-            //else {
-            //    $("x1").html(null);
-            //}
+            $("#MenuWidth").css("width", "170px");
 
         });
 
@@ -50,14 +49,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("後臺系統", "Admin", "Account", new { area = "" }, new { @class = "navbar-brand", @style = "color:white" })
+                @Html.ActionLink("後臺系統", "Index", "BS", new { area = "BStage" }, new { @class = "navbar-brand", @style = "color:white" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("最近新增資訊", "Index2", "Home", new { @style = "color:white" })</li>
-                    <li>@Html.ActionLink("股票", "Index2", "Home", new { @style = "color:white" })</li>
-                    <li>@Html.ActionLink("外匯", "Index2", "Home", new { @style = "color:white" })</li>
-                    <li>@Html.ActionLink("儲蓄險", "Index", "Insurances", null,new { @style = "color:white" })</li>
+                    <li>@Html.ActionLink("資產分布", "Recent", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
+                    <li>@Html.ActionLink("總金額", "AllSum", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -67,9 +64,10 @@
                             @*下拉箭頭*@
                             @*<span class="caret"></span>*@
                         </a>            
-                        <ul class="dropdown-menu" role="menu" style="text-align:center" id="MenuWidth">
-                            <li>@Html.ActionLink("修改密碼", "ChangePasswordAdmin", "Account")</li>
-                            <li>@Html.ActionLink("登出", "Logout", "Account")</li>
+                        <ul class="dropdown-menu" role="menu" style="text-align:center" id="MenuWidth">                           
+
+                            <li>@Html.ActionLink("修改密碼", "ChangePasswordAdmin", "Account", new { Area = "" }, null)</li>
+                            <li>@Html.ActionLink("登出", "Logout", "Account", new { Area = "" }, null)</li>
                         </ul>
                     </li>
                 </ul>

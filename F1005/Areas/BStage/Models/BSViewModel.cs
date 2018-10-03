@@ -44,6 +44,9 @@ namespace F1005.Areas.BStage.Models
         public Nullable<double> Units { get; set; }
         public Nullable<double> CashFlowX { get; set; }
 
+        
+        public Nullable<double> NetBenefit { get; set; }
+
         public virtual SummaryTable SummaryTable { get; set; }
     }
 }

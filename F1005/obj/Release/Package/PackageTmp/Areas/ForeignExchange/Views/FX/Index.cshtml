@@ -13,11 +13,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            @*<div class="col-md-3">
                 <span class="badge badge-primary">結構幣別</span>
-            </div>
-            <div class="col-md-9">
+            </div>*@
+            @*<div class="col-md-9">
                 <select id="moneyselect" onchange="selectfc()"></select>
+            </div>*@
+            <div class="form-group" row>
+                <label class="col-sm-3 control-label">結構幣別:</label>
+                @Html.DropDownList("CurrencyRate", null, "-- 請選擇 --", new { @class = "col-sm-3 form-control",@id= "moneyselect" })
             </div>
         </div>
         <div class="row">
@@ -29,7 +33,6 @@
             </div>
             <div class="col-md-3">
                 <span class="badge badge-primary">輸入匯率</span>
-
             </div>
             <div class="col-md-3">
                 <input type="text" id="ExchargeRate" class="form-control" oninput="inputvalue()">
@@ -103,7 +106,7 @@
             </div>
         </div>
         <div>
-            <button type="button" class="btn btn-warning" onclick="btncheck()">@Html.ActionLink("確認", "Create", "TradeTables")</button>
+            <button type="button" class="btn btn-warning" onclick="btncheck()">確認</button>
         </div>
     </div>
 </div>
@@ -119,8 +122,8 @@
         <script src="~/Scripts/bootstrap.min.js"></script>
 
         <script>
-            function loadmoney() {
-                $.get("/api/FX/Getmoney", { name: "value" },
+            @*function loadmoney() {
+                $.get("@Url.Action("Getmoney","Money", new { Area = "ForeignExchange" }, null)", { name: "value" },
                     function (data, textStatus, jqXHR) {
                         var arr = $.map(data, function (qq) { return qq });
                         for (i = 0; i < arr.length; i++) {
@@ -130,8 +133,9 @@
                     },
                     "json"
                 );
-            }
+            }*@
 
+            //選擇用新臺幣或外幣買賣
             function radiochecked() {
                 if (document.getElementById("r1").checked) {
                     document.getElementById("r11").disabled = false;
@@ -152,22 +156,27 @@
                     $('#d2').css('background-color', 'antiquewhite');
                 }
             }
-
-            function selectfc() {
+            @*function selectfc() {
                 var rec = document.getElementById("moneyselect").value;
-                $.ajax(
+               $.ajax(
                     {
-                        type: "POST",
-                        url: "/api/FX/Getnowfc",
-                        data: JSON.stringify(rec), //重要!(把物件轉為JSON格式)
+                        type: "GET",
+                        url: "@Url.Action("Getnowfc", "Money", new { Area = "ForeignExchange" }, null)",
+                        data: rec, 
                         dataType: "json",
                         success: function (response) {
                             var arr = $.map(response, function (qq) { return qq });
                             $('#nowfc').val(arr[0]);
                         }
                     });
-            }
-
+            }*@
+            //選取外幣後顯示匯率
+            $('#moneyselect').bind('change', function ()
+            {
+                var value = $('#moneyselect').val();
+                $('#nowfc').val(value);
+            })
+            //及時計算新臺幣總額
             function inputvalue() {
                 if (document.getElementById("r1").checked) {
                     var input = document.getElementById("r11").value;
@@ -188,22 +197,35 @@
                     $('#r4').val(tototal);
                 }
             }
+            //確認紐
             function btncheck() {
-                var ck = document.getElementById("r1").checked
-                if (ck) {
-                    localStorage.USD = document.getElementById("r11").value;
-                    localStorage.NTD = document.getElementById("r4").value;
+                var tf = document.getElementById("tf").checked;
+                var checkcash = localStorage.cash - $('#r4').val();
+                if (checkcash < 0 && tf == false)
+                {
+                    alert("目前現金存款不足");
                 }
-                else {
-                    localStorage.USD = document.getElementById("r22").value;
-                    localStorage.NTD = document.getElementById("r4").value;
+                else
+                {
+                    var ck = document.getElementById("r1").checked
+                    if (ck) {
+                        localStorage.USD = document.getElementById("r11").value;
+                        localStorage.NTD = document.getElementById("r4").value;
+                    }
+                    else {
+                        localStorage.USD = document.getElementById("r22").value;
+                        localStorage.NTD = document.getElementById("r4").value;
+                    }
+                    localStorage.tax = document.getElementById("tax").value;
+                    var si = document.getElementById("moneyselect").selectedIndex;
+                    localStorage.CurrencyClass = document.getElementById("moneyselect").options[si].text.substring(0,3);
+                    localStorage.ExchargeRate = document.getElementById("ExchargeRate").value;
+                    localStorage.note = document.getElementById("note").value;
+                    localStorage.tf = document.getElementById("tf").checked;
+                    window.location.href = "@Url.Action("Create", "TradeTables", new { Area = "ForeignExchange" }, null)"
                 }
-                localStorage.tax = document.getElementById("tax").value;
-                localStorage.CurrencyClass = document.getElementById("moneyselect").value;
-                localStorage.ExchargeRate = document.getElementById("ExchargeRate").value;
-                localStorage.note = document.getElementById("note").value;
-                localStorage.tf = document.getElementById("tf").checked;
             }
+            //切換外幣買/賣
             $('#btnbuy').bind('click', function () {
                 localStorage.TradeClass = "買入";
                 document.getElementById("p1").innerText = "以外幣買入";
@@ -217,6 +239,7 @@
                     class: 'label label-primary',
                 }).css("font-size", "16px");
             })
+            //切換外幣買/賣
             $('#btnsell').bind('click', function () {
                 localStorage.TradeClass = "賣出";
                 document.getElementById("p1").innerText = "以外幣賣出";
@@ -233,9 +256,9 @@
 
             $(function () {
                 localStorage.TradeClass = "買入";
-                loadmoney();
+                //loadmoney();
                 radiochecked();
-                selectfc()
+                //selectfc()
             });
         </script>
     }

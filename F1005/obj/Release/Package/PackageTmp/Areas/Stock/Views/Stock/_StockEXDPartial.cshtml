@@ -17,7 +17,7 @@
         </div>
 
         <div class="form-group">
-            @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName" })
+            @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName4" })
         </div>
 
         <div class="form-group">
@@ -28,7 +28,7 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.stockID)
+                @Html.LabelFor(m => m.stockID)@Html.ValidationMessageFor(m => m.stockID, null, new { @style = "color:orangered" })
 
                 @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StockEXDID" })
 
@@ -37,8 +37,10 @@
         <div class="col-md-6">
             <div class="form-group">
 
-                @Html.Label("除息日期")
-                @Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "EXDate", @Value = "2018-09-20" })
+                @Html.Label("除息日期")@Html.ValidationMessageFor(m => m.SummaryTable.TradeDate, null, new { @style = "color:orangered" })
+                @*@Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "EXDate", @Value = "2018-09-20" })*@
+                @Html.EditorFor(m => m.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", @id = "EXDDate", @type = "date" } })
+
 
             </div>
         </div>
@@ -48,7 +50,7 @@
         <div class="col-md-6">
             <div class="form-group">
 
-                @Html.Label("現金股利")
+                @Html.Label("現金股利")@Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered" })
                 @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "CashDDiv" })
 
                 @*<input type="text" class="form-control" id="StocksellDate" />*@
@@ -76,7 +78,7 @@
         //資料表欄位中的Netimcoe為此表格的現金股利收入
         <div class="col-md-6">
             <div class="form-group">
-                @Html.Label("現金收入")
+                @Html.Label("現金收入")@Html.ValidationMessageFor(m => m.stockNetincome, null, new { @style = "color:orangered" })
                 @Html.TextBoxFor(m => m.stockNetincome, null, new { @class = "form-control", @id = "StockCDivNetincome", @readonly = "" })
             </div>
         </div>

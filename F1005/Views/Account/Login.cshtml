@@ -12,16 +12,14 @@
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                <p style="color:green ; font-size:20px">@TempData["Request"]</p>
-                <p style="color:green ; font-size:20px">@TempData["Request2"]</p>
-                @*@Html.AntiForgeryToken()
-                    <h4>使用本機帳戶登入。</h4>
-                    <hr />
+                <p style="color:green ; font-size:18px">@TempData["Request"]</p>
+                <p style="color:green ; font-size:18px">@TempData["Request2"]</p>
+                @*@Html.AntiForgeryToken()  
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
                 <div class="form-group">
                     @Html.LabelFor(m => m.UserName, new { @class = "col-md-3 control-label" })
                     <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @Value = "msit119_one" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @Value = "msit119_one", @autocomplete = "off" })
                         @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -35,17 +33,14 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.CheckCode, new { @class = "col-md-3 control-label" })
-                    <div class="col-md-9">
-                        @*@Html.TextBoxFor(m => m.CheckCode, new { @class = "form-control" })*@
+                    <div class="col-md-9">             
                         @Html.TextBoxFor(m => m.CheckCode, new { @class = "form-control", @autocomplete = "off" })
                         @Html.ValidationMessageFor(m => m.CheckCode, "", new { @class = "text-danger" })
                         <img id="imgx" src=@TempData["img"] />
                         <span>
-
                             <a onclick="xxx()">換張圖</a>
 
                             <script>
-
                                 function xxx() {
 
                                     $.ajax({
@@ -53,10 +48,11 @@
                                         url: "@Url.Action("ChangeImg", "Account")",
                                     }).done(function (res) {
                                         $("#imgx").attr("src", res);
+                                        $("#ccarea").text("");
                                     })
                                 }
-
                             </script>
+
                         </span>
                     </div>
                 </div>
@@ -64,13 +60,9 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="登入" class="btn btn-default" />
-                        <p style="color:red ; font-size:20px">@TempData["status"]</p>
+                        <p id="ccarea" style="color:red ; font-size:18px">@TempData["status"]</p>
                     </div>
                 </div>
-
-                @*<div>
-                        <a href=@Url.Action("LoginGoogle", "Account")><img style="height:50px; width:50px" src=@Url.Content("/Images/google-plus-button.jpg") /></a>
-                    </div>*@
 
                 <p>
                     @Html.ActionLink("註冊為新使用者", "Register")

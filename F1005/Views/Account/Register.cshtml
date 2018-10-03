@@ -35,7 +35,11 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Code, new { @id = "MyCC", @class = "form-control", @autocomplete = "off" })
             <input id="sc" type="button" value="Send Code" class="btn btn-default">
-            <input id="con" type="button" value="確認!!" class="btn btn-default"><span id="idsp1"></span>
+            <input id="con" type="button" value="確認!!" class="btn btn-default">
+            <span>
+                <span id="idsp1"><img src=@Url.Content("~/Images/correct.png")>Correct</span>              
+                <span id="idsp2"><img src=@Url.Content("~/Images/error.png")>Incorrect</span>           
+            </span>
         </div>
     </div>
 
@@ -78,11 +82,11 @@
                     alert("此帳號或電子郵件己有人使用，註冊失敗")
                 }
                 else {
-                    alert("已成功寄出Email")
-                    //$("#sc").attr("disabled", false);
-                }
-                //$("#con").attr("disabled", false);
+                    alert("已成功寄出Email")                          
+                } 
             })
+
+            $("#sc").attr("disabled", true);
         }
         function yyy() {
             var s = $("#MyCC").val();
@@ -95,7 +99,10 @@
                 data: para,
             }).done(function (res) {
                 if (res == "Cor") {
-                    $("#idsp1").html("<img id='im'src='/Images/correct.png'>Correct");
+
+                    //$("#idsp1").html("<img id='im' src='~/Images/correct.png'>Correct");                  
+                    $("#idsp1").show();
+                    $("#idsp2").hide();   
 
                     $("#fs").attr("disabled", false);     
 
@@ -104,10 +111,15 @@
                 }
                 else
                 {
-                    $("#idsp1").html("<img id='im' src='/Images/error.png'>Incorrect");
+                    //$("#idsp1").html("<img id='im' src='~/Images/error.png'>Incorrect");
+                    $("#idsp1").hide();   
+                    $("#idsp2").show();   
+
+                    $("#MyP").attr("disabled", true);
+                    $("#MyCP").attr("disabled", true);
                                        
                     $("#fs").attr("disabled", true);
-                }             
+                }
             }).fail(function (res) {
                 alert("WWW")
             })
@@ -143,29 +155,27 @@
             }
         }
 
-        function EmailType() {
-
-
-            //var str = $("#MyEmail").val();
-            //var x = str.lastIndexOf("@@");
-
-            //if (str.indexOf("@@") == -1 || str.lastIndexOf("@@") == str.length-1) {             
-            if ($("#em").text() != null && $("#em").text() != "") {             
-                //$("#EmailType").text("Email格式錯誤");   
+        function EmailType() {            
+                                     
+            if ($("#em").text() != null && $("#em").text() != "") {          
+                
                 $("#sc").attr("disabled", true);
                 $("#con").attr("disabled", true);
             }
-            else {
-                //$("#EmailType").text(null);           
+            else {        
                 $("#sc").attr("disabled", false);
                 $("#con").attr("disabled", false);
             }
         }
 
-
-
         function clock() {     
             $("#fs").attr("disabled", true);
+        }
+
+        function clock2() {
+            if ($("#em").text() != null && $("#em").text() != "") {
+                $("#sc").attr("disabled", false);
+            }
         }
 
         $(function () {
@@ -181,11 +191,16 @@
 
             $("#MyP").blur(eightup);
             $("#MyEmail").blur(EmailType);
+            $("#MyEmail").keyup(EmailType);
 
             $("#MyP").keyup(zzz);
             $("#MyCP").keyup(zzz);
+         
+            $("#idsp1").hide();
+            $("#idsp2").hide();
 
             time = setInterval("clock()", 180000);
+            time = setInterval("clock2()", 10000);
         });
     </script>
 }

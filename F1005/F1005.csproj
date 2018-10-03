@@ -605,14 +605,12 @@
     <Content Include="Areas\Stock\Views\Stock\_StockEXSPartial.cshtml" />
     <Content Include="Areas\Stock\Views\Stock\_StockSellPartial.cshtml" />
     <Content Include="Areas\Stock\Views\Stock\_StockGetAllPartial.cshtml" />
-    <Content Include="Areas\InsurancesandFund\Views\web.config" />
+    <Content Include="Areas\InsurancesandFund\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\InsurancesandFund\Views\Funds\Create.cshtml" />
-    <Content Include="Areas\InsurancesandFund\Views\Funds\Details.cshtml" />
-    <Content Include="Areas\InsurancesandFund\Views\Funds\Edit.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Funds\Index.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Insurances\Create.cshtml" />
-    <Content Include="Areas\InsurancesandFund\Views\Insurances\Delete.cshtml" />
-    <Content Include="Areas\InsurancesandFund\Views\Insurances\Edit.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Insurances\Index.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\Insurances\Withdraw.cshtml" />
     <Content Include="Areas\InsurancesandFund\Views\_ViewStart.cshtml" />
@@ -639,7 +637,7 @@
       <DependentUpon>MyInvestModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\新 老師端.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\Colors.js" />
@@ -777,7 +775,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Utility.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
