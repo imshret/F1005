@@ -131,7 +131,7 @@ namespace F1005.Areas.BStage.Controllers
         public JsonResult GetIs()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var ret = db.Insurances.ToList().Where(c=>c.CashFlow > 0).Select(c => new BSViewModel
+            var ret = db.Insurances.ToList().Where(c=>c.CashFlow < 0).Select(c => new BSViewModel
             {
                 UserName = c.SummaryTable.UserName,
                 InsuranceName = c.InsuranceName,
@@ -139,7 +139,7 @@ namespace F1005.Areas.BStage.Controllers
                 WithdrawDate = c.WithdrawDate.ToShortDateString(),
                 PaymentPerYear = c.PaymentPerYear,
                 PayYear = c.PayYear,
-                CashFlow = c.CashFlow,
+                CashFlow = c.CashFlow *-1,
                 Withdrawal = c.Withdrawal
             });
             //dynamic retObject = new { data = ret.ToList() };
@@ -156,8 +156,9 @@ namespace F1005.Areas.BStage.Controllers
                           Date = c.Date.ToShortDateString(),
                           NAV = c.NAV,
                           Units = c.Units,
-                          CashFlowX = c.CashFlow
-                  });
+                          CashFlowX = c.CashFlow,
+             
+    });
             //dynamic retObject = new { data = ret.ToList() };
             return Json(ret, JsonRequestBehavior.AllowGet);
         }

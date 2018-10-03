@@ -23,22 +23,6 @@
         <div class="col-lg-7" style="height:500px; background-color: white">
             <div class="col-lg-12" style="height:50px"></div>
 
-            @*<div class="col-lg-6">
-                    <img class="index" src=@Url.Content("/Images/cash2.png") />
-                </div>
-                <div class="col-lg-6">
-                    <img class="index" src=@Url.Content("/Images/stock3.png") />
-                </div>
-
-                <div class="col-lg-12" style="height:35px"></div>
-
-                <div class="col-lg-6">
-                    <img class="index" src=@Url.Content("/Images/FX2.png") />
-                </div>
-                <div class="col-lg-6">
-                    <img class="index" src=@Url.Content("/Images/deposit2.png") />
-                </div>*@
-
             <div id="myCarousel" class="carousel slide" style="background-color:transparent" align="center">
                 <!-- 轮播（Carousel）指标 -->
                 @*<ol class="carousel-indicators">
@@ -49,25 +33,24 @@
                 <!-- 轮播（Carousel）项目 -->
                 <div class="carousel-inner">
                     <div class="item active" style="height:400px">
-
                         <img class="index" src=@Url.Content("~/Images/cash2.png") />
                     </div>
                     <div class="item" style="height:400px">
-
                         <img class="index" src=@Url.Content("~/Images/stock3.png") />
                     </div>
                     <div class="item" style="height:400px">
-
                         <img class="index" src=@Url.Content("~/Images/FX2.png") />
                     </div>
                     <div class="item" style="height:400px">
-
                         <img class="index" src=@Url.Content("~/Images/deposit2.png") />
                     </div>
-                    <a  href="#myCarousel"
+                    <div class="item" style="height:400px">
+                        <img class="index" src=@Url.Content("~/Images/fund.png") />                        
+                    </div>
+                    @*<a  href="#myCarousel"
            data-slide="prev" style="background-color:transparent">&lsaquo;</a>
         <a  href="#myCarousel"
-           data-slide="next" style="background-color:transparent">&rsaquo;</a>
+           data-slide="next" style="background-color:transparent">&rsaquo;</a>*@
 
                 </div>
                 <!-- 轮播（Carousel）导航 -->
@@ -88,7 +71,9 @@
 
 @section scripts{
     <script>
-        $('.carousel').carousel();
+        $('.carousel').carousel({
+            interval: 3000
+        });
     </script>   
     
     }

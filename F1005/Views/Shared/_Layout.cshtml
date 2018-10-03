@@ -25,14 +25,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("首頁", "Index", "Home")</li>
-        <li>@Html.ActionLink("關於", "About", "Home")</li>
-        <li>@Html.ActionLink("連絡人", "Contact", "Home")</li>*@
-
                     <li>@Html.ActionLink("msit119_one登入首頁", "IndexX", "Home", new { Area = "Main" }, null)</li>
-                    <li>@Html.ActionLink("msit119 後臺登入首頁", "Index", "BS", new { Area = "BStage" }, null)</li>
-
-                    @*<li>@Html.ActionLink("登入清單", "Show", "Account")</li>*@
+                    <li>@Html.ActionLink("msit119 後臺登入首頁", "Index", "BS", new { Area = "BStage" }, null)</li>                      
                 </ul>
             </div>
         </div>
@@ -41,7 +35,27 @@
     <div class="container body-content">
         @RenderBody()
         <footer>
-            <p>&copy; @DateTime.Now.Year - 資訊策進會MSIT119<img src=@Url.Content("~/Images/home.png") /></p>
+            <div style="background-color:Highlight; margin:0px; height:300px;">
+                <div style="padding:5px;">
+                    <h2>我的理財管家MyInvest</h2>
+                    <h2>
+                        客服資訊
+                    </h2>
+                    <h3>
+                        服務信箱：msit119@gmail.com
+                    </h3>
+                    <h3>
+                        服務專線：(02) 6631-6666
+                    </h3>
+                    <h3>
+                        服務時間：週一至週五 08:00-22:00
+                    </h3>
+                    <h2>
+                        &copy; @DateTime.Now.Year - 資訊策進會MSIT119
+                        <img src=@Url.Content("~/Images/home.png") />
+                    </h2>
+                </div>
+            </div>
         </footer>
     </div>
 

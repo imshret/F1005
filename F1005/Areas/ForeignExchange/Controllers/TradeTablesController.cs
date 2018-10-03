@@ -17,16 +17,23 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // GET: TradeTables
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
-        //public ActionResult Index()
-        //{
-        //    return RedirectToAction("About","Home");
-        //}
+
 
         // GET: TradeTables/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,6 +49,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // GET: TradeTables/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 
@@ -105,6 +117,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // GET: TradeTables/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -153,6 +170,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             FXtradeTable tradeTable = await db.FXtradeTable.FindAsync(id);
             db.FXtradeTable.Remove(tradeTable);
             await db.SaveChangesAsync();

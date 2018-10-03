@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
-  <IisApp path="D:\分享資料\F1005_0928_外匯整合+現金整合+股票 +基金保險\F1005\obj\Release\Package\PackageTmp" />
-  <setAcl path="D:\分享資料\F1005_0928_外匯整合+現金整合+股票 +基金保險\F1005\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
-  <setAcl path="D:\分享資料\F1005_0928_外匯整合+現金整合+股票 +基金保險\F1005\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
-  <setAcl path="D:\分享資料\F1005_0928_外匯整合+現金整合+股票 +基金保險\F1005\obj\Release\Package\PackageTmp\App_Data" setAclResourceType="Directory" setAclAccess="Write" />
+  <IisApp path="D:\分享資料\F1005\F1005\obj\Release\Package\PackageTmp" />
+  <setAcl path="D:\分享資料\F1005\F1005\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
+  <setAcl path="D:\分享資料\F1005\F1005\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
 </sitemanifest>

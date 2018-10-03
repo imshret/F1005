@@ -21,7 +21,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.UserName, new { @class = "col-md-3 control-label" })
                     <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @Value = "msit119_two" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @Value = "msit119_one" })
                         @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -50,9 +50,10 @@
 
                                     $.ajax({
                                         type: "GET",
-                                        url: "/Account/ChangeImg",
+                                        url: "@Url.Action("ChangeImg", "Account")",
                                     }).done(function (res) {
                                         $("#imgx").attr("src", res);
+                                        $("#ccarea").text("");
                                     })
                                 }
 
@@ -64,7 +65,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="登入" class="btn btn-default" />
-                        <p style="color:red ; font-size:20px">@TempData["status"]</p>
+                        <p id="ccarea" style="color:red ; font-size:20px">@TempData["status"]</p>
                     </div>
                 </div>
 
