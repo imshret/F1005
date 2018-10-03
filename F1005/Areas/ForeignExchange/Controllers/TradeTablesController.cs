@@ -75,6 +75,22 @@ namespace F1005.Areas.ForeignExchange.Controllers
                     cashincome.InAmount = Convert.ToInt32(change);
                     db.CashIncome.Add(cashincome);
                     db.SaveChanges();
+                    //更新個人資產表
+                    TestHomeController th = new TestHomeController();
+                    var name = summaryTable.UserName;
+                    var ud = th.GetUsersData(name);
+
+                    usersData.FXValue = th.SaveUserdata(name);
+                    usersData.UserName = ud[0].UserName;
+                    var cv = Math.Abs(tradeTable.NTD.Value);
+                    usersData.CashValue = ud[0].CashValue + tradeTable.NTD;
+                    usersData.InsuranceValue = ud[0].InsuranceValue;
+                    usersData.StockValue = ud[0].StockValue;
+                    usersData.FundValue = ud[0].FundValue;
+                    usersData.Email = ud[0].Email;
+                    usersData.Password = ud[0].Password;
+                    db.Entry(usersData).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
                 else
                 {
@@ -94,25 +110,30 @@ namespace F1005.Areas.ForeignExchange.Controllers
                     }
                     db.CashExpense.Add(cashexpense);
                     db.SaveChanges();
+                    //更新個人資產表
+                    TestHomeController th = new TestHomeController();
+                    var name = summaryTable.UserName;
+                    var ud = th.GetUsersData(name);
+
+                    usersData.FXValue = th.SaveUserdata(name);
+                    usersData.UserName = ud[0].UserName;
+                    var cv = Math.Abs(tradeTable.NTD.Value);
+                    if (tradeTable.TradeClass == "買入(不要連動新臺幣帳戶)")
+                    {
+                        usersData.CashValue = ud[0].CashValue;
+                    }
+                    else
+                    {
+                        usersData.CashValue = ud[0].CashValue - tradeTable.NTD;
+                    }
+                    usersData.InsuranceValue = ud[0].InsuranceValue;
+                    usersData.StockValue = ud[0].StockValue;
+                    usersData.FundValue = ud[0].FundValue;
+                    usersData.Email = ud[0].Email;
+                    usersData.Password = ud[0].Password;
+                    db.Entry(usersData).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
-
-
-                //更新個人資產表
-                TestHomeController th = new TestHomeController();
-                var name = summaryTable.UserName;
-                var ud = th.GetUsersData(name);
-
-                usersData.FXValue = th.SaveUserdata(name);
-                usersData.UserName = ud[0].UserName;
-                var cv = Math.Abs(tradeTable.NTD.Value);
-                usersData.CashValue = ud[0].CashValue-tradeTable.NTD;
-                usersData.InsuranceValue = ud[0].InsuranceValue;
-                usersData.StockValue = ud[0].StockValue;
-                usersData.FundValue = ud[0].FundValue;
-                usersData.Email = ud[0].Email;
-                usersData.Password = ud[0].Password;
-                db.Entry(usersData).State = EntityState.Modified;
-                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
