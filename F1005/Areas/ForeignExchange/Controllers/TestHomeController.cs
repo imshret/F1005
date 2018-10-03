@@ -55,55 +55,86 @@ namespace F1005.Areas.ForeignExchange.Controllers
             FXtradeTable tt = dc.FXtradeTable.Find(id);
             if (tt == null)
                 return;
+            var name = Session["User"].ToString();
             CashIncome cashincome = new CashIncome();
             if (tt.TradeClass == "賣出")
             {
-                cashincome.UserName = tt.SummaryTable.UserName;
-                cashincome.OID = tt.SummaryId;
-                cashincome.InCashType = tt.SummaryTable.TradeType;
-                cashincome.InDate = tt.SummaryTable.TradeDate;
-                cashincome.InNote = tt.TradeClass;
-                var change = tt.NTD * -1;
-                cashincome.InAmount = Convert.ToInt32(change);
-                dc.CashIncome.Add(cashincome);
+                CashExpense cashexpense = new CashExpense();
+                cashexpense.UserName = Session["User"].ToString();
+
+                var summary = dc.SummaryTable.Where(c => c.UserName == name).ToList();
+
+                cashexpense.OID = summary[0].STId;
+                cashexpense.ExCashType = summary[0].TradeType;
+                cashexpense.ExDate = summary[0].TradeDate;
+                cashexpense.ExNote = "資料表刪除";
+                cashexpense.ExAmount = Convert.ToInt32(Math.Abs(tt.NTD.Value));
+                dc.CashExpense.Add(cashexpense);
+
                 dc.FXtradeTable.Remove(tt);
+                dc.SaveChanges();
+
+                UsersData usersData = new UsersData();
+                TestHomeController th = new TestHomeController();
+                var ud = th.GetUsersData(name);
+                usersData.FXValue = th.SaveUserdata(name);
+                usersData.UserName = ud[0].UserName;
+                var cv = Math.Abs(tt.NTD.Value);
+                usersData.CashValue = ud[0].CashValue - cv;
+                usersData.InsuranceValue = ud[0].InsuranceValue;
+                usersData.StockValue = ud[0].StockValue;
+                usersData.FundValue = ud[0].FundValue;
+                usersData.Email = ud[0].Email;
+                usersData.Password = ud[0].Password;
+                dc.Entry(usersData).State = EntityState.Modified;
                 dc.SaveChanges();
             }
             else
             {
-                CashExpense cashexpense = new CashExpense();
-                cashexpense.UserName = Session["User"].ToString();
-                cashexpense.OID = tt.SummaryId;
-                cashexpense.ExCashType = tt.SummaryTable.TradeType;
-                cashexpense.ExDate = tt.SummaryTable.TradeDate;
-                cashexpense.ExNote = tt.TradeClass;
+                var summary = dc.SummaryTable.Where(c => c.UserName == name).ToList();
+
+                cashincome.UserName = name;
+                cashincome.OID = summary[0].STId;
+                cashincome.InCashType = summary[0].TradeType;
+                cashincome.InDate = summary[0].TradeDate;
+                cashincome.InNote = "資料表刪除";
+                var cv = Math.Abs(tt.NTD.Value);
                 if (tt.TradeClass == "買入(不要連動新臺幣帳戶)")
                 {
-                    cashexpense.ExAmount = 0;
+                    cashincome.InAmount = 0;
                 }
                 else
                 {
-                    cashexpense.ExAmount = Convert.ToInt32(tt.NTD);
+                    cashincome.InAmount = Convert.ToInt32(cv);
                 }
-                dc.CashExpense.Add(cashexpense);
+                dc.CashIncome.Add(cashincome);
+
+                dc.FXtradeTable.Remove(tt);
+                dc.SaveChanges();
+
+                UsersData usersData = new UsersData();
+                TestHomeController th = new TestHomeController();
+
+                var ud = th.GetUsersData(name);
+
+                usersData.FXValue = th.SaveUserdata(name);
+                usersData.UserName = ud[0].UserName;
+                if (tt.TradeClass == "買入(不要連動新臺幣帳戶)")
+                {
+                    usersData.CashValue = ud[0].CashValue;
+                }
+                else
+                {
+                    usersData.CashValue = ud[0].CashValue + cv;
+                }
+                usersData.InsuranceValue = ud[0].InsuranceValue;
+                usersData.StockValue = ud[0].StockValue;
+                usersData.FundValue = ud[0].FundValue;
+                usersData.Email = ud[0].Email;
+                usersData.Password = ud[0].Password;
+                dc.Entry(usersData).State = EntityState.Modified;
                 dc.SaveChanges();
             }
-            UsersData usersData = new UsersData();
-            TestHomeController th = new TestHomeController();
-            var name = tt.SummaryTable.UserName;
-            var ud = th.GetUsersData(name);
-
-            usersData.FXValue = th.SaveUserdata(name);
-            usersData.UserName = ud[0].UserName;
-            var cv = Math.Abs(tt.NTD.Value);
-            usersData.CashValue = ud[0].CashValue - tt.NTD;
-            usersData.InsuranceValue = ud[0].InsuranceValue;
-            usersData.StockValue = ud[0].StockValue;
-            usersData.FundValue = ud[0].FundValue;
-            usersData.Email = ud[0].Email;
-            usersData.Password = ud[0].Password;
-            dc.Entry(usersData).State = EntityState.Modified;
-            dc.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)
