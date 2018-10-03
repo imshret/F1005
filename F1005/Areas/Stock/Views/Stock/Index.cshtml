@@ -3,14 +3,11 @@
     ViewBag.Title = "Home Page";
 }
 
-
 <div class="row">
     <div class="container-fluid" style="width:98%;">
         <h2>目前現金資產</h2>
-        <input type="text" id="CashAcc" disabled style="font-size:x-large" />
+        <span style="font-size:26px">NT$</span><input type="text" id="CashAcc" disabled style="font-size:x-large" />
     </div>
-
-
     <div class="col-md-12">
         <ul class="nav nav-tabs">
             <li class="nav-item active">
@@ -50,7 +47,7 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-tabs">
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link disabled" href="#AccountTable" data-toggle="tab" role="tab">股票帳戶概覽</a>
                     </li>
                     <li class="nav-item">
@@ -59,21 +56,21 @@
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#InvTable" data-toggle="tab" role="tab">庫存明細</a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a class="nav-link disabled" href="#NetincomeTable" data-toggle="tab" role="tab">損益試算</a>
-                    </li>
+                    </li>*@
 
                 </ul>
                 <div class="tab-content " id="myTabContent">
 
-                    <div class="tab-pane fade" id="AccountTable" role="tabpanel">
+                    <div class="tab-pane active" id="AccountTable" role="tabpanel">
                         @Html.Partial("_StockGetPie")
          
                     </div>
 
                     <div class="tab-pane fade" id="TradeDataTable" role="tabpanel">
                         @*@Html.Partial("_StockTradeDataTable")*@
-                        @Html.Partial("_StockGetAllPartial");
+                        @Html.Partial("_StockGetAllPartial")
                     </div>
                     <div class="tab-pane fade" id="InvTable" role="tabpanel">
                         @Html.Partial("_StockGetAllInvPartial")
@@ -105,8 +102,6 @@
         $("#StocksellDate").css("resize", "none");
         $("#EXDDate").css("resize", "none");
         $("#EXSDate").css("resize", "none");
-
-
 
         //計算成本
         function CalculateCost() {
@@ -184,8 +179,6 @@
 
         });
 
-
-
         //查詢庫存
         function SearchInv() {
             var SearchID = document.getElementById('StocksellID').value;
@@ -209,7 +202,8 @@
         };
 
         //計算賣出獲利
-            function CalculateProfit() {
+        function CalculateProfit() {
+
                 var Avc = document.getElementById("StocksellAvc").value;
                 var Inv = document.getElementById("StocksellInv").value;
                 var SellAmount = document.getElementById("StocksellAmount").value*1000;
@@ -227,12 +221,23 @@
                 var TotalCost = Avc * SellAmount;
                 Netincome = TotalProfit - TotalCost;
                 RR = Netincome / TotalCost * 100;
-
-                document.getElementById("stockSellFee").value =parseInt(SellPrice * SellAmount * Feerate);
+            if (Avc.length != 0 & Inv.length != 0 & SellAmount != 0 & SellPrice.length != 0) {
+                document.getElementById("stockSellFee").value = parseInt(SellPrice * SellAmount * Feerate);
                 document.getElementById("stockSellTax").value = parseInt(SellPrice * SellAmount * Taxrate);
                 document.getElementById("StockSellProfit").value = parseInt(Netincome);
                 document.getElementById("stocksellNetincome").value = TotalProfit.toFixed(0);
                 document.getElementById("StocksellReturnrate").value = RR.toFixed(2);
+            }
+            else {
+
+                document.getElementById("StockSellProfit").value = "**請確認庫存與賣出資訊";
+                $("#StockSellProfit").css("color", "red");
+
+                document.getElementById("StocksellReturnrate").value = "**請確認庫存與賣出資訊";
+                $("#StocksellReturnrate").css("color", "red");
+            }
+                
+
 
             }
                 //除息查詢庫存
@@ -256,8 +261,6 @@
                 alert(err.responseText);
             });
         };
-
-
 
 
             //計算除息
@@ -307,7 +310,7 @@
                 alert(content);
             });
         };
-                                //計算除權
+           //計算除權
         function CalculateEXSD() {
             //現金收入=0
             //報酬率=每股現金股利/成本
@@ -319,19 +322,17 @@
             var StockDiv = document.getElementById("StockSDiv").value;                 //每股現金股利
             var StockSDivInv = document.getElementById("EXSDivInv").value;  //參與除息庫存
             var StockSDivAvc = document.getElementById("EXSDivAvc").value;  //參與除息每股成本
-            var StockSDivInvN = ((StockDiv / 10)*1000 + parseInt(StockSDivInv*1000));
+            var StockSDivInvN =StockDiv*100 + parseInt(StockSDivInv);
             document.getElementById("StockSDivNetincome").value = 0;
             document.getElementById("StockSDivR").value ="NA";
-            document.getElementById("StockSDivInvN").value = parseFloat(StockSDivInvN / 1000).toFixed(3);
-            document.getElementById("StockSDivAvcN").value = ((StockSDivInv * StockSDivAvc*1000) / (StockSDivInvN)).toFixed(2);
+            document.getElementById("StockSDivInvN").value = parseFloat(StockSDivInvN );
+            document.getElementById("StockSDivAvcN").value = ((StockSDivInv * StockSDivAvc) / (StockSDivInvN)).toFixed(2);
             document.getElementById("StockDivDiff").value = parseInt(StockSDivInvN - StockSDivInv*1000);
 
 
         }
 
-
-
-                //資產分布百分比圓餅圖
+           //資產分布百分比圓餅圖
         //Draw Pie
         function LoadPie() {
         $.ajax({
@@ -365,13 +366,13 @@
                                 window.chartColors.purple,
                             ]
                         }],
-                        fontSize:12,
+                        fontSize:10,
                     },
                     options: {
                         responsive: true,
                         title: {
-                            display: true,
-                            fontSize: 26,
+                            display: false,
+                            fontSize: 20,
                             text: '持股市值百分比%'
                         },
                     }
@@ -380,12 +381,25 @@
         });
 		};
 
+        function LoadAccountData(){
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("GetAccountState", "Stock")",
+
+            }).done(function (res) {
+                document.getElementById("AccTotal").innerHTML = res[0].NetAll;
+                document.getElementById("AccProfit").innerHTML = res[0].ProfitAll;
+                document.getElementById("AccProfitPercent").innerHTML = res[0].percentAll;
 
 
 
+                }).fail(function (err) {
 
+                    alert(err.responseText);
+            });
+        };
 
-
+        
         function LoadJsGrid() {
 			$.ajax({
 					type: "Get",
@@ -426,8 +440,6 @@
 					//});
 
 					//jsGrid.fields.date = MyDateField;
-
-
 
 					$("#jsGridIncome").jsGrid({
 						width: "100%",
@@ -510,6 +522,8 @@
                             { name: "avgcost", type: "text", title: "每股成本", width: 100 },
                             { name: "stocklastprice", type: "text", title: "最新收盤價", width: 100 },
                             { name: "pv", type: "text", title: "個股現值", width: 100 },
+                            { name: "Net", type: "text", title: "簡易損益", width: 100 },
+                            { name: "profitpercent", type: "text", title: "簡易報酬率", width: 100 },
 
                             { type: "control", deleteButton: false, editButton: false,}
 						],
@@ -522,12 +536,11 @@
         }
 
 
-
-
 		$(document).ready(function () {
             LoadJsGrid();
             LoadJsGrid2();
             LoadPie();
+            LoadAccountData();
 
 		});
 

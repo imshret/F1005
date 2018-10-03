@@ -26,7 +26,7 @@ namespace F1005.Models
         public Nullable<decimal> stockPrice { get; set; }
 
         [Required(ErrorMessage = "**請輸入數量!")]
-        [Display(Name = "數量")]
+        [Display(Name = "數量(張)")]
         public Nullable<int> stockAmount { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C0}")]

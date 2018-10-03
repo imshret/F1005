@@ -1,4 +1,5 @@
-﻿using F1005.Models;
+﻿using F1005.Areas.Stock.Controllers;
+using F1005.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,5 +111,53 @@ namespace F1005.Areas.Stock.Models
             }
 
         }
+
+
+        public decimal  getpv(int? amount,string lastprice)
+        {
+            decimal pv = 0;
+            pv = (Convert.ToDecimal(amount) * Convert.ToDecimal(lastprice));
+            return pv;
+        }
+
+        public decimal getProfitPercent(decimal avgcost, string lastprice)
+        {
+            decimal avg = avgcost; 
+            decimal percent = 0;
+            percent = ((Convert.ToDecimal(lastprice))- avg) / avg;
+
+
+            return percent;
+
+        }
+
+        public decimal getPVsum(string username) {
+            MyInvestEntities db = new MyInvestEntities();
+            var InvList = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => new InvViewModel
+            {
+                amount = c.stockAmount,
+                pv = c.Stock_data.收盤價
+
+            }, (id, invVM) => new            
+            {
+                stockamount = invVM.Select(c => c.amount).Sum(),
+                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
+            });
+            decimal totalpv = 0;
+            foreach (var item in InvList)
+            {
+                totalpv = (Convert.ToDecimal(item.stockamount)) * (Convert.ToDecimal(item.stockpv));
+            }
+
+
+            return totalpv;
+        }
+
+        public List<UsersData> GetUserdata(string username) {
+            MyInvestEntities db = new MyInvestEntities();
+            var userdata = db.UsersData.Where(c => c.UserName == username).ToList();
+                return userdata;
+        }
+
     }
 }
