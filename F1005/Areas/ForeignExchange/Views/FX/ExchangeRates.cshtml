@@ -2,29 +2,59 @@
 @{
     ViewBag.Title = "ExchangeRates";
 }
-
-
-
-
-
-<div class="form-horizontal">
-    <div class="form-group">
-        <p style="font-size:larger">選擇交易貨幣</p>
-        <select id="currencies1"></select>
-    </div>
-    <div class="form-group">
-        <p style="font-size:larger">選擇兌換貨幣</p>
-        <select id="currencies2"></select>
-    </div>
+<div class="container-fluid" style="font-size:18px">
     <div class="row">
-        <div class="col-md-1"><input id="input" value="1" style="font-size:x-large" /></div>
-        <div class="col-md-1"><p id="p1" style="font-size:x-large"></p></div>
-        <div class="col-md-1"><p style="font-size:x-large">等於</p></div>
-        <div class="col-md-1"><input type="text" id="output" style="font-size:x-large" /></div>
-        <div class="col-md-1"><p id="p2" style="font-size:x-large"></p></div>
-        <div class="col-md-12"><button type="button" onclick="getRate()" class="btn btn-primary">換算</button></div>
-    </div>
+        <div class="col-md-12">
+            <h3 class="text-info text-center well">
+                匯率轉換工具
+            </h3>
+            <div class="row well">
+                <div class="col-md-2">
+                    <span >選擇交易貨幣</span>
+                </div>
+                <div class="col-md-10">
+                    <select id="currencies1" onchange="getRate()" class="alert alert-success"></select>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-md-2">
+                    <span >選擇兌換貨幣</span>
+                </div>
+                <div class="col-md-10">
+                    <select id="currencies2" onchange="getRate()" class="alert alert-info"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <input id="input" value="1" type="text" class="form-control" oninput="getRate()"/>
+                </div>
+                <div class="col-md-2">
+                    <span class="badge badge-default" id="p1"></span>
+                </div>
+                <div class="col-md-2">
+                    <span class="badge badge-default">等於</span>
+                </div>
+                <div class="col-md-2">
+                    <input id="output" value="1" type="text" class="form-control" oninput="getRate()"/>
+                </div>
+                <div class="col-md-2">
+                    <span class="badge badge-default" id="p2"></span>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                </div>
+                <div class="col-md-3">
 
+                    <button type="button" class="btn btn-md btn-outline-primary" onclick="change()">
+                        互換
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -59,6 +89,13 @@
         xhr.open("GET", url, true);
         xhr.setRequestHeader("CB-VERSION", "2018-01-01");
         xhr.send();
+    }
+    function change()
+    {
+        var index = document.getElementById('currencies1').selectedIndex;
+        document.getElementById('currencies1').selectedIndex = document.getElementById('currencies2').selectedIndex;
+        document.getElementById('currencies2').selectedIndex = index;
+        getRate();
     }
     $(document).ready(function () {
         loadmoney();
