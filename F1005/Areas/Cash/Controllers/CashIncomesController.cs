@@ -26,7 +26,7 @@ namespace F1005.Areas.Cash.Controllers
             }
             //var cashIncome = db.CashIncome.Include(c => c.SummaryTable);
             //return View(cashIncome.ToList());
-            return View();
+            return View(db.CashIncome.ToList());
         }
 
         // GET: Cash/CashIncomes/Details/5
@@ -142,7 +142,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetAllIncome()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashIncome.ToList().Where(c => c.UserName == username).OrderBy(c=>c.InCashID).Select(c => new GetIncomeViewModel
+            var query = db.CashIncome.ToList().Where(c => c.UserName == username).OrderBy(c => c.InCashID).Select(c => new GetIncomeViewModel
             {
                 InCashID = c.InCashID,
                 UserName = c.UserName,
@@ -151,7 +151,7 @@ namespace F1005.Areas.Cash.Controllers
                 InDate = c.InDate.ToShortDateString(),
                 InNote = c.InNote
             });
-         
+
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
@@ -163,15 +163,27 @@ namespace F1005.Areas.Cash.Controllers
                 return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
 
-            summaryTable.TradeType = cashIncome.InCashType;
-            summaryTable.TradeDate = cashIncome.InDate;
-            summaryTable.UserName = cashIncome.UserName;
-            db.SummaryTable.Add(summaryTable);
-            db.SaveChanges();
-
-            cashIncome.OID = summaryTable.STId;
             if (ModelState.IsValid)
             {
+                var username = Convert.ToString(Session["User"]);
+                var Esum = db.CashExpense.Sum(c => c.ExAmount);
+                var Isum = db.CashIncome.Sum(c => c.InAmount) + cashIncome.InAmount;
+                var net = Isum - Esum;
+                //算出現金淨值,更新至userdata的cashvalue
+
+                var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
+                userdata.CashValue = net+cashIncome.InAmount;
+                db.Entry(userdata).State = EntityState.Modified;
+
+                //新增總表資料
+                summaryTable.TradeType = cashIncome.InCashType;
+                summaryTable.TradeDate = cashIncome.InDate;
+                summaryTable.UserName = cashIncome.UserName;
+                db.SummaryTable.Add(summaryTable);
+                db.SaveChanges();
+
+                //新增現金資產
+                cashIncome.OID = summaryTable.STId;
                 db.CashIncome.Add(cashIncome);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -183,31 +195,68 @@ namespace F1005.Areas.Cash.Controllers
         //Edit Income
         public ActionResult EditIncome([Bind(Include = "InCashID,UserName,InCashType,InAmount,InDate,InNote")] CashIncome cashIncome)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+            var username = Convert.ToString(Session["User"]);
             if (ModelState.IsValid)
             {
+
+                //var CI = db.CashIncome.Where(c => c.UserName == username && c.InCashID == cashIncome.InCashID).Select(c => c).SingleOrDefault();
+                //var stData = db.SummaryTable.Where(c => c.UserName == username && c.STId == CI.OID).Select(c => c).SingleOrDefault();
+                //stData.TradeDate = cashIncome.InDate;
+                //db.Entry(stData).State = EntityState.Modified;
+                //var id = GetData(cashIncome.InCashID);
+                //cashIncome.OID = id[0].OID;
+                //cashIncome.InCashType = id[0].InCashType;
+                //cashIncome.InDate = id[0].InDate;
+
+                //更新收入表資料
                 db.Entry(cashIncome).State = EntityState.Modified;
-                //CashIncome CI = db.CashIncome.Where(c => c.InCashID == cashIncome.InCashID).Select(c=>c).SingleOrDefault();
-                //var stTable = db.SummaryTable.Where(c => c.STId == CI.OID).Select(c => c).SingleOrDefault();
-                //stTable.TradeDate = cashIncome.InDate;
-                //db.Entry(stTable).State = EntityState.Modified;
+
+                //更新userdata的cashvalue
+                var Esum = db.CashExpense.Sum(c => c.ExAmount);
+                var Isum = db.CashIncome.Sum(c => c.InAmount);
+                var net = Isum - Esum;
+                var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
+                userdata.CashValue = net;
+                db.Entry(userdata).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(cashIncome);
         }
 
+        public List<CashIncome> GetData(int id)
+        {
+            var username = Convert.ToString(Session["User"]);
+            var CI = db.CashIncome.Where(c => c.UserName == username && c.InCashID == id).Select(c => c).ToList();
+            return CI;
+        }
+
         //Delete Income
         public ActionResult DeleteIncome(int? id)
         {
             CashIncome obj = db.CashIncome.Find(id);
-            var stTable = db.SummaryTable.Where(c => c.STId == obj.OID).Select(c => c).SingleOrDefault();
-            db.SummaryTable.Remove(stTable);
+            var stData = db.SummaryTable.Where(c => c.STId == obj.OID).Select(c => c).SingleOrDefault();
+            //刪除總表資料
+            db.SummaryTable.Remove(stData);
+            //刪除收入表資料
             db.CashIncome.Remove(obj);
+
+            //更新userdata的cashvalue
+            var username = Convert.ToString(Session["User"]);
+            var Esum = db.CashExpense.Sum(c => c.ExAmount);
+            var Isum = db.CashIncome.Sum(c => c.InAmount);
+            var net = Isum - Esum;
+            var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
+            userdata.CashValue = net;
+            db.Entry(userdata).State = EntityState.Modified;
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
 
 
         //====================================
@@ -217,7 +266,7 @@ namespace F1005.Areas.Cash.Controllers
         {
             var username = Convert.ToString(Session["User"]);
             var month = DateTime.Now.Month;
-            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Month==month).OrderBy(c => c.InDate).ToList().Select(c => new IncomeHisViewModel
+            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Month == month).OrderBy(c => c.InCashID).ToList().Select(c => new IncomeHisViewModel
             {
                 Amount = c.InAmount,
                 MyDate = c.InDate.ToShortDateString()
@@ -227,10 +276,10 @@ namespace F1005.Areas.Cash.Controllers
 
         //Get Income History by Month
         [HttpGet]
-        public ActionResult GetIncomeHisByMonth(int? year , int? month)
+        public ActionResult GetIncomeHisByMonth(int? year, int? month)
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Year==year && c.InDate.Month== month).OrderBy(c=>c.InDate).ToList().Select(c => new IncomeHisViewModel
+            var query = db.CashIncome.Where(c => c.UserName == username && c.InDate.Year == year && c.InDate.Month == month).OrderBy(c => c.InCashID).ToList().Select(c => new IncomeHisViewModel
             {
                 Amount = c.InAmount,
                 MyDate = c.InDate.ToShortDateString()
@@ -279,7 +328,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetIncomeBalance()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = Convert.ToInt32(db.CashIncome.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.InAmount)).ToString("c2");
+            var query = Convert.ToInt32(db.CashIncome.ToList().Where(c => c.UserName == username).Sum(c => c.InAmount)).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
@@ -287,7 +336,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetExpenseBalance()
         {
             var username = Convert.ToString(Session["User"]);
-            var query = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount)).ToString("c2");
+            var query = Convert.ToInt32(db.CashExpense.ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount)).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 
@@ -295,13 +344,10 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetDiff()
         {
             var username = Convert.ToString(Session["User"]);
-            var Income = Convert.ToInt32(db.CashIncome.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.InAmount));
-            var Expense = Convert.ToInt32(db.CashExpense.ToList().ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount));
+            var Income = Convert.ToInt32(db.CashIncome.ToList().Where(c => c.UserName == username).Sum(c => c.InAmount));
+            var Expense = Convert.ToInt32(db.CashExpense.ToList().Where(c => c.UserName == username).Sum(c => c.ExAmount));
             var query = ((decimal)Income - (decimal)Expense).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
-
-
-
     }
 }

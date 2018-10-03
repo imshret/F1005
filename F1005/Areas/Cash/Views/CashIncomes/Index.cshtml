@@ -11,7 +11,7 @@
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-th-list"></i>  現金收入明細表</h2>
 	</div>
 
-	<div class="panel panel-info">
+	<div class="panel panel-info" id="myP">
 		<div class="panel-heading">現金收入明細表</div>
 		<div class="panel-body"><div id="jsGridIncome"></div></div>
 	</div>
@@ -48,7 +48,6 @@
 	<div class="jumbotron">
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  資產分布百分比</h2>
 	</div>
-	@*<label>請選擇查詢月份:</label>@Html.DropDownList("PieMonth", new SelectList(new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" }), "---請選擇---", new { @class = "form-control", @onchange = "PieMonthChange()" })*@
 	<div class="row" style="height:350px" id="dd">
 		<div class="col-lg-6">
 			<canvas id="Doughnut"></canvas>
@@ -216,7 +215,7 @@
 									data: dd
 								}).done(function () {
 									$("#jsGridIncome").jsGrid("loadData");
-									$('#xxx').notify("新增成功", "success", {position:"bottom"});
+									$('#myP').notify("新增成功", "success", {position:"bottom"});
 									GetIncomeHis();
 									LoadDoughnut();
 									LoadPie();
@@ -234,7 +233,7 @@
 									data: item
 								}).done(function () {
 									$("#jsGridIncome").jsGrid("loadData");
-									$('#xxx').notify("修改成功", "success", { position: "bottom" });
+									$('#myP').notify("修改成功", "success", { position: "bottom" });
 									GetIncomeHis();
 									LoadDoughnut();
 									LoadPie();
@@ -253,7 +252,7 @@
 									data: item
 								}).done(function (res) {
 									$("#jsGridIncome").jsGrid("loadData");
-									$('#xxx').notify("刪除成功", "success", { position: "bottom" });
+									$('#myP').notify("刪除成功", "success", { position: "bottom" });
 									GetIncomeHis();
 									LoadDoughnut();
 									LoadPie();
