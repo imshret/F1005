@@ -435,12 +435,12 @@ namespace F1005.Controllers
                     throw ex;
                 }
 
-                return RedirectToAction("Admin", "Account");
+                return RedirectToRoute("BStage_default", new { Controller = "BS", Action = "Index" });
             }
             else
             {
                 ViewBag.Message = "原密碼錯誤";
-                return View("Index2");
+                return View();
             }
         }
 
