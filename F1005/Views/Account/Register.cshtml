@@ -83,11 +83,12 @@
                 }
                 else {
                     alert("已成功寄出Email")                          
+                    $("#sc").attr("disabled", true);
+                    clock2();       
                 } 
-            })
-
-            $("#sc").attr("disabled", true);
+            })     
         }
+
         function yyy() {
             var s = $("#MyCC").val();
 
@@ -155,8 +156,7 @@
             }
         }
 
-        function EmailType() {            
-                                     
+        function EmailType() {              
             if ($("#em").text() != null && $("#em").text() != "") {          
                 
                 $("#sc").attr("disabled", true);
@@ -168,14 +168,13 @@
             }
         }
 
-        function clock() {     
-            $("#fs").attr("disabled", true);
-        }
+        //function clock() {     
+        //    setTimeout(function () { $("#fs").attr("disabled", true); }, 180000);    
+        //    //$("#fs").attr("disabled", true);
+        //}
 
         function clock2() {
-            if ($("#em").text() != null && $("#em").text() != "") {
-                $("#sc").attr("disabled", false);
-            }
+            setTimeout(function () { $("#sc").attr("disabled", false); }, 10000);             
         }
 
         $(function () {
@@ -199,8 +198,7 @@
             $("#idsp1").hide();
             $("#idsp2").hide();
 
-            time = setInterval("clock()", 180000);
-            time = setInterval("clock2()", 10000);
+            //time = setInterval("clock()", 180000);        
         });
     </script>
 }
