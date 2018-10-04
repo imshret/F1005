@@ -178,6 +178,8 @@ namespace F1005.Areas.BStage.Controllers
         public ActionResult chartpieX()
         {
             var db = new F1005.Models.MyInvestEntities();
+
+            var cashCount = db.CashIncome.Count().ToString();
             var stockCount = db.StockHistory.Count().ToString();
             var FXCount = db.FXtradeTable.Count().ToString();
             var InsuranceCount = db.Insurances.Count().ToString();
@@ -185,10 +187,12 @@ namespace F1005.Areas.BStage.Controllers
 
             var query = db.StockHistory.Select(c => new OverallViewModel
             {
-                X = stockCount,
-                XX = FXCount,
-                XXX = InsuranceCount,
-                XXXX = FundCount
+                cash = cashCount,
+                stock = stockCount,
+                FX = FXCount,
+                Insurance = InsuranceCount,
+                fund = FundCount
+
             }).First();
             return Json(query,JsonRequestBehavior.AllowGet);
         }
@@ -196,17 +200,25 @@ namespace F1005.Areas.BStage.Controllers
         public ActionResult chartpieXX()
         {
             var db = new F1005.Models.MyInvestEntities();
-            var stockCount = db.StockHistory.Select(c => c.stockNetincome * -1).Sum().ToString(); ;
-            var FXCount = db.FXtradeTable.Where(c=>c.TradeClass == "買入").Select(c=>c.NTD).Sum().ToString();
-            var InsuranceCount = db.Insurances.Where(c => c.PurchaseOrWithdraw == true).Select(c => c.CashFlow * -1).Sum().ToString();
-            var FundCount = db.Fund.Where(c => c.BuyOrSell == true).Select(c => c.CashFlow).Sum().ToString();
+            var cashCount = ((decimal)db.UsersData.Select(c => c.CashValue).Sum()).ToString("c2");
+            var stockCount = ((decimal)db.UsersData.Select(c=>c.StockValue).Sum()).ToString("c2");
+            var FXCount = ((decimal)db.UsersData.Select(c => c.FXValue).Sum()).ToString("c2");
+            var InsuranceCount = ((decimal)db.UsersData.Select(c => c.InsuranceValue).Sum()).ToString("c2");
+            var FundCount = ((decimal)db.UsersData.Select(c => c.FundValue).Sum()).ToString("c2");
+            //var total = cashCount + stockCount + FXCount + InsuranceCount + FundCount;
+
+            //var stockCount = db.StockHistory.Select(c => c.stockNetincome * -1).Sum().ToString(); ;
+            //var FXCount = db.FXtradeTable.Where(c=>c.TradeClass == "買入").Select(c=>c.NTD).Sum().ToString();
+            //var InsuranceCount = db.Insurances.Where(c => c.PurchaseOrWithdraw == true).Select(c => c.CashFlow * -1).Sum().ToString();
+            //var FundCount = db.Fund.Where(c => c.BuyOrSell == true).Select(c => c.CashFlow).Sum().ToString();
 
             var query = db.StockHistory.Select(c => new OverallViewModel
-            {                
-                X = stockCount,
-                XX = FXCount,
-                XXX = InsuranceCount,
-                XXXX = FundCount
+            {               
+                cash= cashCount,
+                stock = stockCount,
+                FX = FXCount,
+                Insurance= InsuranceCount,
+                fund = FundCount
             }).First();
             return Json(query, JsonRequestBehavior.AllowGet);
         }

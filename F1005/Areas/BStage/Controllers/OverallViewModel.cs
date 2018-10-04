@@ -2,13 +2,10 @@
 {
     internal class OverallViewModel
     {
-        //股票
-        public string X { get; set; }
-        //外匯
-        public string XX { get; set; }
-        //儲蓄險
-        public string XXX { get; set; }
-        //基金
-        public string XXXX { get; set; }
+        public string cash { get; set; }
+        public string stock { get; set; }
+        public string FX { get; set; }
+        public string Insurance { get; set; }
+        public string fund { get; set; }
     }
 }
