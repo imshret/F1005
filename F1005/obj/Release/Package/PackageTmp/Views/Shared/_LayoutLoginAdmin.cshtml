@@ -52,6 +52,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("使用者清單", "Users", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
+                    
                     <li>@Html.ActionLink("資產分布", "Recent", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
                     <li>@Html.ActionLink("總金額", "AllSum", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
                 </ul>
