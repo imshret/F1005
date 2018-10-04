@@ -12,6 +12,7 @@
 		}
 	</style>
 }
+<h2>試算/加入保單</h2>
 	<div class="col-lg-12">
 		@using (Html.BeginForm())
 		{
@@ -97,13 +98,16 @@
 			<br />
 			<button class="btn" id="GetIRR" >試算報酬</button>
 			<h4 style="font-family:'Microsoft JhengHei'" id="IRR">	</h4>
-			<div class="container" style="background-color:lavenderblush">
+			<div class="container" style="background-color:white">
 				<div class="col-md-6 " id="xx">
 					<canvas id="IRRchart" style="background-color:transparent"></canvas>
 				</div>
 			</div>
 		</div>
 	</div>
+<br />
+<br />
+<br />
 
 <div>
 	@Html.ActionLink("回到保險首頁", "Index")

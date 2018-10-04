@@ -21,7 +21,11 @@
 			overflow: hidden;
 			background-color: #333;
 		}
-
+		#navbar li {
+			width:150px;
+			text-align:center;
+		}
+		
 		/* Page content */
 		.content {
 			padding: 16px;
@@ -47,7 +51,7 @@
 			background-color: black;
 			color: white;
 			text-align: center;
-			height: 100px;
+			height: 8%;
 		}
 
 		#navbar a {
@@ -103,39 +107,40 @@
 				<div class="navbar-header">
 					<span>MYINVEST-我的投資管家</span>
 				</div>
-				<div style="margin-left:32%;">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("首頁", "Index", "Home", new { Area = "Main" }, null)</li>
-                        <li>@Html.ActionLink("帳戶總覽", "Index", "MyAsset", new { Area = "Overview" }, null)</li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                現金
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("現金收入", "Index", "CashIncomes", new { Area = "Cash" }, null)</li>
-                                <li>@Html.ActionLink("現金支出", "Index", "CashExpenses", new { Area = "Cash" }, null)</li>
-                            </ul>
-                        </li>
-                        <li>@Html.ActionLink("股票", "Index", "Stock", new { Area = "Stock" }, null)</li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                外匯
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("外匯首頁", "Index", "TradeTables", new { Area = "ForeignExchange" }, null)</li>
-                                <li>@Html.ActionLink("買進賣出", "Index", "FX", new { Area = "ForeignExchange" }, null)</li>
-                                <li>@Html.ActionLink("目前匯率", "History", "FX", new { Area = "ForeignExchange" }, null)</li>
-                            </ul>
-                        </li>
-                        <li>@Html.ActionLink("保險", "Index", "Insurances", new { Area = "InsurancesandFund" }, null)</li>
-                        <li>@Html.ActionLink("基金", "Index", "Funds", new { Area = "InsurancesandFund" }, null)</li>
 
-                    </ul>
-				</div>
+					<ul class="nav navbar-nav" style="margin-left:15%" >
+						<li> @Html.ActionLink("首頁", "Index", "Home", new { Area = "Main" }, null) </li>
+						
+						<li>@Html.ActionLink("帳戶總覽", "Index", "MyAsset", new { Area = "Overview" }, null)</li>
+						<li>@Html.ActionLink("股票", "Index", "Stock", new { Area = "Stock" }, null)</li>
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								 現金 
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>@Html.ActionLink("現金收入", "Index", "CashIncomes", new { Area = "Cash" }, null)</li>
+								<li>@Html.ActionLink("現金支出", "Index", "CashExpenses", new { Area = "Cash" }, null)</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								 外匯 
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>@Html.ActionLink("外匯首頁", "Index", "TradeTables", new { Area = "ForeignExchange" }, null)</li>
+								<li>@Html.ActionLink("買進賣出", "Index", "FX", new { Area = "ForeignExchange" }, null)</li>
+								<li>@Html.ActionLink("目前匯率", "History", "FX", new { Area = "ForeignExchange" }, null)</li>
+							</ul>
+						</li>
+						<li>@Html.ActionLink("保險", "Index", "Insurances", new { Area = "InsurancesandFund" }, null)</li>
+						<li>@Html.ActionLink("基金", "Index", "Funds", new { Area = "InsurancesandFund" }, null)</li>
+
+					</ul>
+
 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
+					<li class="dropdown" >
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="userxxx">
 							@Session["User"]
 							<span class="caret"></span>
