@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 資訊策進會MSIT119</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+    @RenderSection("styles", required: false)
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+                                                                
+    <script>
+
+        function ColorChange() {
+            $("#ColorChange").css("color", "black");
+        }
+
+        function ColorChangeO() {
+            $("#ColorChange").css("color", "darkgray");
+        }
+
+        $(function () {
+            $("#ColorChangeO").mouseover(ColorChange);
+            $("#ColorChangeO").mouseout(ColorChangeO);
+            $("#ColorChangeO").click(ColorChange);
+
+            $("#ColorChangeO").css("width", "170px");
+            $("#MenuWidth").css("width", "170px");
+
+        });
+
+    </script>
+</head>
+<body style="background-color:white">
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color:orange">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("後臺系統", "Index", "BS", new { area = "BStage" }, new { @class = "navbar-brand", @style = "color:white" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("資產分布", "Recent", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
+                    <li>@Html.ActionLink("總金額", "AllSum", "BS", new { area = "BStage" }, new { @style = "color:white" })</li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a id="ColorChangeO" data-toggle="dropdown" style="color:darkgray; text-align:center; border:solid">
+                            <span id="ColorChange" >@Session["User"]</span>
+                            @*下拉箭頭*@
+                            @*<span class="caret"></span>*@
+                        </a>            
+                        <ul class="dropdown-menu" role="menu" style="text-align:center" id="MenuWidth">                           
+
+                            <li>@Html.ActionLink("修改密碼", "ChangePasswordAdmin", "Account", new { Area = "" }, null)</li>
+                            <li>@Html.ActionLink("登出", "Logout", "Account", new { Area = "" }, null)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+            <hr />
+            <footer>
+                <p>
+                    &copy; @DateTime.Now.Year - 資訊策進會MSIT119
+                    <img src="~/images/home.png" />
+                </p>
+
+            </footer>
+        </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

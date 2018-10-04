@@ -1,0 +1,212 @@
+﻿@model IEnumerable<F1005.Areas.Main.Controllers.RssViewModel>
+
+@{
+	ViewBag.Title = "Index";
+}
+
+
+
+@section styles{
+	<style>
+		hr.style-three {
+			border: 0;
+			border-bottom: 1px dashed #ccc;
+			background: #999;
+		}
+
+
+		.col-lg-4 {
+			padding: 10px;
+			position: relative;
+		}
+
+			.col-lg-4 img {
+				width: 100%;
+				height: 100%;
+				border-radius: 20px;
+			}
+
+			.col-lg-4 #view {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				text-align: center;
+				background-color: rgba(0,0,0,0.4);
+				width: 370px;
+				height: 250px;
+				border-radius: 20px;
+				color: white;
+				opacity: 0;
+				font-family: 'Microsoft JhengHei';
+			}
+
+				.col-lg-4 #view:hover {
+					opacity: 1;
+				}
+
+			.col-lg-4 h1 {
+				margin-top: 100px;
+			}
+
+		.page_container img {
+			opacity: 0.8;
+		}
+
+			.page_container img:hover {
+				opacity: 1;
+			}
+
+		#view a {
+			text-decoration:none;
+			color:white;
+		}
+	</style>
+}
+
+
+@*3D圖示*@
+<div class="wrapper" style="height:2300px !important">
+	<div class="main">
+		<div class="header">
+			<h1 style="text-align:center; font-family:'Microsoft JhengHei UI'">Welcome MyInvest投資理財管理平台</h1>
+			<div class="jquery-script-ads">
+				<script type="text/javascript"
+						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
+			</div>
+		</div>
+		<section class="page1">
+			<div class="page_container">
+				<div style="width:1000px;height:500px">
+					<a href="#"><img src="~/Areas/Main/Images/p1.jpeg" style="width:100%; height:100%; border-radius:18px" /></a>
+				</div>
+			</div>
+		</section>
+
+		<section class="page2">
+			<div class="page_container">
+				<div style="width:1000px;height:500px">
+					<a href="#"><img src="~/Areas/Main/Images/p4.jpg" style="width:100%; height:100%; border-radius:18px" /></a>
+				</div>
+			</div>
+		</section>
+
+		<section class="page3">
+			<div class="page_container">
+				<div style="width:1000px;height:500px">
+					<a href="#"><img src="~/Areas/Main/Images/p2.jpg" style="width:100%; height:100%; border-radius:18px" /></a>
+				</div>
+			</div>
+		</section>
+
+		<section class="page4">
+			<div class="page_container">
+				<div style="width:1000px;height:500px">
+					<a href="#"><img src="~/Areas/Main/Images/p3.jpg" style="width:100%; height:100%; border-radius:18px" /></a>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+
+<div class="container" id="imgCon">
+	<hr style="background-color:rebeccapurple" />
+	<h2>財經小知識</h2>
+	<hr style="background-color:rebeccapurple" />
+	<div class="row">
+		<div class="col-lg-4">
+			<img src="~/Areas/Main/Images/X1.jpg" />
+			<div id="view">
+				<a href="#"><h1>現金理財</h1></a>
+				<p>View More</p>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<img src="~/Areas/Main/Images/X2.jpg" />
+			<div id="view">
+				<a href="#"><h1>基金投資</h1></a>
+				<p>View More</p>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<img src="~/Areas/Main/Images/X3.jpg" />
+			<div id="view">
+				<a href="#"><h1>外匯買賣</h1></a>
+				<p>View More</p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-4">
+			<img src="~/Areas/Main/Images/X4.jpg" />
+			<div id="view">
+				<a href="#"><h1>儲蓄險定存</h1></a>
+				<p>View More</p>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<img src="~/Areas/Main/Images/X5.jpg" />
+			<div id="view">
+				<a href="#"><h1>股票投資</h1></a>
+				<p>View More</p>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<img src="~/Areas/Main/Images/X6.jpg" />
+			<div id="view">
+				<a href="#"><h1>綜合管理</h1></a>
+				<p>View More</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<hr style="background-color:rebeccapurple" />
+	<h2>即時新聞</h2>
+	<hr style="background-color:rebeccapurple" />
+
+	<div class="panel panel-primary">
+		<div id="PanelID" class="panel-heading">即時財經新聞</div>
+		<div class="panel-body">
+			<table id="NewsTable" class="table-bordered table-striped table-hover">
+				<thead>
+					<tr>
+						<th>新聞連結</th>
+						<th>內容概敘</th>
+						<th>發布時間</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td><a href="@item.Link">@item.Title</a>/></td>
+							<td style="width:100px;">@item.Description</td>
+							<td style="width:100px;">@item.PubDate</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+@section scripts{
+	<script>
+		$(document).ready(function () {
+			$(".main").tiltedpage_scroll({
+				angle: 40
+			});
+		});
+
+					//$(function () {
+					//	$('#NewsTable').hide();
+					//	document.getElementById("PanelID").addEventListener("mouseover", ShowTable);
+					//});
+
+					//function ShowTable() {
+					//	$('#NewsTable').fadeIn(1500);
+					//}
+	</script>
+}

@@ -1,0 +1,90 @@
+﻿@model MVC0905.Models.TradeTable
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>TradeTable</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MClass)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MClass)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NTD)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NTD)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.USD)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.USD)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FX)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FX)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.tax)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tax)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Ttime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Ttime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TClass)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TClass)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

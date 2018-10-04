@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "ExchangeRates";
+}
+<style>
+    span {
+        font-size: 24px;
+    }
+    .form-control {
+        font-size: 24px;
+    }
+</style>
+<div class="container" style="font-size:18px" >
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-info text-left">
+                匯率轉換工具
+            </h3>
+            <div class="row well">
+                <div class="col-md-2">
+                    <span >選擇交易貨幣</span>
+                </div>
+                <div class="col-md-10">
+                    <select id="currencies1" onchange="getRate()" class="alert alert-success"></select>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-md-2">
+                    <span>選擇兌換貨幣</span>
+                </div>
+                <div class="col-md-10">
+                    <select id="currencies2" onchange="getRate()" class="alert alert-info"></select>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-md-2">
+                    <input id="input" value="1" type="text" class="form-control" oninput="getRate()" />
+                </div>
+                <div class="col-md-1">
+                    <span id="p1"></span>
+                </div>
+                <div class="col-md-1">
+                    <span>等於</span>
+                </div>
+                <div class="col-md-2">
+                    <input id="output" value="1" type="text" class="form-control" oninput="getRate()" />
+                </div>
+                <div class="col-md-2">
+                    <span id="p2"></span>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-outline-primary" onclick="change()">
+                        幣別互換
+                    </button>
+                </div>
+                <div class="col-md-8">
+
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadmoney() {
+        $.get("https://api.coinbase.com/v2/currencies", { name: "value" },
+            function (data, textStatus, jqXHR) {
+                var arr = $.map(data, function (qq) { return qq });
+                for (i = 0; i < arr.length; i++) {
+                    var arrr = $.map(arr[i], function (qq) { return qq });
+                    document.getElementById('currencies1').insertAdjacentHTML('beforeEnd', '<option value=' + arrr[0] + '>' + arrr[0] + "  (" + arrr[1] + ")" + '</option>');
+                    document.getElementById('currencies2').insertAdjacentHTML('beforeEnd', '<option value=' + arrr[0] + '>' + arrr[0] + "  (" + arrr[1] + ")" + '</option>');
+                }
+            },
+            "json"
+        );
+    }
+    function getRate() {
+        var show1 = document.getElementById('currencies1').value;
+        var url = "https://api.coinbase.com/v2/exchange-rates?currency=" + show1;
+        var show2 = document.getElementById('currencies2').value;
+        xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+            var response = JSON.parse(this.responseText);
+            document.getElementById('p1').innerHTML = show1;
+            document.getElementById('p2').innerHTML = show2;
+            var rate = response.data.rates[show2];
+
+            var money = document.getElementById('input').value * rate;
+            document.getElementById('output').value = money;
+        };
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("CB-VERSION", "2018-01-01");
+        xhr.send();
+    }
+    function change() {
+        var index = document.getElementById('currencies1').selectedIndex;
+        document.getElementById('currencies1').selectedIndex = document.getElementById('currencies2').selectedIndex;
+        document.getElementById('currencies2').selectedIndex = index;
+        getRate();
+    }
+    $(document).ready(function () {
+        loadmoney();
+    });
+</script>

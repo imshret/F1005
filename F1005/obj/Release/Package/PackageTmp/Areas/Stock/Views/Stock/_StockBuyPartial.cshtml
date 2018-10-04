@@ -1,0 +1,156 @@
+﻿@model F1005.Models.StockHistory
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("CreateStockBuy", "Stock", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "股票買進" })
+            </div>
+
+            <div class="form-group">
+                @*@Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName" })*@
+                @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName2" })
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockID) @Html.ValidationMessageFor(m=>m.stockID,null,new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">股票代碼</label>*@
+                    @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StockbuyID" })
+                    @*<input type="text" class="form-control" id="StockbuyID" />*@
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SummaryTable.TradeDate) @Html.ValidationMessageFor(m => m.SummaryTable.TradeDate, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">交易日期</label>*@
+                    @Html.EditorFor(m => m.SummaryTable.TradeDate,  new { htmlAttributes =new { @class = "form-control", @id = "StockbuyDate", @type = "date" } })
+
+                    @*<input type="text" class="form-control" id="StockbuyDate" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockAmount) @Html.ValidationMessageFor(m => m.stockAmount, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">買進數量(張)</label>*@
+                    @Html.TextBoxFor(m => m.stockAmount, null, new { @class = "form-control", @id = "StockbuyAmount", @oninput = "CalculateCost()", @onblur = "CompareCashAcc()" })
+                    @*<input type="text" class="form-control" id="StockbuyAmount" oninput="CalculateCost()" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockPrice) @Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">買進價格</label>*@
+                    @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "StockbuyPrice", @oninput = "CalculateCost()", @onblur = "CompareCashAcc()" })
+                    @*<input type="text" class="form-control" id="StockbuyPrice" oninput="CalculateCost()" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label for="Stockbuyid">最低手續費(元)</label>
+                    <input type="text" class="form-control" id="StockbuyMinFee" value="20" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Stockbuyid">手續費折扣(折)</label>
+                    <input type="text" class="form-control" id="StockbuyDiscount" value="6" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Stockbuyid">手續費費率(‰)</label>
+                    <input type="text" class="form-control" id="StockbuyFeerate" value="1.425" readonly="" />
+                </div>
+            </div>
+
+            <div class="form-group" >
+                @Html.HiddenFor(m => m.stockFee, new { @id = "stockFee" })
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Stockbuyid">證交稅稅率(‰)</label>
+                    <input type="text" class="form-control" id="StockbuyTaxrate" value="3" readonly="" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.stockTax, new { @id = "stockTax" })
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    @Html.LabelFor(m => m.stockNetincome) @Html.ValidationMessageFor(m => m.stockNetincome, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">買進總成本</label>*@
+                    @Html.TextBoxFor(m => m.stockNetincome, null, new { @class = "form-control", @id = "stockNetincome", @readonly = "" })
+                    @*<input type="text" class="form-control" id="StockTotalcost" readonly="" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StockbuyBEPoint">損平價格</label>
+                    <input type="text" class="form-control" id="StockbuyBEPoint" readonly="" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StockbuyERR">預期報酬率(%)</label>
+                    <input type="text" class="form-control" id="StockbuyERR" oninput="CalculateTP()" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label for="StockbuyER">預期報酬</label>
+                    <input type="text" class="form-control" id="StockbuyER"readonly=""/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockTP)
+                    @Html.TextBoxFor(m => m.stockTP, null, new { @class = "form-control", @id = "StockbuyTP" ,@readonly=""})
+                    @*<input type="text" class="form-control" id="StockbuyTP" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockNote)
+                    @*<label for="Stockbuyid">筆記</label>*@
+                    @Html.TextBoxFor(m => m.stockNote, null, new { @class = "form-control", @id = "StockbuyNote" })
+                    @*<input type="text" class="form-control" id="StockbuyNote" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.CheckBoxFor(m => m.CashAccount, new { @id = "UseCashAcc" })
+                    @Html.LabelFor(m => m.CashAccount)
+
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+
+
+
+                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-left" />
+
+
+                </div>
+            </div>
+
+
+        }
+    </div>
+</div>
+

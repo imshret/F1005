@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Recent";
+}
+
+<h3>X</h3>
+<div style="margin:0px auto; text-align:center">
+    <h2>總金額</h2>
+ </div>
+<canvas id="chart"></canvas>
+
+@section styles
+{
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+}
+
+@section scripts
+{
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
+    <script>
+        var label = ["現金","股票", "外匯" ,"儲蓄險" ,"基金"];
+
+           function calldata() {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("chartpieXX", "BS", new { Area = "BStage" }, null)",
+                dataType: "json",
+            }).done(function (data) {
+                //label.length = 0;
+                //list.length = 0;
+
+                //for (i = 0; i < data.length; i++) {
+                //    var arr = $.map(data[i], function (qq) { return qq });
+                //    X.push(data[i].X);
+                //    list.push(data[i].X);
+                //}
+                //list.push(data);
+
+                var ctx = document.getElementById('chart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: label /*["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]*/,
+                        datasets: [{
+                            data: [data.cash, data.stock, data.FX, data.Insurance, data.fund],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            //borderColor: [
+                            //    'rgba(255,99,132,1)',
+                            //    'rgba(54, 162, 235, 1)',
+                            //    'rgba(255, 206, 86, 1)',
+                            //    'rgba(75, 192, 192, 1)',
+                            //    'rgba(153, 102, 255, 1)',
+                            //    'rgba(255, 159, 64, 1)'
+                            //],
+                            //borderWidth: 1
+                        }]
+                    }
+                });
+            }
+            );
+        }
+
+        $(document).ready(function () {
+            calldata();
+        });
+
+    </script>
+}
+
+

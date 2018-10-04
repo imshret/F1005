@@ -1,0 +1,391 @@
+﻿@model IEnumerable<F1005.Models.Insurances>
+
+@{
+	ViewBag.Title = "Index";
+}
+
+<h2>My 儲蓄險</h2>
+
+<p>
+	@Html.ActionLink("試算/加入一筆保單", "Create")
+</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#home">保險資產總覽</a></li>
+	<li><a data-toggle="tab" href="#record">交易紀錄</a></li>
+</ul>
+
+<div class="tab-content">
+	<div id="home" class="tab-pane fade in active">
+		<h3>未實現保險資產</h3>
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<canvas id="UnWithdrawedDoughnut"></canvas>
+		</div>
+		<div class="col-md-3"></div>
+		<hr />
+
+		<table class="table">
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.InsuranceName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PurchaseDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.WithdrawDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PaymentPerYear)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PayYear)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Withdrawal)
+				</th>
+				<th>
+					<span>檢視/解約</span>
+				</th>
+			</tr>
+
+			@foreach (var item in Model.Where(model => model.PurchaseOrWithdraw == true && model.Withdrawed == false && model.UserID == Session["User"].ToString()))
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.InsuranceName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PurchaseDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.WithdrawDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PaymentPerYear)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PayYear)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Withdrawal)
+					</td>
+					<td>
+						@Html.ActionLink("檢視/解約這筆保單", "Withdraw", new { id = item.SerialNumber })
+					</td>
+				</tr>
+			}
+
+		</table>
+		<hr />
+		<h3>已實現保險資產</h3>
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<canvas id="WithdrawedDoughnut"></canvas>
+		</div>
+		<div class="col-md-3"></div>
+
+		<table class="table">
+
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.InsuranceName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PurchaseDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.WithdrawDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PaymentPerYear)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.PayYear)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Withdrawal)
+				</th>
+			</tr>
+
+			@foreach (var item in Model.Where(model => model.PurchaseOrWithdraw == false && model.UserID == Session["User"].ToString()))
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.InsuranceName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PurchaseDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.WithdrawDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PaymentPerYear)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PayYear)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Withdrawal)
+					</td>
+				</tr>
+			}
+
+		</table>
+	</div>
+
+
+
+	<div id="record" class="tab-pane fade">
+		<h3>交易紀錄</h3>
+		@*jsGrid Table*@
+		<div class="container" style="background-color:lavenderblush">
+			<div id="jsGridIncome"></div>
+		</div>
+	</div>
+
+</div>
+
+@section scripts
+	{
+	<script>
+				function LoadUnWithdrawedDoughnut()	{
+	$.ajax({
+	type: "Get",
+	url: "@Url.Action("GetCurrentDoughnut", "Insurances")",
+	data: null,
+	dataType: "json",
+		success: function (response) {
+			var datalabels = [];
+			var data = [];
+			var total = 0;
+			for (var i = 0; i < response.length; i++) {
+				var arr = $.map(response[i], function (qq) { return qq; })
+				total += parseInt(arr[1]);
+			}
+			for (var i = 0; i < response.length; i++)
+			{
+				var arr = $.map(response[i], function (qq) { return qq; })
+				datalabels.push(arr[0]);
+				data.push(((parseInt(arr[1]) / total) * 100).toFixed(2));
+			}
+			
+			var ctxDoughnut = document.getElementById("UnWithdrawedDoughnut");
+	var DoughnutChart = new Chart(ctxDoughnut, {
+	type: 'doughnut',
+	data: {
+	labels: datalabels,
+	datasets: [{
+	data: data,
+	backgroundColor: [
+	window.chartColors.blue,
+		window.chartColors.red,
+		window.chartColors.green,
+		window.chartColors.yellow,
+		window.chartColors.gray,
+		window.chartColors.orange,
+		window.chartColors.purple,
+	]
+	}],
+	},
+	options: {
+	responsive: true,
+	title: {
+	display: true,
+		fontSize: 26,
+	text: '未實現保險收入百分比'
+	},
+	}
+	})
+	}
+	});
+		};
+		function LoadWithdrawedDoughnut()	{
+	$.ajax({
+	type: "Get",
+	url: "@Url.Action("GetWithdrawedDoughnut", "Insurances")",
+	data: null,
+	dataType: "json",
+		success: function (response) {
+			var datalabels = [];
+			var data = [];
+			var total = 0;
+			for (var i = 0; i < response.length; i++) {
+				var arr = $.map(response[i], function (qq) { return qq; })
+				total += parseInt(arr[1]);
+			}
+			for (var i = 0; i < response.length; i++)
+			{
+				var arr = $.map(response[i], function (qq) { return qq; })
+				datalabels.push(arr[0]);
+				data.push(((parseInt(arr[1]) / total) * 100).toFixed(2));
+			}
+			
+	var ctxDoughnut = document.getElementById("WithdrawedDoughnut");
+	var DoughnutChart = new Chart(ctxDoughnut, {
+	type: 'doughnut',
+	data: {
+	labels: datalabels,
+	datasets: [{
+	data: data,
+	backgroundColor: [
+	window.chartColors.blue,
+		window.chartColors.red,
+		window.chartColors.green,
+		window.chartColors.yellow,
+		window.chartColors.gray,
+		window.chartColors.orange,
+		window.chartColors.purple,
+	]
+	}],
+	},
+	options: {
+	responsive: true,
+	title: {
+	display: true,
+	fontSize: 26,
+	text: '已實現保險收入百分比'
+	},
+	}
+	})
+	}
+	});
+		};
+		$(document).ready(function () {
+			LoadWithdrawedDoughnut();
+			LoadUnWithdrawedDoughnut();
+		});
+	</script>
+	<script>
+			function init() {
+				$.ajax({
+					type: "Get",
+					url: "@Url.Action("loadalldata", "Insurances")",
+				}).done(function (res) {
+					var MyDateField = function (config) {
+						jsGrid.Field.call(this, config);
+				};
+					MyDateField.prototype = new jsGrid.Field({
+
+						css: "date-field",            // redefine general property 'css'
+						align: "center",              // redefine general property 'align'
+						myCustomProperty: "foo",      // custom property
+
+						sorter: function (date1, date2) {
+							return new Date(date1) - new Date(date2);
+						},
+
+						itemTemplate: function (value) {
+							return new Date(value).toDateString();
+						},
+
+						insertTemplate: function (value) {
+							return this._insertPicker = $("<input>").datepicker({ defaultDate: new Date() });
+						},
+
+						editTemplate: function (value) {
+							return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
+						},
+
+						insertValue: function () {
+							return this._insertPicker.datepicker("getDate").toISOString();
+						},
+
+						editValue: function () {
+							return this._editPicker.datepicker("getDate").toISOString();
+						}
+					});
+
+					jsGrid.fields.date = MyDateField;
+
+
+					$("#jsGridIncome").jsGrid({
+						width: "100%",
+						height: "400px",
+
+						//filtering: true,
+						//inserting: true,
+						editing: true,
+						sorting: true,
+						paging: true,
+						autoload: true,
+						pageSize: 5,
+						pageButtonCount: 5,
+						deleteConfirm: "確定要刪除這筆資料?",
+						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
+						pagePrevText: "上一頁",
+						pageNextText: "下一頁",
+						pageFirstText: "第一頁",
+						pageLastText: "最終頁",
+						noDataContent: "目前沒有紀錄",
+
+						data: res,
+
+						controller: {
+							loadData: function (filter) {
+								return $.ajax({
+									type: "GET",
+					url: "@Url.Action("loadalldata", "Insurances")",
+									data: filter
+								});
+							},
+
+							
+
+							updateItem: function (item) {
+								return $.ajax({
+									type: "PUT",
+									url: "@Url.Action("EditIinsurance", "Insurances")",
+									data: item
+								}).done(function () {
+									$("#jsGridIncome").jsGrid("loadData");
+	
+								});
+							},
+
+							deleteItem: function (item) {
+								var id = item.SerialNumber;
+								return $.ajax({
+									type: "Delete",
+									url: "@Url.Action("DeleteInsurances", "Insurances")/" + id,
+									data: item
+								}).done(function (res) {
+									$("#jsGridIncome").jsGrid("loadData");
+				
+								});
+							},
+						},
+
+						fields: [
+							{ name: "STID", type: "text", title: "交易序號", width: 100, inserting: false },
+							{ name: "InsuranceName", type: "text", title: "保險名稱", width: 100},
+							{ name: "PurchaseDate", type: "date", title: "購買日期", width: 100 },
+							{ name: "WithdrawDate", type: "date", title: "解約日期", width: 100 },
+							{ name: "PaymentPerYear", type: "text", title: "年繳保費", width: 100, sorting: false },
+							{ name: "PayYear", type: "text", title: "繳費年期", width: 100 },
+							{ name: "PurchaseOrWithdraw", type: "checkbox", title: "購買OR解約", width: 100 },
+							{ name: "Withdrawal", type: "text", title: "解約金", width: 100 },
+							{ name: "Withdrawed", type: "checkbox", title: "已解約", width: 100 },
+							{ name: "CashFlow", type: "text", title: "現金流", width: 100 },
+							{ type: "control" }
+						],
+
+					});
+				}).fail(function (err) {
+					alert("Error");
+				});
+
+
+
+		};//init tail
+
+		$(document).ready(function () {
+			init();
+		});
+	</script>
+	
+	
+
+}
+

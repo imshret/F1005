@@ -1,0 +1,167 @@
+﻿
+<div class="container-fluid" style="width:70%;">
+    <h2>外匯資產總表</h2>
+
+    <table id="myGrid"></table>
+    <div id="pager"></div>
+
+    <table id="myGrid"></table>
+    <div id="pager"></div>
+    <br />
+    <h3>近期交易紀錄</h3>
+    <div id="jsGrid1"></div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/jquery.jqGrid.min.js"></script>
+    <script>
+        $(function () {
+            jsGrid.locale("zh-tw");
+            fillData();
+        });
+
+        function fillData() {
+            $("#jsGrid1").jsGrid({
+                width: "80%",
+                height: "400px",
+                filtering: false,
+                inserting: false,
+                editing: false,
+                sorting: true,
+                paging: true,
+                autoload: true,
+                deleteConfirm: "Do you really want to delete?",
+                //pageLoading: true,
+                pageSize: 5,
+                pageIndex: 1,
+
+                //autoload: true,
+                //sorting: true,
+                //paging: true,
+                //pageLoading: true,
+                //pageSize: 10,
+                //pageIndex: 5,
+                controller: {
+                    //loadData: function (filter) {
+                    //    var d = $.Deferred();
+                    //    return $.ajax({
+                    //        type: "GET",
+                    //        async: true,
+                    //        url: "/TestHome/GetData/",
+                    //        data: `pageSize=${filter.pageSize}&pageIndex=${filter.pageIndex}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`,
+                    //        dataType: "json",
+                    //        contentType: "application/json; charset=utf-8",
+                    //    }).done(function (response) {
+                    //        d.resolve(response);
+                    //    }).fail(function (e) {
+                    //        console.log("error: " + e.responseText);
+                    //        console.log(e.status);
+                    //    });
+                    //},
+                    loadData: function (filter) {
+                        return $.ajax({
+                            type: "GET",
+                            url: "http://localhost:55991/TestHome/GetDataTable",
+                            data: filter,
+                            dataType: "json"
+                        });
+                    },
+                    deleteItem: function (item) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "http://localhost:55991/TestHome/DELETE/" + item.Id,
+                            dataType: "json"
+                        }).done(function (fk) {
+                            $("#jsGrid1").jsGrid("loadData");
+                        });
+                    }
+                },
+                fields:
+                    [
+                        { title: "流水號", name: "Id", type: "text", width: 50, align: "center", visible: false, },
+                        { title: "使用者", name: "UserName", type: "text", width: 50, align: "center", inserting: false },
+                        { title: "交易類別", name: "TClass", type: "text", width: 50, align: "center", },
+                        { title: "外幣種類", name: "MClass", type: "text", width: 50, align: "center" },
+                        { title: "外幣金額", name: "USD", type: "text", width: 50, align: "center" },
+                        { title: "外幣匯率", name: "FX", type: "text", width: 50, align: "center" },
+                        { title: "新台幣金額", name: "NTD", type: "text", width: 50, align: "center" },
+                        { title: "交易時間", name: "Ttime", type: "text", width: 100, align: "center" },
+                        { type: "control", editButton: false, }
+                    ]
+            });
+        }
+    </script>
+    <script type="text/javascript">
+
+        $("#myGrid").jqGrid({                  //將id=myGrid的DOM元件轉換成jqGrid
+            url: 'http://localhost:55991/TestHome/Jqgridtable',  //取得資料的URL，這邊我會到controller取得資料
+            datatype: 'json',                  //資料回傳的類型，有json,xml...等等
+            jsonReader: {                      //jqgrid讀取json的時候，需要配置jsonReader才能讀取。
+                repeatitems: false              //預設是true，但是我回傳的json的內容並不會按照順序回傳，故這邊要設定false，讓jsonReader是用搜尋name去塞入對應的值
+            },
+            mtype: 'GET',                      //ajax的類型，有GET和POST
+            colModel: [                        //這個是欄位的屬性，name屬性必須要與後端回傳的欄位名稱相同，另外也可以顯示欄位名稱，樣式等等。
+                { label: "流水號", name: "Id", sorttype: "int", width: 50, align: "center", hidden: true },
+                { label: "使用者", name: "UserName", sorttype: "text", width: 50, align: "center", hidden: true },
+                { label: "交易類別", name: "TClass", sorttype: "text", width: 100, align: "center" },
+                { label: "外幣種類", name: "MClass", sorttype: "text", width: 100, align: "center" },
+                { label: "外幣金額", name: "USD", sorttype: "number", summaryType: 'sum', width: 150, align: "center" },
+                { label: "外幣匯率", name: "FX", sorttype: "number", width: 50, align: "center" },
+                { label: "新台幣金額", name: "NTD", sorttype: "number", summaryType: 'sum', width: 150, align: "center" },
+                { label: "交易時間", name: "Ttime", sorttype: "date", width: 100, align: "center" },
+            ],
+            pager: '#pager',                 //這是對應到<div>的id，會透過<div>變成分頁的相關UI
+            width: 'auto',                   //jqGrid的寬度
+            height: 'auto',                  //jqGrid的高度
+            rowNum: 10,                      //jqGrid預設顯示筆數
+            rowList: [5, 10, 20, 50],        //jqGrid可選擇每頁顯示幾筆
+            sortname: 'Id',                  //jqGrid預設排序欄位名稱
+            sortorder: "asc",                //jqGrid預設排序方式asc升冪，desc降冪
+            viewrecords: true,               //是否要顯示總筆數
+            caption: '個人資產總表',           //jqGrid標題欄顯示的文字
+            loadonce: true,                   //是否只載入一次
+            grouping: true,
+            groupingView: {
+                groupField: ['MClass'],
+                groupColumnShow: [true],
+                groupText: ['<b>{0}</b>'],
+                groupCollapse: false,
+                groupOrder: ['asc'],
+                groupSummary: [true],
+                groupDataSorted: true,
+                showSummaryOnHide: true
+            }
+        });
+        jQuery("#myGrid").jqGrid('navGrid', '#pager',
+            { edit: false, add: false, del: true, view: true, search: true }, //options
+            {}, {},
+            {   // del options
+                zIndex: 100,
+                url: "/TestHome/Delete",
+                closeOnEscape: true,
+                closeAfterDelete: true,
+                recreateForm: true,
+                msg: "確定是否刪除? ",
+                afterComplete: function (response) {
+                    if (response.responseText) {
+                        alert(response.responseText);
+                    }
+                }
+            },
+            {}, // search options
+            {}
+        )
+            .navSeparatorAdd("#pager")
+            .jqGrid('navButtonAdd', "#pager", {
+                caption: "Add",
+                buttomicon: "ui-icon-newwin",
+                onClickButton: Adddata,
+                position: "last",
+                title: "新增買賣外匯記錄",
+                cursor: "pointer"
+            });
+        function Adddata() {
+            window.location.href = "http://localhost:55991/FX/Index"
+        }
+    </script>
+}
