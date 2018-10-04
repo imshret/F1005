@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ece3fb2630424c289344189595737ba3" Name="Diagram1">
+        <EntityTypeShape EntityType="MyInvestModel.CashExpense" Width="1.5" PointX="5.25" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.CashIncome" Width="1.5" PointX="5.25" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.CurrencyRate" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.Fund" Width="1.5" PointX="5.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.fund_data" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.FXtradeTable" Width="1.5" PointX="5.25" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.Insurances" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.Stock_data" Width="1.5" PointX="6" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.StockHistory" Width="1.5" PointX="8.25" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.SummaryTable" Width="1.5" PointX="3" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyInvestModel.UsersData" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
+        <AssociationConnector Association="MyInvestModel.FK_CashExpense_SummaryTable" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_CashIncome_SummaryTable" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_Fund_SummaryTable" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_Fund_UsersData" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_FXtradeTable_SummaryTable" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_Insurances_Insurances" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_Insurances_UsersData" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_StockHistory_Stock_data" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_StockHistory_SummaryTable" ManuallyRouted="false" />
+        <AssociationConnector Association="MyInvestModel.FK_SummaryTable_UsersData" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

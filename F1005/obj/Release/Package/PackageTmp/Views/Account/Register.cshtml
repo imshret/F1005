@@ -1,0 +1,203 @@
+﻿@model F1005.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "註冊";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <h4>建立新的使用者帳戶</h4>
+    <hr />
+
+    //@Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.UserName, new { @id = "MyUserName", @class = "form-control", @Value = "msit119_two" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger"})
+        </div>
+    </div>
+
+    //@Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @id = "MyEmail", @class = "form-control", @Value = "msit119.two@gmail.com" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" , @id = "em"})
+            @*<span class="text-danger" id="EmailType"></span>*@
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Code, new { @id = "MyCC", @class = "form-control", @autocomplete = "off" })
+            <input id="sc" type="button" value="Send Code" class="btn btn-default">
+            <input id="con" type="button" value="確認!!" class="btn btn-default">
+            <span>
+                <span id="idsp1"><img src=@Url.Content("~/Images/correct.png")>Correct</span>              
+                <span id="idsp2"><img src=@Url.Content("~/Images/error.png")>Incorrect</span>           
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @id = "MyP", @class = "form-control" })
+            <span class="text-danger" id="C1"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @id = "MyCP", @class = "form-control" })
+            <span class="text-danger" id="CC"></span>
+        </div>   
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="fs" type="submit" class="btn btn-default" value="註冊" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        
+        function xxx() {
+            var s = $("#MyEmail").val();
+            var u = $("#MyUserName").val();
+            
+            para = { "Email": s, "UserName": u};
+            
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ConfirmEmail", "Account")",
+                data: para,
+            }).done(function (res) {
+                if (res == "Existed") {
+                    alert("此帳號或電子郵件己有人使用，註冊失敗")
+                }
+                else {
+                    alert("已成功寄出Email")                          
+                    $("#sc").attr("disabled", true);
+                    clock2();       
+                } 
+            })     
+        }
+
+        function yyy() {
+            var s = $("#MyCC").val();
+
+            para = { "Code": s };
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ConfirmEmailx", "Account")",
+                data: para,
+            }).done(function (res) {
+                if (res == "Cor") {
+
+                    //$("#idsp1").html("<img id='im' src='~/Images/correct.png'>Correct");                  
+                    $("#idsp1").show();
+                    $("#idsp2").hide();   
+
+                    //$("#fs").attr("disabled", false);     
+
+                    $("#MyP").attr("disabled", false);
+                    $("#MyCP").attr("disabled", false);
+                }
+                else
+                {
+                    //$("#idsp1").html("<img id='im' src='~/Images/error.png'>Incorrect");
+                    $("#idsp1").hide();   
+                    $("#idsp2").show();   
+
+                    $("#MyP").attr("disabled", true);
+                    $("#MyCP").attr("disabled", true);
+                }
+            }).fail(function (res) {
+                alert("WWW")
+            })
+        }
+
+        function zzz() {            
+
+            if ($("#MyP").val() != $("#MyCP").val()) {
+                $("#CC").text("密碼不一致");
+                $("#fs").attr("disabled", true);
+            }
+            else {
+                $("#CC").text(null);
+                //var x = $("#C1").text();                
+                if ($("#C1").text() == "") {
+                    $("#fs").attr("disabled", false);
+                }
+            }
+        }
+
+        function eightup() {
+
+            if ($("#MyP").val().length <8) {
+                $("#C1").text("密碼需大於八碼");
+                $("#fs").attr("disabled", true);
+            }
+            else {
+                $("#C1").text(null);
+                //var x = $("#CC").text();
+                if ($("#CC").text() == "" && $("#idsp1").text() == "Correct") {
+                    $("#fs").attr("disabled", false);
+                }
+            }
+        }
+
+        function EmailType() {              
+            if ($("#em").text() != null && $("#em").text() != "") {          
+                
+                $("#sc").attr("disabled", true);
+                $("#con").attr("disabled", true);
+            }
+            else {        
+                $("#sc").attr("disabled", false);
+                $("#con").attr("disabled", false);
+            }
+        }
+
+        //function clock() {     
+        //    setTimeout(function () { $("#fs").attr("disabled", true); }, 180000);    
+        //    //$("#fs").attr("disabled", true);
+        //}
+
+        function clock2() {
+            setTimeout(function () { $("#sc").attr("disabled", false); }, 10000);             
+        }
+
+        $(function () {
+            $("#sc").click(xxx);
+            $("#con").click(yyy);
+
+            $("#sc").attr("disabled", true);
+            $("#con").attr("disabled", true);
+            $("#fs").attr("disabled", true);
+
+            $("#MyP").attr("disabled", true);
+            $("#MyCP").attr("disabled", true);
+
+            $("#MyP").blur(eightup);
+            $("#MyEmail").blur(EmailType);
+            $("#MyEmail").keyup(EmailType);
+
+            $("#MyP").keyup(zzz);
+            $("#MyCP").keyup(zzz);
+         
+            $("#idsp1").hide();
+            $("#idsp2").hide();
+
+            //time = setInterval("clock()", 180000);        
+        });
+    </script>
+}
+

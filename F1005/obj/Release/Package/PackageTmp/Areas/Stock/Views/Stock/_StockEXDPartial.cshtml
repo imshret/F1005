@@ -1,0 +1,117 @@
+﻿@model F1005.Models.StockHistory
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="button" id="EXSeach" value="查詢可參與除息庫存" class="btn btn-default" onclick="SearchEXDInv()" />
+            <input type="button" id="EXCal" value="計算獲利" class="btn btn-default" onclick="CalculateEXD()" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        @using (Html.BeginForm("CreateEXD", "Stock", FormMethod.Post))
+        {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "股票除息" })
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName4" })
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.stockAmount, new { @Value = 0 })
+        </div>
+
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.stockID)@Html.ValidationMessageFor(m => m.stockID, null, new { @style = "color:orangered" })
+
+                @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StockEXDID" })
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+
+                @Html.Label("除息日期")@Html.ValidationMessageFor(m => m.SummaryTable.TradeDate, null, new { @style = "color:orangered" })
+                @*@Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "EXDate", @Value = "2018-09-20" })*@
+                @Html.EditorFor(m => m.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", @id = "EXDDate", @type = "date" } })
+
+
+            </div>
+        </div>
+
+
+        //資料表欄位中 股價此表格的現金股利
+        <div class="col-md-6">
+            <div class="form-group">
+
+                @Html.Label("現金股利")@Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered" })
+                @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "CashDDiv" })
+
+                @*<input type="text" class="form-control" id="StocksellDate" />*@
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.stockNote)
+                @Html.TextBoxFor(m => m.stockNote, null, new { @class = "form-control", @id = "StockEXDNote" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("參與除息庫存(股)")
+                <input type="text" class="form-control" id="StockCDivInv" readonly="" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("參與除息庫存成本")
+                <input type="text" class="form-control" id="StockCDivAvc" readonly="" />
+            </div>
+        </div>
+        //資料表欄位中的Netimcoe為此表格的現金股利收入
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("現金收入")@Html.ValidationMessageFor(m => m.stockNetincome, null, new { @style = "color:orangered" })
+                @Html.TextBoxFor(m => m.stockNetincome, null, new { @class = "form-control", @id = "StockCDivNetincome", @readonly = "" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("報酬率(%)")
+                <input type="text" class="form-control" id="StockCDivR" readonly="" />
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("新庫存數量(股)")
+                <input type="text" class="form-control" id="StockCDivInvN" readonly="" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.Label("新庫存成本")
+                <input type="text" class="form-control" id="StockCDivAvcN" readonly="" />
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-6">
+                <input type="submit" id="submit" value="Create" class="btn btn-default " style="margin-left:11px" />
+            </div>
+        </div>
+        }
+
+    </div>
+</div>

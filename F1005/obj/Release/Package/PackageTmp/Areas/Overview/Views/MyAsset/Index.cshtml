@@ -1,0 +1,132 @@
+﻿
+@{
+	ViewBag.Title = "Index";
+}
+
+@*現金收入vs支出圓餅圖*@
+<div class="container" style="background-color:lavenderblush">
+	<div class="jumbotron">
+		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  資產分布百分比</h2>
+	</div>
+	<div class="row" style="height:350px" id="dd">
+		@*Draw Pie*@
+		<div class="col-lg-12">
+			<canvas id="Pie"></canvas>
+		</div>
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="jumbotron">
+		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  各項資產分布</h2>
+	</div>
+	@using (Html.BeginForm("ExportToExcel", "MyAsset", FormMethod.Post))
+	{
+		<input type="submit" value="匯出Excel" class="btn btn-success"  style="margin:10px;"/>
+		<table  class="table table-bordered table-hover" style="font-size:18px; font-family:'Microsoft JhengHei'">
+			<thead>
+				<tr>
+					<th>現金</th>
+					<th>股票</th>
+					<th>外匯</th>
+					<th>保險</th>
+					<th>基金</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td id="cash"></td>
+					<td id="stock"></td>
+					<td id="FX"></td>
+					<td id="insurance"></td>
+					<td id="fund"></td>
+				</tr>
+				<tr>
+					<td id="cashP"></td>
+					<td id="stockP"></td>
+					<td id="FXP"></td>
+					<td id="insuranceP"></td>
+					<td id="fundP"></td>
+				</tr>
+			</tbody>
+		</table>
+	}
+</div>
+<div class="container">
+	<button id="send" class="btn btn-primary" onclick="Send()">發送郵件</button>
+</div>
+
+
+@section scripts{
+	<script>
+		$(function () {
+			LoadPie();
+		});
+
+		//資產分布百分比圓餅圖
+		//Draw Pie
+		function LoadPie() {
+			$.ajax({
+				type: "Get",
+				url: "@Url.Action("GetPie", "MyAsset")",
+				data: null,
+				dataType: "json",
+				success: function (res) {
+					document.getElementById("cash").innerText = res[0].CashValue;
+					document.getElementById("stock").innerText = res[0].StockValue;
+					document.getElementById("FX").innerText = res[0].FXValue;
+					document.getElementById("insurance").innerText = res[0].InsuranceValue;
+					document.getElementById("fund").innerText = res[0].FundValue;
+
+					document.getElementById("cashP").innerText = res[0].CashValueP + "%";
+					document.getElementById("stockP").innerText = res[0].StockValueP + "%";
+					document.getElementById("FXP").innerText = res[0].FXValueP + "%";
+					document.getElementById("insuranceP").innerText = res[0].InsuranceValueP + "%";
+					document.getElementById("fundP").innerText = res[0].FundValueP + "%";
+
+					var ctxDoughnut = document.getElementById("Pie");
+					var DoughnutChart = new Chart(ctxDoughnut, {
+						type: 'pie',
+						data: {
+							labels: ["現金", "股票", "外匯", "保險", "基金"],
+							datasets: [{
+								data: [res[0].CashValueP, res[0].StockValueP, res[0].FXValueP, res[0].InsuranceValueP, res[0].FundValueP],
+								backgroundColor: [
+									window.chartColors.red,
+									window.chartColors.blue,
+									window.chartColors.orange,
+									window.chartColors.yellow,
+									window.chartColors.green,
+								]
+							}],
+						},
+						options: {
+							responsive: true,
+							title: {
+								display: true,
+								fontSize: 26,
+								text: '資產分布%'
+							},
+						}
+					})
+				}
+			});
+		};
+
+		function Send() {
+			$.ajax({
+				type: "Post",
+				url:"@Url.Action("SendEmail", "MyAsset")",
+			}).done(function (res) {
+				$('#send').notify("發送成功", "success", { position: "right" });
+			}).fail(function (err) {
+				$('#send').notify("發送失敗", "error", { position: "right" });
+			});
+
+		}
+
+
+	</script>
+}
+
