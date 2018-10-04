@@ -16,78 +16,93 @@
 {
 	@Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-	<hr />
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	<div class="col-md-12">
 
-	<div class="form-group">
-		<label class="control-label col-md-2">基金公司</label>
-		<div class="col-md-10">
-			<select id="CompanyList" class="form-control"></select>
+
+
+		<div class="col-md-6">
+
+			<div class="form-horizontal">
+				<hr />
+				<div class="form-group">
+					<label class="control-label col-md-2">基金公司</label>
+					<div class="col-md-10">
+						<select id="CompanyList" class="form-control"></select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-md-2">選擇基金</label>
+					<div class="col-md-10">
+						<select id="FundList" class="form-control"></select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.FundName, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control", id = "FundName", placeholder = "請由上方選擇基金名稱" } })
+						@Html.ValidationMessageFor(model => model.FundName, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入手續費%" } })
+						@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						@Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入購買淨值", id = "NAV" } })
+						@Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.Units, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						<input checked="checked" id="MoneyorUnits1" name="MoneyorUnits" type="radio" value="1" />直接輸入單位數
+						@Html.EditorFor(model => model.Units, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入單位數", id = "FundUnits" } })
+						<input id="MoneyorUnits2" name="MoneyorUnits" type="radio" value="2" />金額換算單位數
+						<input id="Money" type="text" class="form-control" placeholder="或以金額換算單位數" />
+						@Html.ValidationMessageFor(model => model.Units, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date", placeholder = "請選擇交易日期", id = "Date" } })
+						@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						<input type="submit" value="確定加入" class="btn btn-default" />
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div id="details" class="col-md-6" hidden="hidden">
+			<br />
+			<br />
+			<br />
+
+			<span>基金公司:</span><span id="CN"></span><br />
+			<span>基金名稱:</span><span id="FN"></span><br />
+			<span>基金統編:</span><span id="FC"></span><br />
+			<span>收付幣別:</span><span id="CC"></span><br />
+			<span>最新淨值:</span><span id="LN"></span><br />
+
 		</div>
 	</div>
-
-	<div class="form-group">
-		<label class="control-label col-md-2">選擇基金</label>
-		<div class="col-md-10">
-			<select id="FundList" class="form-control"></select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.FundName, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.FundName, new { htmlAttributes = new { @class = "form-control", id = "FundName", placeholder = "請由上方選擇基金名稱" } })
-			@Html.ValidationMessageFor(model => model.FundName, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入手續費%" } })
-			@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入購買淨值", id="NAV" } })
-			@Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Units, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			<input checked="checked" id="MoneyorUnits1" name="MoneyorUnits" type="radio" value="1" />直接輸入單位數
-			@Html.EditorFor(model => model.Units, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入單位數", id="FundUnits" } })
-			<input  id="MoneyorUnits2" name="MoneyorUnits" type="radio" value="2" />金額換算單位數
-			<input id="Money" type="text" class="form-control" placeholder="或以金額換算單位數"/>
-			@Html.ValidationMessageFor(model => model.Units, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", type = "date", placeholder = "請選擇交易日期" ,id="Date"} })
-			@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-
-
-
-	<div class="form-group">
-		<div class="col-md-offset-2 col-md-10">
-			<input type="submit" value="確定加入" class="btn btn-default" />
-		</div>
-	</div>
-</div>
 }
-
 <div>
 	@Html.ActionLink("回到基金首頁", "Index")
 </div>
@@ -201,6 +216,41 @@
 			var Money = document.getElementById("Money");
 			Units.addEventListener("keyup", UnitsKeyUp);
 			Money.addEventListener("keyup", MoneyKeyUp)
+		});
+	</script>
+
+	<script>
+		function getdetails()
+		{
+			document.getElementById("details").hidden = false;
+
+			var Fundname = document.getElementById("FundList").value;
+			var para =
+			{
+				"CompanyName": "aaa",
+				"FundName": Fundname
+			}
+			$.ajax({
+				type: "POST",
+				url: "@Url.Action("GetFundDetails", "Funds")",
+				data: para,
+				dataType: "json"
+			}).done(function (response)
+				{
+				for (var i = 0; i < response.length; i++) {
+					var arr = $.map(response[i], function (qq) { return qq; })
+					document.getElementById("CN").innerText = arr[0];
+					document.getElementById("FN").innerText = arr[1];
+					document.getElementById("FC").innerText = arr[2];
+					document.getElementById("CC").innerText = arr[3];
+					document.getElementById("LN").innerText = arr[4];
+				}
+				});
+		}
+		
+		$(document).ready(function () {
+			var Fund = document.getElementById("FundList")
+			Fund.addEventListener("change", getdetails);
 		});
 	</script>
 }
