@@ -451,7 +451,7 @@
 						sorting: true,
 						paging: true,
 						autoload: true,
-						pageSize: 5,
+						pageSize: 15,
 						pageButtonCount: 5,
 						deleteConfirm: "確定要刪除這筆資料?",
 						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
@@ -461,8 +461,25 @@
 						pageLastText: "最終頁",
 						noDataContent: "目前沒有紀錄",
 
-						data: res,
+                        data: res,
 
+                        deleteItem: function (item) {
+                            var id = item.stockTradeID;
+								return $.ajax({
+									type: "Delete",
+									url: "@Url.Action("DeleteStock", "stock")/" + id,
+									data: item
+								}).done(function (res) {
+									$("#jsGridIncome").jsGrid("loadData");
+									$('#myP').notify("刪除成功", "success", { position: "bottom" });
+
+                                    LoadJsGrid();
+                                    LoadJsGrid2();
+                                    LoadPie();
+                                    LoadAccountData();
+
+								});
+							},
 						fields: [
 							{ name: "stockDate", type: "text", title: "交易日期", width: 100 },
 							{ name: "stockID", type: "text", title: "股票代碼", width: 100 },
@@ -473,7 +490,7 @@
 							{ name: "stockTax", type: "text", title: "證交稅", width: 100 },
 							{ name: "stockNetincome", type: "text", title: "資金收付", width: 100 },
 							{ name: "stockNote", type: "text", title: "筆記", width: 100 },
-                            { type: "control", editButton: false, deleteButton: false,  }
+                            { type: "control", editButton: false, deleteButton: true,  }
 						],
 
 					});

@@ -2,6 +2,7 @@
 {
     internal class GetAllListViewModel
     {
+        public int stockTradeID { get; set; }
         public string stockID { get; set; }
         public decimal? stockPrice { get; set; }
         public int? stockAmount { get; set; }

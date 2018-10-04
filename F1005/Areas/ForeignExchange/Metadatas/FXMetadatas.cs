@@ -19,16 +19,16 @@ namespace F1005.Models
         public string SummaryId { get; set; }
         [Display(Name = "外幣種類")]
         public string CurrencyClass { get; set; }
-        [Required(ErrorMessage = "新臺幣金額輸入錯誤!")]
+        //[Required(ErrorMessage = "新臺幣金額輸入錯誤!")]
         [Display(Name = "新臺幣金額")]
         public Nullable<double> NTD { get; set; }
-        [Required(ErrorMessage = "外幣金額輸入錯誤!")]
+        //[Required(ErrorMessage = "外幣金額輸入錯誤!")]
         [Display(Name = "外幣金額")]
         public Nullable<double> USD { get; set; }
-        [Required(ErrorMessage = "匯率輸入錯誤!")]
+        //[Required(ErrorMessage = "匯率輸入錯誤!")]
         [Display(Name = "匯率")]
         public Nullable<double> ExchargeRate { get; set; }
-        [Required(ErrorMessage = "優惠匯率輸入錯誤!")]
+        //[Required(ErrorMessage = "優惠匯率輸入錯誤!")]
         [Display(Name = "優惠匯率")]
         public Nullable<double> tax { get; set; }
         [Display(Name = "交易類別")]
