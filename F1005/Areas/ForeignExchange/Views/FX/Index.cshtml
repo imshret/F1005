@@ -8,8 +8,8 @@
     <div class="row">
         <div class="col-md-12" style="padding:0px 0px 10px 0px;">
             <div class="btn-group">
-                <button type="button" class="btn-sb btn-primary" id="btnbuy">買入</button>
-                <button type="button" class="btn-sb btn-primary" id="btnsell">賣出</button>
+                <button type="button" class="btn-sb btn-info" id="btnbuy">買入</button>
+                <button type="button" class="btn-sb btn-info" id="btnsell">賣出</button>
             </div>
         </div>
         <div class="row">
@@ -33,10 +33,9 @@
             </div>
             <div class="col-md-3">
                 <span class="badge badge-primary">輸入匯率</span>
-
             </div>
             <div class="col-md-3">
-                <input type="text" id="ExchargeRate" class="form-control" oninput="inputvalue()">
+                <input type="text" id="ExchargeRate" class="form-control" oninput="inputvalue()" onkeyup="value=this.value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
             </div>
         </div>
         <div class="row">
@@ -50,7 +49,7 @@
                         <p>
                     </div>
                     <div class="col-md-9">
-                        <input type="text" id="r11" class="form-control" oninput="inputvalue()">
+                        <input type="text" id="r11" class="form-control" oninput="inputvalue()" onkeyup="value=this.value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
                     </div>
                     <div class="col-md-3">換算新台幣</div>
                     <div class="col-md-9">
@@ -65,7 +64,7 @@
                         <p id="p2" class="label label-primary" style="font-size:16px">以新臺幣買入</p>
                     </div>
                     <div class="col-md-9">
-                        <input type="text" id="r21" class="form-control" oninput="inputvalue()">
+                        <input type="text" id="r21" class="form-control" oninput="inputvalue()" onkeyup="value=this.value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
                     </div>
                     <div class="col-md-3">換算外幣</div>
                     <div class="col-md-9">
@@ -81,7 +80,7 @@
                         <span class="badge badge-default">匯率優惠</span>
                     </div>
                     <div class="col-md-9">
-                        <input type="text" name="fxpre" class="form-control" id="tax" oninput="inputvalue()">(百分比)
+                        <input type="text" name="fxpre" class="form-control" id="tax" oninput="inputvalue()" onkeyup="value=this.value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" placeholder="百分比為單位">
                     </div>
                 </div>
                 <div class="row">
@@ -136,6 +135,7 @@
                 );
             }*@
 
+            //選擇用新臺幣或外幣買賣
             function radiochecked() {
                 if (document.getElementById("r1").checked) {
                     document.getElementById("r11").disabled = false;
@@ -170,12 +170,13 @@
                         }
                     });
             }*@
+            //選取外幣後顯示匯率
             $('#moneyselect').bind('change', function ()
             {
                 var value = $('#moneyselect').val();
                 $('#nowfc').val(value);
             })
-
+            //及時計算新臺幣總額
             function inputvalue() {
                 if (document.getElementById("r1").checked) {
                     var input = document.getElementById("r11").value;
@@ -196,8 +197,11 @@
                     $('#r4').val(tototal);
                 }
             }
+            //確認紐
             function btncheck() {
+                //tf:是否連動現金帳戶
                 var tf = document.getElementById("tf").checked;
+                //checkcash:
                 var checkcash = localStorage.cash - $('#r4').val();
                 if (checkcash < 0 && tf == false)
                 {
@@ -215,13 +219,15 @@
                         localStorage.NTD = document.getElementById("r4").value;
                     }
                     localStorage.tax = document.getElementById("tax").value;
-                    localStorage.CurrencyClass = document.getElementById("moneyselect").textContent;
+                    var si = document.getElementById("moneyselect").selectedIndex;
+                    localStorage.CurrencyClass = document.getElementById("moneyselect").options[si].text.substring(0,3);
                     localStorage.ExchargeRate = document.getElementById("ExchargeRate").value;
                     localStorage.note = document.getElementById("note").value;
                     localStorage.tf = document.getElementById("tf").checked;
                     window.location.href = "@Url.Action("Create", "TradeTables", new { Area = "ForeignExchange" }, null)"
                 }
             }
+            //切換外幣買/賣
             $('#btnbuy').bind('click', function () {
                 localStorage.TradeClass = "買入";
                 document.getElementById("p1").innerText = "以外幣買入";
@@ -235,6 +241,7 @@
                     class: 'label label-primary',
                 }).css("font-size", "16px");
             })
+            //切換外幣買/賣
             $('#btnsell').bind('click', function () {
                 localStorage.TradeClass = "賣出";
                 document.getElementById("p1").innerText = "以外幣賣出";
@@ -251,7 +258,9 @@
 
             $(function () {
                 localStorage.TradeClass = "買入";
+                //loadmoney();
                 radiochecked();
+                //selectfc()
             });
         </script>
     }

@@ -1,58 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="MyInvestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityContainer Name="MyInvestEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="CashExpense" EntityType="MyInvestModel.CashExpense" />
-    <EntitySet Name="CashIncome" EntityType="MyInvestModel.CashIncome" />
-    <EntitySet Name="StockHistory" EntityType="MyInvestModel.StockHistory" />
-    <EntitySet Name="StockIDList" EntityType="MyInvestModel.StockIDList" />
-    <EntitySet Name="SummaryTable" EntityType="MyInvestModel.SummaryTable" />
-    <EntitySet Name="sysdiagrams" EntityType="MyInvestModel.sysdiagrams" />
-    <EntitySet Name="UsersData" EntityType="MyInvestModel.UsersData" />
-    <AssociationSet Name="FK_CashExpense_SummaryTable" Association="MyInvestModel.FK_CashExpense_SummaryTable">
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-      <End Role="CashExpense" EntitySet="CashExpense" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CashIncome_SummaryTable" Association="MyInvestModel.FK_CashIncome_SummaryTable">
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-      <End Role="CashIncome" EntitySet="CashIncome" />
-    </AssociationSet>
-    <AssociationSet Name="FK_StockHistory_StockIDList" Association="MyInvestModel.FK_StockHistory_StockIDList">
-      <End Role="StockIDList" EntitySet="StockIDList" />
-      <End Role="StockHistory" EntitySet="StockHistory" />
-    </AssociationSet>
-    <AssociationSet Name="FK_StockHistory_SummaryTable" Association="MyInvestModel.FK_StockHistory_SummaryTable">
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-      <End Role="StockHistory" EntitySet="StockHistory" />
-    </AssociationSet>
-    <AssociationSet Name="FK_SummaryTable_UsersData" Association="MyInvestModel.FK_SummaryTable_UsersData">
-      <End Role="UsersData" EntitySet="UsersData" />
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-    </AssociationSet>
-    <EntitySet Name="CurrencyRate" EntityType="MyInvestModel.CurrencyRate" />
-    <EntitySet Name="FXtradeTable" EntityType="MyInvestModel.FXtradeTable" />
-    <AssociationSet Name="FK_FXtradeTable_SummaryTable1" Association="MyInvestModel.FK_FXtradeTable_SummaryTable1">
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-      <End Role="FXtradeTable" EntitySet="FXtradeTable" />
-    </AssociationSet>
-    <EntitySet Name="Fund" EntityType="MyInvestModel.Fund" />
-    <EntitySet Name="Insurances" EntityType="MyInvestModel.Insurances" />
-    <AssociationSet Name="FK_Fund_SummaryTable" Association="MyInvestModel.FK_Fund_SummaryTable">
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-      <End Role="Fund" EntitySet="Fund" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Fund_UsersData" Association="MyInvestModel.FK_Fund_UsersData">
-      <End Role="UsersData" EntitySet="UsersData" />
-      <End Role="Fund" EntitySet="Fund" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Insurances_Insurances" Association="MyInvestModel.FK_Insurances_Insurances">
-      <End Role="SummaryTable" EntitySet="SummaryTable" />
-      <End Role="Insurances" EntitySet="Insurances" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Insurances_UsersData" Association="MyInvestModel.FK_Insurances_UsersData">
-      <End Role="UsersData" EntitySet="UsersData" />
-      <End Role="Insurances" EntitySet="Insurances" />
-    </AssociationSet>
-  </EntityContainer>
   <EntityType Name="CashExpense">
     <Key>
       <PropertyRef Name="ExCashID" />
@@ -62,9 +9,9 @@
     <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ExCashType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ExAmount" Type="Int32" />
-    <Property Name="ExDate" Type="DateTime" Precision="7" Nullable="false" />
+    <Property Name="ExDate" Type="DateTime" Nullable="false" Precision="7" />
     <Property Name="ExNote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_CashExpense_SummaryTable" FromRole="CashExpense" ToRole="SummaryTable" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_CashExpense_SummaryTable" FromRole="CashExpense" ToRole="SummaryTable" />
   </EntityType>
   <EntityType Name="CashIncome">
     <Key>
@@ -75,9 +22,110 @@
     <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="InCashType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="InAmount" Type="Int32" />
-    <Property Name="InDate" Type="DateTime" Precision="7" Nullable="false" />
+    <Property Name="InDate" Type="DateTime" Nullable="false" Precision="7" />
     <Property Name="InNote" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_CashIncome_SummaryTable" FromRole="CashIncome" ToRole="SummaryTable" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_CashIncome_SummaryTable" FromRole="CashIncome" ToRole="SummaryTable" />
+  </EntityType>
+  <EntityType Name="CurrencyRate">
+    <Key>
+      <PropertyRef Name="CurrencyClass" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CurrencyClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CashBuy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CashSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OnlineBuy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OnlineSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Fund">
+    <Key>
+      <PropertyRef Name="SerialNumber" />
+    </Key>
+    <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="STID" Type="Int32" />
+    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BuyOrSell" Type="Boolean" />
+    <Property Name="Fee" Type="Double" />
+    <Property Name="Units" Type="Double" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="NAV" Type="Double" />
+    <Property Name="CashFlow" Type="Double" />
+    <Property Name="RelateCash" Type="Boolean" Nullable="false" />
+    <Property Name="SellNAV" Type="Double" />
+    <Property Name="CurrentNAV" Type="Double" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_Fund_SummaryTable" FromRole="Fund" ToRole="SummaryTable" />
+    <NavigationProperty Name="UsersData" Relationship="Self.FK_Fund_UsersData" FromRole="Fund" ToRole="UsersData" />
+  </EntityType>
+  <EntityType Name="fund_data">
+    <Key>
+      <PropertyRef Name="FundID" />
+    </Key>
+    <Property Name="Date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="MemberCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FundCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FundNAV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Fluctuate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FluctuateRatio" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="TypeCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Currancy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BenifitCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="FXtradeTable">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SummaryId" Type="Int32" Nullable="false" />
+    <Property Name="CurrencyClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="NTD" Type="Double" />
+    <Property Name="USD" Type="Double" />
+    <Property Name="ExchargeRate" Type="Double" />
+    <Property Name="tax" Type="Double" />
+    <Property Name="TradeClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_FXtradeTable_SummaryTable" FromRole="FXtradeTable" ToRole="SummaryTable" />
+  </EntityType>
+  <EntityType Name="Insurances">
+    <Key>
+      <PropertyRef Name="SerialNumber" />
+    </Key>
+    <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="STID" Type="Int32" />
+    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="InsuranceName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="WithdrawDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="PaymentPerYear" Type="Int32" />
+    <Property Name="PayYear" Type="Int32" />
+    <Property Name="PurchaseOrWithdraw" Type="Boolean" />
+    <Property Name="Withdrawal" Type="Int32" />
+    <Property Name="Withdrawed" Type="Boolean" />
+    <Property Name="CashFlow" Type="Int32" />
+    <Property Name="RelateCash" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_Insurances_Insurances" FromRole="Insurances" ToRole="SummaryTable" />
+    <NavigationProperty Name="UsersData" Relationship="Self.FK_Insurances_UsersData" FromRole="Insurances" ToRole="UsersData" />
+  </EntityType>
+  <EntityType Name="Stock_data">
+    <Key>
+      <PropertyRef Name="StockID" />
+    </Key>
+    <Property Name="StockID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="證券名稱" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="成交股數" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="成交金額" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="開盤價" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="最高價" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="最低價" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="收盤價" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="漲跌價差" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="成交筆數" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="StockHistory" Relationship="Self.FK_StockHistory_Stock_data" FromRole="Stock_data" ToRole="StockHistory" />
   </EntityType>
   <EntityType Name="StockHistory">
     <Key>
@@ -94,39 +142,31 @@
     <Property Name="stockNetincome" Type="Int32" />
     <Property Name="stockNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
     <Property Name="CashAccount" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="StockIDList" Relationship="MyInvestModel.FK_StockHistory_StockIDList" FromRole="StockHistory" ToRole="StockIDList" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_StockHistory_SummaryTable" FromRole="StockHistory" ToRole="SummaryTable" />
-  </EntityType>
-  <EntityType Name="StockIDList">
-    <Key>
-      <PropertyRef Name="stockID" />
-    </Key>
-    <Property Name="stockID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="stockName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="StockHistory" Relationship="MyInvestModel.FK_StockHistory_StockIDList" FromRole="StockIDList" ToRole="StockHistory" />
-    <Property Name="stockLastPrice" Type="Decimal" Precision="6" Scale="2" />
+    <Property Name="stockLastAVG" Type="Decimal" Precision="6" Scale="2" />
+    <NavigationProperty Name="Stock_data" Relationship="Self.FK_StockHistory_Stock_data" FromRole="StockHistory" ToRole="Stock_data" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_StockHistory_SummaryTable" FromRole="StockHistory" ToRole="SummaryTable" />
   </EntityType>
   <EntityType Name="SummaryTable">
     <Key>
       <PropertyRef Name="STId" />
     </Key>
     <Property Name="STId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TradeType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="TradeDate" Type="DateTime" Precision="7" Nullable="false" />
-    <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="CashExpense" Relationship="MyInvestModel.FK_CashExpense_SummaryTable" FromRole="SummaryTable" ToRole="CashExpense" />
-    <NavigationProperty Name="CashIncome" Relationship="MyInvestModel.FK_CashIncome_SummaryTable" FromRole="SummaryTable" ToRole="CashIncome" />
-    <NavigationProperty Name="StockHistory" Relationship="MyInvestModel.FK_StockHistory_SummaryTable" FromRole="SummaryTable" ToRole="StockHistory" />
-    <NavigationProperty Name="UsersData" Relationship="MyInvestModel.FK_SummaryTable_UsersData" FromRole="SummaryTable" ToRole="UsersData" />
-    <NavigationProperty Name="FXtradeTable" Relationship="MyInvestModel.FK_FXtradeTable_SummaryTable1" FromRole="SummaryTable" ToRole="FXtradeTable" />
-    <NavigationProperty Name="Fund" Relationship="MyInvestModel.FK_Fund_SummaryTable" FromRole="SummaryTable" ToRole="Fund" />
-    <NavigationProperty Name="Insurances" Relationship="MyInvestModel.FK_Insurances_Insurances" FromRole="SummaryTable" ToRole="Insurances" />
+    <Property Name="TradeType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TradeDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="UserName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CashExpense" Relationship="Self.FK_CashExpense_SummaryTable" FromRole="SummaryTable" ToRole="CashExpense" />
+    <NavigationProperty Name="CashIncome" Relationship="Self.FK_CashIncome_SummaryTable" FromRole="SummaryTable" ToRole="CashIncome" />
+    <NavigationProperty Name="Fund" Relationship="Self.FK_Fund_SummaryTable" FromRole="SummaryTable" ToRole="Fund" />
+    <NavigationProperty Name="FXtradeTable" Relationship="Self.FK_FXtradeTable_SummaryTable" FromRole="SummaryTable" ToRole="FXtradeTable" />
+    <NavigationProperty Name="Insurances" Relationship="Self.FK_Insurances_Insurances" FromRole="SummaryTable" ToRole="Insurances" />
+    <NavigationProperty Name="StockHistory" Relationship="Self.FK_StockHistory_SummaryTable" FromRole="SummaryTable" ToRole="StockHistory" />
+    <NavigationProperty Name="UsersData" Relationship="Self.FK_SummaryTable_UsersData" FromRole="SummaryTable" ToRole="UsersData" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
       <PropertyRef Name="diagram_id" />
     </Key>
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="principal_id" Type="Int32" Nullable="false" />
     <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="version" Type="Int32" />
@@ -137,23 +177,25 @@
       <PropertyRef Name="UserName" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="RememberMe" Type="Boolean" />
     <Property Name="AnyOne" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_SummaryTable_UsersData" FromRole="UsersData" ToRole="SummaryTable" />
-    <NavigationProperty Name="Fund" Relationship="MyInvestModel.FK_Fund_UsersData" FromRole="UsersData" ToRole="Fund" />
-    <NavigationProperty Name="Insurances" Relationship="MyInvestModel.FK_Insurances_UsersData" FromRole="UsersData" ToRole="Insurances" />
     <Property Name="CashValue" Type="Double" />
     <Property Name="StockValue" Type="Double" />
     <Property Name="FXValue" Type="Double" />
     <Property Name="InsuranceValue" Type="Double" />
     <Property Name="FundValue" Type="Double" />
+    <NavigationProperty Name="Fund" Relationship="Self.FK_Fund_UsersData" FromRole="UsersData" ToRole="Fund" />
+    <NavigationProperty Name="Insurances" Relationship="Self.FK_Insurances_UsersData" FromRole="UsersData" ToRole="Insurances" />
+    <NavigationProperty Name="SummaryTable" Relationship="Self.FK_SummaryTable_UsersData" FromRole="UsersData" ToRole="SummaryTable" />
   </EntityType>
   <Association Name="FK_CashExpense_SummaryTable">
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="0..1" />
-    <End Type="MyInvestModel.CashExpense" Role="CashExpense" Multiplicity="*" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CashExpense" Type="Self.CashExpense" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SummaryTable">
         <PropertyRef Name="STId" />
@@ -164,8 +206,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_CashIncome_SummaryTable">
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="0..1" />
-    <End Type="MyInvestModel.CashIncome" Role="CashIncome" Multiplicity="*" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1" />
+    <End Role="CashIncome" Type="Self.CashIncome" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SummaryTable">
         <PropertyRef Name="STId" />
@@ -175,123 +217,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_StockHistory_StockIDList">
-    <End Type="MyInvestModel.StockIDList" Role="StockIDList" Multiplicity="0..1" />
-    <End Type="MyInvestModel.StockHistory" Role="StockHistory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="StockIDList">
-        <PropertyRef Name="stockID" />
-      </Principal>
-      <Dependent Role="StockHistory">
-        <PropertyRef Name="stockID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_StockHistory_SummaryTable">
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="1" />
-    <End Type="MyInvestModel.StockHistory" Role="StockHistory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SummaryTable">
-        <PropertyRef Name="STId" />
-      </Principal>
-      <Dependent Role="StockHistory">
-        <PropertyRef Name="STId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_SummaryTable_UsersData">
-    <End Type="MyInvestModel.UsersData" Role="UsersData" Multiplicity="1" />
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UsersData">
-        <PropertyRef Name="UserName" />
-      </Principal>
-      <Dependent Role="SummaryTable">
-        <PropertyRef Name="UserName" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="CurrencyRate">
-    <Key>
-      <PropertyRef Name="CurrencyClass" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CurrencyClass" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CashBuy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CashSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="OnlineBuy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="OnlineSell" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Date" Type="DateTime" Precision="0" />
-  </EntityType>
-  <EntityType Name="FXtradeTable">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="SummaryId" Type="Int32" Nullable="false" />
-    <Property Name="CurrencyClass" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="NTD" Type="Double" />
-    <Property Name="USD" Type="Double" />
-    <Property Name="ExchargeRate" Type="Double" />
-    <Property Name="tax" Type="Double" />
-    <Property Name="Tradetime" Type="DateTime" Precision="7" />
-    <Property Name="TradeClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_FXtradeTable_SummaryTable1" FromRole="FXtradeTable" ToRole="SummaryTable" />
-  </EntityType>
-  <Association Name="FK_FXtradeTable_SummaryTable1">
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="1" />
-    <End Type="MyInvestModel.FXtradeTable" Role="FXtradeTable" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SummaryTable">
-        <PropertyRef Name="STId" />
-      </Principal>
-      <Dependent Role="FXtradeTable">
-        <PropertyRef Name="SummaryId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Fund">
-    <Key>
-      <PropertyRef Name="SerialNumber" />
-    </Key>
-    <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="STID" Type="Int32" />
-    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="FundName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="BuyOrSell" Type="Boolean" />
-    <Property Name="Fee" Type="Double" />
-    <Property Name="Units" Type="Double" />
-    <Property Name="Date" Type="DateTime" Precision="7" Nullable="false" />
-    <Property Name="NAV" Type="Double" />
-    <Property Name="CashFlow" Type="Double" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_Fund_SummaryTable" FromRole="Fund" ToRole="SummaryTable" />
-    <NavigationProperty Name="UsersData" Relationship="MyInvestModel.FK_Fund_UsersData" FromRole="Fund" ToRole="UsersData" />
-    <Property Name="RelateCash" Type="Boolean" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Insurances">
-    <Key>
-      <PropertyRef Name="SerialNumber" />
-    </Key>
-    <Property Name="SerialNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="STID" Type="Int32" />
-    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="InsuranceName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="PurchaseDate" Type="DateTime" Precision="7" Nullable="false" />
-    <Property Name="WithdrawDate" Type="DateTime" Precision="7" Nullable="false" />
-    <Property Name="PaymentPerYear" Type="Int32" />
-    <Property Name="PayYear" Type="Int32" />
-    <Property Name="PurchaseOrWithdraw" Type="Boolean" />
-    <Property Name="Withdrawal" Type="Int32" />
-    <Property Name="Withdrawed" Type="Boolean" />
-    <Property Name="CashFlow" Type="Int32" />
-    <NavigationProperty Name="SummaryTable" Relationship="MyInvestModel.FK_Insurances_Insurances" FromRole="Insurances" ToRole="SummaryTable" />
-    <NavigationProperty Name="UsersData" Relationship="MyInvestModel.FK_Insurances_UsersData" FromRole="Insurances" ToRole="UsersData" />
-    <Property Name="RelateCash" Type="Boolean" Nullable="false" />
-  </EntityType>
   <Association Name="FK_Fund_SummaryTable">
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="0..1" />
-    <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="*" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1" />
+    <End Role="Fund" Type="Self.Fund" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SummaryTable">
         <PropertyRef Name="STId" />
@@ -302,8 +230,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Fund_UsersData">
-    <End Type="MyInvestModel.UsersData" Role="UsersData" Multiplicity="0..1" />
-    <End Type="MyInvestModel.Fund" Role="Fund" Multiplicity="*" />
+    <End Role="UsersData" Type="Self.UsersData" Multiplicity="0..1" />
+    <End Role="Fund" Type="Self.Fund" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="UsersData">
         <PropertyRef Name="UserName" />
@@ -313,9 +241,23 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_FXtradeTable_SummaryTable">
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
+    <End Role="FXtradeTable" Type="Self.FXtradeTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SummaryTable">
+        <PropertyRef Name="STId" />
+      </Principal>
+      <Dependent Role="FXtradeTable">
+        <PropertyRef Name="SummaryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Insurances_Insurances">
-    <End Type="MyInvestModel.SummaryTable" Role="SummaryTable" Multiplicity="0..1" />
-    <End Type="MyInvestModel.Insurances" Role="Insurances" Multiplicity="*" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Insurances" Type="Self.Insurances" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SummaryTable">
         <PropertyRef Name="STId" />
@@ -326,8 +268,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Insurances_UsersData">
-    <End Type="MyInvestModel.UsersData" Role="UsersData" Multiplicity="0..1" />
-    <End Type="MyInvestModel.Insurances" Role="Insurances" Multiplicity="*" />
+    <End Role="UsersData" Type="Self.UsersData" Multiplicity="0..1" />
+    <End Role="Insurances" Type="Self.Insurances" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="UsersData">
         <PropertyRef Name="UserName" />
@@ -337,4 +279,94 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_StockHistory_Stock_data">
+    <End Role="Stock_data" Type="Self.Stock_data" Multiplicity="0..1" />
+    <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stock_data">
+        <PropertyRef Name="StockID" />
+      </Principal>
+      <Dependent Role="StockHistory">
+        <PropertyRef Name="stockID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockHistory_SummaryTable">
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="1" />
+    <End Role="StockHistory" Type="Self.StockHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SummaryTable">
+        <PropertyRef Name="STId" />
+      </Principal>
+      <Dependent Role="StockHistory">
+        <PropertyRef Name="STId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SummaryTable_UsersData">
+    <End Role="UsersData" Type="Self.UsersData" Multiplicity="1" />
+    <End Role="SummaryTable" Type="Self.SummaryTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UsersData">
+        <PropertyRef Name="UserName" />
+      </Principal>
+      <Dependent Role="SummaryTable">
+        <PropertyRef Name="UserName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MyInvestEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CashExpense" EntityType="Self.CashExpense" />
+    <EntitySet Name="CashIncome" EntityType="Self.CashIncome" />
+    <EntitySet Name="CurrencyRate" EntityType="Self.CurrencyRate" />
+    <EntitySet Name="Fund" EntityType="Self.Fund" />
+    <EntitySet Name="fund_data" EntityType="Self.fund_data" />
+    <EntitySet Name="FXtradeTable" EntityType="Self.FXtradeTable" />
+    <EntitySet Name="Insurances" EntityType="Self.Insurances" />
+    <EntitySet Name="Stock_data" EntityType="Self.Stock_data" />
+    <EntitySet Name="StockHistory" EntityType="Self.StockHistory" />
+    <EntitySet Name="SummaryTable" EntityType="Self.SummaryTable" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="UsersData" EntityType="Self.UsersData" />
+    <AssociationSet Name="FK_CashExpense_SummaryTable" Association="Self.FK_CashExpense_SummaryTable">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="CashExpense" EntitySet="CashExpense" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CashIncome_SummaryTable" Association="Self.FK_CashIncome_SummaryTable">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="CashIncome" EntitySet="CashIncome" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fund_SummaryTable" Association="Self.FK_Fund_SummaryTable">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="Fund" EntitySet="Fund" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fund_UsersData" Association="Self.FK_Fund_UsersData">
+      <End Role="UsersData" EntitySet="UsersData" />
+      <End Role="Fund" EntitySet="Fund" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FXtradeTable_SummaryTable" Association="Self.FK_FXtradeTable_SummaryTable">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="FXtradeTable" EntitySet="FXtradeTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Insurances_Insurances" Association="Self.FK_Insurances_Insurances">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="Insurances" EntitySet="Insurances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Insurances_UsersData" Association="Self.FK_Insurances_UsersData">
+      <End Role="UsersData" EntitySet="UsersData" />
+      <End Role="Insurances" EntitySet="Insurances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockHistory_Stock_data" Association="Self.FK_StockHistory_Stock_data">
+      <End Role="Stock_data" EntitySet="Stock_data" />
+      <End Role="StockHistory" EntitySet="StockHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockHistory_SummaryTable" Association="Self.FK_StockHistory_SummaryTable">
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+      <End Role="StockHistory" EntitySet="StockHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SummaryTable_UsersData" Association="Self.FK_SummaryTable_UsersData">
+      <End Role="UsersData" EntitySet="UsersData" />
+      <End Role="SummaryTable" EntitySet="SummaryTable" />
+    </AssociationSet>
+  </EntityContainer>
 </Schema>

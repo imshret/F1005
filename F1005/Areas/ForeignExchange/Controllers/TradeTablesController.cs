@@ -17,16 +17,23 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // GET: TradeTables
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
-        //public ActionResult Index()
-        //{
-        //    return RedirectToAction("About","Home");
-        //}
+
 
         // GET: TradeTables/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,6 +49,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // GET: TradeTables/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 
@@ -50,17 +62,15 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create( FXtradeTable tradeTable, SummaryTable summaryTable)
+        public ActionResult Create( FXtradeTable tradeTable, SummaryTable summaryTable,UsersData usersData)
         {
             if (ModelState.IsValid)
             {
-                //var x = Session["User"].ToString();
-                //var x = "5566";
-                //summaryTable.UserName = x; 
+                //存總表
                 db.SummaryTable.Add(summaryTable);
                 db.SaveChanges();
 
-                //summaryTable.UserName = x;
+                //存外匯交易表
                 var uid = db.SummaryTable.Select(c => c.STId).ToList().LastOrDefault();
                 tradeTable.SummaryId = uid;
                 db.FXtradeTable.Add(tradeTable);
@@ -76,6 +86,22 @@ namespace F1005.Areas.ForeignExchange.Controllers
                     var change = tradeTable.NTD * -1;
                     cashincome.InAmount = Convert.ToInt32(change);
                     db.CashIncome.Add(cashincome);
+                    db.SaveChanges();
+                    //更新個人資產表
+                    TestHomeController th = new TestHomeController();
+                    var name = summaryTable.UserName;
+                    var ud = th.GetUsersData(name);
+
+                    usersData.FXValue = th.SaveUserdata(name);
+                    usersData.UserName = ud[0].UserName;
+                    var cv = Math.Abs(tradeTable.NTD.Value);
+                    usersData.CashValue = ud[0].CashValue + tradeTable.NTD;
+                    usersData.InsuranceValue = ud[0].InsuranceValue;
+                    usersData.StockValue = ud[0].StockValue;
+                    usersData.FundValue = ud[0].FundValue;
+                    usersData.Email = ud[0].Email;
+                    usersData.Password = ud[0].Password;
+                    db.Entry(usersData).State = EntityState.Modified;
                     db.SaveChanges();
                 }
                 else
@@ -96,7 +122,31 @@ namespace F1005.Areas.ForeignExchange.Controllers
                     }
                     db.CashExpense.Add(cashexpense);
                     db.SaveChanges();
+                    //更新個人資產表
+                    TestHomeController th = new TestHomeController();
+                    var name = summaryTable.UserName;
+                    var ud = th.GetUsersData(name);
+
+                    usersData.FXValue = th.SaveUserdata(name);
+                    usersData.UserName = ud[0].UserName;
+                    var cv = Math.Abs(tradeTable.NTD.Value);
+                    if (tradeTable.TradeClass == "買入(不要連動新臺幣帳戶)")
+                    {
+                        usersData.CashValue = ud[0].CashValue;
+                    }
+                    else
+                    {
+                        usersData.CashValue = ud[0].CashValue - tradeTable.NTD;
+                    }
+                    usersData.InsuranceValue = ud[0].InsuranceValue;
+                    usersData.StockValue = ud[0].StockValue;
+                    usersData.FundValue = ud[0].FundValue;
+                    usersData.Email = ud[0].Email;
+                    usersData.Password = ud[0].Password;
+                    db.Entry(usersData).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
+
                 return RedirectToAction("Index");
             }
             return View(tradeTable);
@@ -105,6 +155,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
         // GET: TradeTables/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -153,6 +208,11 @@ namespace F1005.Areas.ForeignExchange.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             FXtradeTable tradeTable = await db.FXtradeTable.FindAsync(id);
             db.FXtradeTable.Remove(tradeTable);
             await db.SaveChangesAsync();

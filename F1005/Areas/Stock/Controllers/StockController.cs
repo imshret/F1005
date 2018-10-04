@@ -3,6 +3,7 @@ using F1005.Models;
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,7 +26,7 @@ namespace F1005.Areas.Stock.Controllers
         //買進股票
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateStockBuy([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote,CashAccount")]StockHistory stockHistory)
+        public ActionResult CreateStockBuy([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockTP,stockNetincome,stockNote,CashAccount")]StockHistory stockHistory, UsersData userdata)
         {
             if (Session["User"] == null)
             {
@@ -34,10 +35,12 @@ namespace F1005.Areas.Stock.Controllers
 
             if (ModelState.IsValid)
             {
+
                 //存入總表獲得交易序號
                 db.SummaryTable.Add(summaryTable);
                 db.SaveChanges();
                 var id = db.SummaryTable.Select(c => c.STId).ToList().LastOrDefault();
+                bool cashflag = false;
                 if (stockHistory.CashAccount)
                 {
                     CashExpense expense = new CashExpense();
@@ -47,6 +50,7 @@ namespace F1005.Areas.Stock.Controllers
                     expense.ExAmount = (stockHistory.stockNetincome) * (-1);
                     expense.ExDate = summaryTable.TradeDate;
                     expense.ExNote = "買進股票";
+                    cashflag = true;
                     db.CashExpense.Add(expense);
                     db.SaveChanges();
                 }
@@ -61,7 +65,23 @@ namespace F1005.Areas.Stock.Controllers
                 stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
-                ViewBag.Alert = "alert('新增成功')";
+
+                //計算股票現值
+                var name = summaryTable.UserName;
+                decimal pvsum = calculator.getPVsum(name);
+                var ud = calculator.GetUserdata(name);
+
+                userdata.StockValue = (double)pvsum;
+                userdata.UserName = ud[0].UserName;
+                userdata.CashValue =(cashflag)? (ud[0].CashValue +Math.Abs((double)stockHistory.stockNetincome)): ud[0].CashValue;
+                userdata.Password = ud[0].Password;
+                userdata.Email = ud[0].Email;
+                userdata.FXValue = ud[0].FXValue;
+                userdata.InsuranceValue = ud[0].InsuranceValue;
+                userdata.FundValue = ud[0].FundValue;
+                db.Entry(userdata).State = EntityState.Modified;
+                db.SaveChanges();           
+
                 return RedirectToAction("Index");
             }
 
@@ -71,7 +91,7 @@ namespace F1005.Areas.Stock.Controllers
         //賣出股票
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateStockSell([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory)
+        public ActionResult CreateStockSell([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory,UsersData userdata)
         {
             if (Session["User"] == null)
             {
@@ -107,6 +127,23 @@ namespace F1005.Areas.Stock.Controllers
                 stockHistory.STId = id;
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
+
+                //計算股票現值
+                var name = summaryTable.UserName;
+                decimal pvsum = calculator.getPVsum(name);
+                var ud = calculator.GetUserdata(name);
+
+                userdata.StockValue = (double)pvsum;
+                userdata.UserName = ud[0].UserName;
+                userdata.CashValue =ud[0].CashValue + Math.Abs((double)stockHistory.stockNetincome);
+                userdata.Password = ud[0].Password;
+                userdata.Email = ud[0].Email;
+                userdata.FXValue = ud[0].FXValue;
+                userdata.InsuranceValue = ud[0].InsuranceValue;
+                userdata.FundValue = ud[0].FundValue;
+                db.Entry(userdata).State = EntityState.Modified;
+                db.SaveChanges();
+
 
                 return RedirectToAction("Index");
             }
@@ -224,6 +261,8 @@ namespace F1005.Areas.Stock.Controllers
             }
         }
 
+
+        //查詢除權庫存數量與成本
         [HttpGet]
         public JsonResult EXSCost(string searchid)
         {
@@ -281,7 +320,7 @@ namespace F1005.Areas.Stock.Controllers
         //匯入除息資料
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateEXD([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory)
+        public ActionResult CreateEXD([Bind(Include = "TradeType,TradeDate,UserName")]SummaryTable summaryTable, [Bind(Include = "stockID,stockPrice,stockAmount,stockFee,stockTax,stockNetincome,stockNote")]StockHistory stockHistory, UsersData userdata)
         {
             if (Session["User"] == null)
             {
@@ -317,6 +356,22 @@ namespace F1005.Areas.Stock.Controllers
                 int _cashflow = (int)stockHistory.stockNetincome;
                 stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 db.StockHistory.Add(stockHistory);
+                db.SaveChanges();
+
+                //計算股票現值
+                var name = summaryTable.UserName;
+                decimal pvsum = calculator.getPVsum(name);
+                var ud = calculator.GetUserdata(name);
+
+                userdata.StockValue = (double)pvsum;
+                userdata.UserName = ud[0].UserName;
+                userdata.CashValue = ud[0].CashValue + Math.Abs((double)stockHistory.stockNetincome);
+                userdata.Password = ud[0].Password;
+                userdata.Email = ud[0].Email;
+                userdata.FXValue = ud[0].FXValue;
+                userdata.InsuranceValue = ud[0].InsuranceValue;
+                userdata.FundValue = ud[0].FundValue;
+                db.Entry(userdata).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -365,6 +420,7 @@ namespace F1005.Areas.Stock.Controllers
         }
 
 
+        //計算現金餘額
         [HttpGet]
         public JsonResult Cash()
         {
@@ -381,7 +437,8 @@ namespace F1005.Areas.Stock.Controllers
             //回傳現金帳戶狀態
             if (cashaccount >= 0)
             {
-                return Json(cashaccount, JsonRequestBehavior.AllowGet);
+               decimal  Cash= cashaccount.Value;
+                return Json(Cash, JsonRequestBehavior.AllowGet);
                 //return Content(InvDatas);
             }
             else
@@ -389,6 +446,55 @@ namespace F1005.Areas.Stock.Controllers
                 return Json("無現金資料", JsonRequestBehavior.AllowGet);
             }
         }
+
+        //帳戶餘額總攬
+        [HttpGet]
+        public ActionResult GetAccountState()
+        {
+
+            AVGCalculator calculator = new AVGCalculator();
+            var username = Session["User"].ToString();
+            var InvList3 = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => new InvViewModel
+            {
+                stockid = c.Stock_data.StockID,
+                stockname = c.Stock_data.證券名稱,
+                amount = c.stockAmount,
+                name = c.SummaryTable.TradeType,
+                avgcost = c.stockLastAVG,
+                pv = c.Stock_data.收盤價
+
+            }, (id, invVM) => new
+            {
+                stockid = invVM.Select(c => c.stockid).FirstOrDefault(),
+                stockname = "(" + invVM.Select(c => c.stockid).FirstOrDefault() + ")" + invVM.Select(c => c.stockname).FirstOrDefault(),
+                stockamount = invVM.Select(c => c.amount).Sum(),
+                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
+            });
+            List<InvViewModel3> testmodel = new List<InvViewModel3>();
+            foreach (var item in InvList3)
+            {
+                testmodel.Add(new InvViewModel3
+                {
+                    indcost= Convert.ToDecimal(item.stockamount) * calculator.GetAvg2(username, item.stockid),
+                    indpv = calculator.getpv(item.stockamount, item.stockpv),    //現值
+                });
+            }
+
+            List<accstate> AccountState = new List<accstate>();
+            AccountState.Add(new accstate
+            {
+                //成本加總=每檔庫存個股成本加總
+                NetAll = ((testmodel.Sum(c => c.indcost))).ToString("c2"),
+                //現值加總=每檔庫存個股現值加總
+                ProfitAll = (testmodel.Sum(c => c.indpv) - testmodel.Sum(c => c.indcost)).ToString("c2"),
+                //加總獲利
+                percentAll=( (testmodel.Sum(c => c.indpv)- testmodel.Sum(c => c.indcost))/ testmodel.Sum(c => c.indcost)).ToString("#0.00%")
+            });
+
+            return Json(AccountState, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         //顯示特定User的股票買賣紀錄
         public ActionResult GetAllList()
@@ -413,7 +519,47 @@ namespace F1005.Areas.Stock.Controllers
         //顯示user股票庫存
         public ActionResult GetAllInv()
         {
+            AVGCalculator calculator = new AVGCalculator();
+            var username = Session["User"].ToString();
+            var InvList2 = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => new InvViewModel
+            {
+                stockid = c.Stock_data.StockID,
+                stockname = c.Stock_data.證券名稱,
+                amount = c.stockAmount,
+                name = c.SummaryTable.TradeType,
+                avgcost = c.stockLastAVG,
+                pv = c.Stock_data.收盤價
 
+            }, (id, invVM) => new
+            {
+                stockid = invVM.Select(c => c.stockid).FirstOrDefault(),
+                stockname = "(" + invVM.Select(c => c.stockid).FirstOrDefault() + ")" + invVM.Select(c => c.stockname).FirstOrDefault(),
+                stockamount = invVM.Select(c => c.amount).Sum(),
+                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
+            });
+            List<InvViewModel2> testmodel = new List<InvViewModel2>();
+            foreach (var item in InvList2)
+            {
+                testmodel.Add(new InvViewModel2
+                {
+                    stockname = item.stockname,
+                    stockamount = item.stockamount,
+                    avgcost = calculator.GetAvg2(username, item.stockid).ToString("c2"),
+                    stocklastprice = (Convert.ToDecimal(item.stockpv)).ToString("C2"),
+                    pv=calculator.getpv(item.stockamount, item.stockpv).ToString("C0"),
+                    Net =(( (Convert.ToDecimal(item.stockpv)) - calculator.GetAvg2(username, item.stockid)) * Convert.ToDecimal( item.stockamount)).ToString("C2"),
+                    profitpercent =calculator.getProfitPercent(calculator.GetAvg2(username, item.stockid), item.stockpv).ToString("#0.00%")
+
+                });
+
+            }
+            return Json(testmodel, JsonRequestBehavior.AllowGet);
+        }
+
+
+            //pie圖用
+        public JsonResult GetCurrentDoughnut()
+        {
             AVGCalculator calculator = new AVGCalculator();
             var username = Session["User"].ToString();
 
@@ -425,7 +571,6 @@ namespace F1005.Areas.Stock.Controllers
 
             });
 
-
             var InvList2 = db.StockHistory.Where(c => c.SummaryTable.UserName == username).GroupBy(c => c.stockID, c => new InvViewModel
             {
                 stockid = c.Stock_data.StockID,
@@ -435,16 +580,12 @@ namespace F1005.Areas.Stock.Controllers
                 avgcost = c.stockLastAVG,
                 pv = c.Stock_data.收盤價
 
-
             }, (id, invVM) => new
             {
                 stockid = invVM.Select(c => c.stockid).FirstOrDefault(),
                 stockname = "(" + invVM.Select(c => c.stockid).FirstOrDefault() + ")" + invVM.Select(c => c.stockname).FirstOrDefault(),
                 stockamount = invVM.Select(c => c.amount).Sum(),
-
-                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),
-
-
+                stockpv = invVM.Select(c => c.pv).FirstOrDefault(),                
             });
             List<InvViewModel2> testmodel = new List<InvViewModel2>();
             foreach (var item in InvList2)
@@ -452,20 +593,39 @@ namespace F1005.Areas.Stock.Controllers
                 testmodel.Add(new InvViewModel2
                 {
                     stockname = item.stockname,
-                    stockamount = item.stockamount,
-                    avgcost = calculator.GetAvg2(username, item.stockid).ToString("c2"),
-                    stocklastprice = (Convert.ToDecimal(item.stockpv)).ToString("C2"),
-                    pv = (Convert.ToDecimal(item.stockamount) * Convert.ToDecimal(item.stockpv)).ToString("C0"),
+                    pvDoughnut = (Convert.ToDecimal(item.stockamount) * Convert.ToDecimal(item.stockpv)),
 
                 });
 
             }
-
-
-            return Json(testmodel, JsonRequestBehavior.AllowGet);
+            decimal pvtotal = 0;
+            foreach(var item in testmodel)
+            {
+                pvtotal = pvtotal + (decimal)item.pvDoughnut;
+            };
+            var query = InvList2.ToList().Select(c => new
+            {
+                stockname = c.stockname,
+                percentage =(((Convert.ToDecimal(c.stockpv) * Convert.ToDecimal(c.stockamount) )/ pvtotal)*100).ToString("f2")
+            }
+            );
+            return Json(query, JsonRequestBehavior.AllowGet);
         }
 
 
+    }
+
+    public class accstate
+    {
+        public string NetAll { get; set; }
+         public string  ProfitAll { get; set; }
+        public string percentAll { get; set; }
+    }
+
+    public class InvViewModel3 
+    {
+        public decimal indcost { get; set; }
+        public decimal indpv { get; set; }
     }
 
     internal class InvViewModel2
@@ -475,7 +635,9 @@ namespace F1005.Areas.Stock.Controllers
         public string avgcost { get; set; }
         public string stocklastprice { get; set; }
         public string pv { get; set; }
-
+        public decimal? pvDoughnut { get; set; }
+        public string Net { get;  set; }
+        public string profitpercent { get;  set; }
     }
 
     public class InvViewModel

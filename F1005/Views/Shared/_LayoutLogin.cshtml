@@ -16,16 +16,8 @@
     <link href="~/Content/jsgrid/jsgrid.min.css" rel="stylesheet" />
     <link href="~/Content/jsgrid/jsgrid-theme.min.css" rel="stylesheet" />
 
-    @*<style>
-        body{
-            font-family:'Microsoft JhengHei';
-        }
-    </style>*@
-
-
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-
 
     @RenderSection("styles", required: false)
 
@@ -46,8 +38,6 @@
 
             $("#ColorChangeO").css("width", "170px");
             $("#MenuWidth").css("width", "170px");
-
-
         });
 
     </script>
@@ -124,6 +114,7 @@
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@Scripts.Render("~/bundles/jsgrid")
+
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 	@*3Dscroll*@
 	<script src="~/Areas/Main/3DScroll/jquery.tiltedpage-scroll.js"></script>

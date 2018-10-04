@@ -37,5 +37,6 @@ namespace F1005.Models
         public virtual DbSet<SummaryTable> SummaryTable { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<UsersData> UsersData { get; set; }
+        public object FinanceAsset { get; internal set; }
     }
 }

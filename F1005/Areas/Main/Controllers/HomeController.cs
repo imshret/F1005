@@ -17,7 +17,6 @@ namespace F1005.Areas.Main.Controllers
                 return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
 
-
             XDocument doc = XDocument.Load("https://udn.com/rssfeed/news/2/6645?ch=news");
 
             var p = (from c in doc.Descendants("item")

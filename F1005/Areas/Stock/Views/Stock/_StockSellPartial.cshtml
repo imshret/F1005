@@ -2,8 +2,8 @@
 <div class="row">
     <div class="form-group">
         <div class="col-md-12">
-            <input id="Button1" type="button" value="查詢庫存與成本" class="btn btn-info" onclick="SearchInv()" />
-            <input id="Button2" type="button" value="計算獲利" class="btn btn-info" onclick="CalculateProfit()" />
+            <input id="Button1" type="button" value="查詢庫存與成本" class="btn btn-default" onclick="SearchInv()" />
+            <input id="Button2" type="button" value="計算獲利" class="btn btn-default" onclick="CalculateProfit()" />
             <spin id="inv-error">
         </div>
 
@@ -15,7 +15,7 @@
             @Html.ValidationSummary(true)
 
             <div class="form-group">
-                @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "STOCK" })
+                @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "股票賣出" })
             </div>
 
             <div class="form-group">
@@ -40,7 +40,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.Label("庫存數量")
+                    @Html.Label("庫存數量(股)")
                     <input type="text" class="form-control" id="StocksellInv" readonly="" />
                 </div>
             </div>
@@ -54,15 +54,15 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.stockAmount)@Html.ValidationMessageFor(m => m.stockAmount, null, new { @style = "color:orangered" })
                     @*<label for="Stockbuyid">賣出數量(張)</label>*@
-                    @Html.TextBoxFor(m => m.stockAmount, null, new { @class = "form-control", @id = "StocksellAmount" })
+                    @Html.TextBoxFor(m => m.stockAmount, null, new { @class = "form-control", @id = "StocksellAmount" , @oninput = "CalculateProfit()" })
                     @*<input type="text" class="form-control" id="StocksellAmount" oninput="CalculateCost()" />*@
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.stockPrice)@Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered" })
+                    @Html.LabelFor(m => m.stockPrice)@Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered"  })
                     @*<label for="Stockbuyid">賣出價格</label>*@
-                    @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "StocksellPrice" })
+                    @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "StocksellPrice", @oninput = "CalculateProfit()" })
                     @*<input type="text" class="form-control" id="StocksellPrice" oninput="CalculateCost()" />*@
                 </div>
             </div>
