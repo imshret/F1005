@@ -1,0 +1,204 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@section styles
+{
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" />
+}
+
+
+<div class="col-md-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item active">
+            <a class="nav-link disabled" href="#PageCash" data-toggle="tab" role="tab">現金</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#PageStock" data-toggle="tab" role="tab">股票</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#PageFX" data-toggle="tab" role="tab">外匯</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#PageIs" data-toggle="tab" role="tab">儲蓄險</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#PageFund" data-toggle="tab" role="tab">基金</a>
+        </li>
+
+
+    </ul>
+    <div class="tab-content " id="myTabContent">
+
+        <div class="tab-pane active" id="PageCash" role="tabpanel">
+            <span>@Html.Action("IndexCashI", "BS")</span>
+            <span>@Html.Action("IndexCashE", "BS")</span>
+        </div>
+
+        <div class="tab-pane fade" id="PageStock" role="tabpanel">
+            <span>@Html.Action("IndexStock", "BS")</span>
+
+        </div>
+
+        <div class="tab-pane fade" id="PageFX" role="tabpanel">
+            <span>@Html.Action("IndexFX", "BS")</span>
+
+        </div>
+        <div class="tab-pane fade" id="PageIs" role="tabpanel">
+            <span>@Html.Action("IndexIs", "BS")</span>
+
+        </div>
+        <div class="tab-pane fade" id="PageFund" role="tabpanel">
+            <span>@Html.Action("IndexFund", "BS")</span>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+
+    <script>
+
+            function LoadData() {
+                var datatable = $('#GetCashI').DataTable({
+                    ajax: "@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)",
+                    "ajax": { "url":"@Url.Action("GetCashI", "BS", new { Area = "BStage" }, null)","dataSrc":""},
+                    columns: [
+                        { title: 'UserName', data: "UserName" },
+                        { title: 'InCashType', data: "InCashType" },
+                        { title: 'InAmount', data: "InAmount" },
+                        { title: 'InDate', data: "InDate" },
+                        { title: 'InNote', data: "InNote" }
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
+                });
+
+                var datatable = $('#GetCashE').DataTable({
+                    @*ajax: "@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetCashE", "BS", new { Area = "BStage" }, null)","dataSrc":""},
+                    columns: [
+                        { title: 'UserName', data: "UserName" },
+                        { title: 'ExCashType', data: "ExCashType" },
+                        { title: 'ExAmount', data: "ExAmount" },
+                        { title: 'ExDate', data: "ExDate" },
+                        { title: 'ExNote', data: "ExNote" }
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
+                });
+
+                var datatable = $('#GetStock').DataTable({
+                    ajax: "@Url.Action("GetStock", "BS", new { Area = "BStage" }, null)",
+                    columns: [
+                        { title: 'UserName', data: "UserName" },
+                        { title: 'stockID', data: "stockID" },
+                        { title: 'stockPrice', data: "stockPrice" },
+                        { title: 'stockAmount', data: "stockAmount" },
+                        { title: 'stockNetincome', data: "stockNetincome" },
+                        { title: 'stockNote', data: "stockNote" }
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
+                });
+
+                var datatable = $('#GetFX').DataTable({
+                    @*ajax: "@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetFX", "BS", new { Area = "BStage" }, null)","dataSrc":""},
+                    columns: [
+                        { title: 'UserName', data: "UserName" },
+                        { title: 'CurrencyClass', data: "CurrencyClass" },
+                        { title: 'TradeDate', data: "TradeDate" },                  
+                        { title: 'Cost', data: "NTD" },
+                        { title: 'note', data: "note" }
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
+                });
+
+                var datatable = $('#GetIs').DataTable({
+                    @*ajax: "@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetIs", "BS", new { Area = "BStage" }, null)","dataSrc":""},
+                    columns: [
+                        { title: 'UserName', data: "UserName" },
+                        { title: 'InsuranceName', data: "InsuranceName" },
+                        { title: 'PurchaseDate', data: "PurchaseDate" },
+                        { title: 'WithdrawDate', data: "WithdrawDate" },
+                        { title: 'PaymentPerYear', data: "PaymentPerYear" },
+                        { title: 'PayYear', data: "PayYear" },
+                        { title: 'Cost', data: "CashFlow" },
+                        { title: 'Withdrawal', data: "Withdrawal" }
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
+                });
+
+                var datatable = $('#GetFund').DataTable({
+                    @*ajax: "@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)",*@
+                    "ajax": { "url":"@Url.Action("GetFund", "BS", new { Area = "BStage" }, null)","dataSrc":""},
+                    columns: [
+                        { title: 'UserName', data: "UserName" },
+                        { title: 'FundName', data: "FundName" },
+                        { title: 'Date', data: "Date" },
+                        { title: 'NAV', data: "NAV" },
+                        { title: 'Units', data: "Units" },
+                        { title: 'Cost', data: "CashFlowX" }                        
+                    ],
+                    retrieve: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ],
+                });
+            }
+            $(function () {
+                LoadData();
+            });
+    </script>
+}
+

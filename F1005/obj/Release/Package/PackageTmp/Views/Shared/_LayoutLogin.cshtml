@@ -10,8 +10,8 @@
 	<link href="~/Areas/Main/3DScroll/3Dsite.css" rel="stylesheet" />
 	<link href="~/Areas/Main/3DScroll/tiltedpage-scroll.css" rel="stylesheet" />
 
-	<link href="~/Areas/Main/Smartmenus/sm-core-css.css" rel="stylesheet" />
-	<link href="~/Areas/Main/Smartmenus/sm-blue.css" rel="stylesheet" />
+	@*<link href="~/Areas/Main/Smartmenus/sm-core-css.css" rel="stylesheet" />
+	<link href="~/Areas/Main/Smartmenus/sm-blue.css" rel="stylesheet" />*@
 
 	<link href="~/Content/jsgrid/jsgrid.min.css" rel="stylesheet" />
 	<link href="~/Content/jsgrid/jsgrid-theme.min.css" rel="stylesheet" />
@@ -21,7 +21,11 @@
 			overflow: hidden;
 			background-color: #333;
 		}
-
+		#navbar li {
+			width:150px;
+			text-align:center;
+		}
+		
 		/* Page content */
 		.content {
 			padding: 16px;
@@ -47,7 +51,7 @@
 			background-color: black;
 			color: white;
 			text-align: center;
-			height: 100px;
+			height: 8%;
 		}
 
 		#navbar a {
@@ -103,14 +107,15 @@
 				<div class="navbar-header">
 					<span>MYINVEST-我的投資管家</span>
 				</div>
-				<div style="margin-left:32%;">
-					<ul class="nav navbar-nav">
-						<li>@Html.ActionLink("首頁", "Index", "Home", new { Area = "Main" }, null)</li>
+
+					<ul class="nav navbar-nav" style="margin-left:15%" >
+						<li> @Html.ActionLink("首頁", "Index", "Home", new { Area = "Main" }, null) </li>
+						
 						<li>@Html.ActionLink("帳戶總覽", "Index", "MyAsset", new { Area = "Overview" }, null)</li>
 						<li>@Html.ActionLink("股票", "Index", "Stock", new { Area = "Stock" }, null)</li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								現金
+								 現金 
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -120,7 +125,7 @@
 						</li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								外匯
+								 外匯 
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -133,9 +138,9 @@
 						<li>@Html.ActionLink("基金", "Index", "Funds", new { Area = "InsurancesandFund" }, null)</li>
 
 					</ul>
-				</div>
+
 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
+					<li class="dropdown" >
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="userxxx">
 							@Session["User"]
 							<span class="caret"></span>
@@ -179,8 +184,8 @@
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 	@*3Dscroll*@
 	<script src="~/Areas/Main/3DScroll/jquery.tiltedpage-scroll.js"></script>
-	@*NavBar*@
-	<script src="~/Areas/Main/Smartmenus/jquery.smartmenus.js"></script>
+	@*@*NavBar*@
+	@*<script src="~/Areas/Main/Smartmenus/jquery.smartmenus.js"></script>*@
 	@*Notify*@
 	<script src="~/Areas/Main/Notify.js/notify.js"></script>
 
@@ -190,11 +195,11 @@
 
 	<script>
 		$(function () {
-			$('#main-menu').smartmenus();
+			//$('#main-menu').smartmenus();
 
 			var z = $("#userxxx").text();
 			$("#userxxx").notify(
-				"Welcome  " + z, "success",
+				"Welcome " + z, "success",
 				{ position: "bottom" }
 			);
 		});

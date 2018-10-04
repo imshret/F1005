@@ -225,8 +225,10 @@
                 document.getElementById("stockSellFee").value = parseInt(SellPrice * SellAmount * Feerate);
                 document.getElementById("stockSellTax").value = parseInt(SellPrice * SellAmount * Taxrate);
                 document.getElementById("StockSellProfit").value = parseInt(Netincome);
+                $("#StockSellProfit").css("color", "black");
                 document.getElementById("stocksellNetincome").value = TotalProfit.toFixed(0);
                 document.getElementById("StocksellReturnrate").value = RR.toFixed(2);
+                $("#StocksellReturnrate").css("color", "black");
             }
             else {
 
@@ -319,15 +321,15 @@
             //除息後每股成本=參與除息每股成本-每股現金股利
 
 
-            var StockDiv = document.getElementById("StockSDiv").value;                 //每股現金股利
-            var StockSDivInv = document.getElementById("EXSDivInv").value;  //參與除息庫存
+            var StockDiv = parseInt( document.getElementById("StockSDiv").value);                 //每股現金股利
+            var StockSDivInv = parseInt(document.getElementById("EXSDivInv").value);  //參與除息庫存
             var StockSDivAvc = document.getElementById("EXSDivAvc").value;  //參與除息每股成本
             var StockSDivInvN =StockDiv*100 + parseInt(StockSDivInv);
             document.getElementById("StockSDivNetincome").value = 0;
             document.getElementById("StockSDivR").value ="NA";
             document.getElementById("StockSDivInvN").value = parseFloat(StockSDivInvN );
             document.getElementById("StockSDivAvcN").value = ((StockSDivInv * StockSDivAvc) / (StockSDivInvN)).toFixed(2);
-            document.getElementById("StockDivDiff").value = parseInt(StockSDivInvN - StockSDivInv*1000);
+            document.getElementById("StockDivDiff").value = parseInt(StockSDivInvN - StockSDivInv);
 
 
         }

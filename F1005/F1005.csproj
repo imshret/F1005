@@ -559,6 +559,11 @@
     <Content Include="Images\fund.png" />
     <Content Include="Images\FX2.png" />
     <Content Include="Images\home.png" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\logo1.png" />
+    <Content Include="Images\logo2.png" />
+    <Content Include="Images\logo3.png" />
+    <Content Include="Images\MYINVEST_Whitelogo.png" />
     <Content Include="Images\stock3.png" />
     <Content Include="Models\MyInvestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

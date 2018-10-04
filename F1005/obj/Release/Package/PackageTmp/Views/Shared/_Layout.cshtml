@@ -10,60 +10,140 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+	<style>
+		#navbar {
+			overflow: hidden;
+			background-color: #333;
+		}
 
+		/* Page content */
+		.content {
+			padding: 16px;
+		}
+
+		/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+		.sticky {
+			position: fixed;
+			top: 0;
+			width: 100%;
+		}
+
+			/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+			.sticky + .content {
+				padding-top: 60px;
+			}
+
+		.footer {
+			position: relative;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			background-color: black;
+			color: white;
+			text-align: center;
+			height: 8%;
+		}
+
+		#navbar a {
+			font-size: large;
+		}
+
+		.hidethis a {
+		color:black;
+		}
+	</style>
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("MY Invest-我的投資管家", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("msit119_one登入首頁", "IndexX", "Home", new { Area = "Main" }, null)</li>
-                    <li>@Html.ActionLink("msit119 後臺登入首頁", "Index", "BS", new { Area = "BStage" }, null)</li>                      
-                </ul>
-            </div>
-        </div>
-    </div>
 
-    <div class="container body-content">
-        @RenderBody()
-        <footer>
-            <div style="background-color:white; margin:0px; height:300px;">
-                <div style="padding:5px;">
-                    <h2>我的理財管家MyInvest</h2>
-                    <h2>
-                        客服資訊
-                    </h2>
-                    <h3>
-                        服務信箱：msit119@gmail.com
-                    </h3>
-                    <h3>
-                        服務專線：(02) 6631-6666
-                    </h3>
-                    <h3>
-                        服務時間：週一至週五 08:00-22:00
-                    </h3>
-                    <h2>
-                        &copy; @DateTime.Now.Year - 資訊策進會MSIT119
-                        <img src=@Url.Content("~/Images/home.png") />
-                    </h2>
-                </div>
-            </div>
-        </footer>
-    </div>
+<body style="background-color:white; font-family:Arial,'Microsoft JhengHei'; padding:0px;">
+	@*<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					@Html.ActionLink("MY Invest-我的投資管家", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li>@Html.ActionLink("msit119_one登入首頁", "IndexX", "Home", new { Area = "Main" }, null)</li>
+						<li>@Html.ActionLink("msit119 後臺登入首頁", "Index", "BS", new { Area = "BStage" }, null)</li>
+					</ul>
+				</div>
+			</div>
+		</div>*@
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
+	<div style="margin:0; height:250px;background-color:black">
+		<img src="~/Areas/Main/Images/MYINVEST_blacklogo.png" style="margin:auto" />
+	</div>
 
-    @RenderSection("scripts", required: false)
-    @RenderSection("styles", required: false)
+	<div id="navbar" style="height:50px; background-color:transparent; z-index:9999;">
+		<nav class="navbar navbar-inverse" style="border-radius:0px ;height:50px">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					@Html.ActionLink("MY Invest-我的投資管家", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+				</div>
+				<div style="margin-left:32%;">
+					<ul class="nav navbar-nav">
+						<li class="hidethis">@Html.ActionLink("msit119_one登入首頁", "IndexX", "Home", new { Area = "Main"  }, null)</li>
+						<li class="hidethis">@Html.ActionLink("msit119 後臺登入首頁", "IndexX", "BS", new { Area = "BStage"  }, null)</li>
+					</ul>
+				</div>
+
+			</div>
+		</nav>
+	</div>
+	<div class="container body-content">
+
+		<br />
+		<br />
+		@RenderBody()
+		<br />
+		<br />
+		<br />
+
+	</div>
+	<div class="footer">
+		<div style="padding:5px">
+
+			<h4 style="font:bold">MyInvest我的投資管家</h4>
+			<span>
+				服務信箱：msit119@gmail.com
+			</span>
+			<span>
+				服務專線：(02) 6631-6666
+			</span>
+			<span>
+				服務時間：週一至週五 08:00-22:00
+			</span>
+			<h6>
+				&copy; @DateTime.Now.Year - 資訊策進會MSIT119
+			</h6>
+		</div>
+	</div>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/bootstrap")
+	<script>
+		window.onscroll = function () { myFunction() };
+
+		// Get the navbar
+		var navbar = document.getElementById("navbar");
+
+		// Get the offset position of the navbar
+		var sticky = navbar.offsetTop;
+
+		// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+		function myFunction() {
+			if (window.pageYOffset >= sticky) {
+				navbar.classList.add("sticky")
+			} else {
+				navbar.classList.remove("sticky");
+			}
+		}
+	</script>
+	@RenderSection("scripts", required: false)
+	@RenderSection("styles", required: false)
 </body>
 </html>
