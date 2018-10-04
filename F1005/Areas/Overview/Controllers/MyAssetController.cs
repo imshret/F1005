@@ -113,12 +113,11 @@ namespace F1005.Areas.Overview.Controllers
                 InsuranceValueP = ((decimal)c.InsuranceValue / (decimal)(c.CashValue + c.StockValue + c.FXValue + c.InsuranceValue + c.FundValue) * 100).ToString("f2"),
                 FundValueP = ((decimal)c.FundValue / (decimal)(c.CashValue + c.StockValue + c.FXValue + c.InsuranceValue + c.FundValue) * 100).ToString("f2"),
 
-                CashValue = ((decimal)c.CashValue).ToString("c2"),
-                StockValue = ((decimal)c.StockValue).ToString("c2"),
-                FXValue = ((decimal)c.FXValue).ToString("c2"),
-                InsuranceValue = ((decimal)c.InsuranceValue).ToString("c2"),
-                FundValue = ((decimal)c.FundValue).ToString("c2")
-
+                CashValue = ((decimal)c.CashValue),
+                StockValue = ((decimal)c.StockValue),
+                FXValue = ((decimal)c.FXValue),
+                InsuranceValue = ((decimal)c.InsuranceValue),
+                FundValue = ((decimal)c.FundValue)
             });
 
             return Json(query, JsonRequestBehavior.AllowGet);
@@ -137,11 +136,11 @@ namespace F1005.Areas.Overview.Controllers
                 InsuranceValueP = ((decimal)c.InsuranceValue / (decimal)(c.CashValue + c.StockValue + c.FXValue + c.InsuranceValue + c.FundValue) * 100).ToString("f2"),
                 FundValueP = ((decimal)c.FundValue / (decimal)(c.CashValue + c.StockValue + c.FXValue + c.InsuranceValue + c.FundValue) * 100).ToString("f2"),
 
-                CashValue = ((decimal)c.CashValue).ToString("c2"),
-                StockValue = ((decimal)c.StockValue).ToString("c2"),
-                FXValue = ((decimal)c.FXValue).ToString("c2"),
-                InsuranceValue = ((decimal)c.InsuranceValue).ToString("c2"),
-                FundValue = ((decimal)c.FundValue).ToString("c2")
+                CashValue = ((decimal)c.CashValue),
+                StockValue = ((decimal)c.StockValue),
+                FXValue = ((decimal)c.FXValue),
+                InsuranceValue = ((decimal)c.InsuranceValue),
+                FundValue = ((decimal)c.FundValue)
 
             });
             gv.DataBind();

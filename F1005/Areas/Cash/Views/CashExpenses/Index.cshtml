@@ -43,6 +43,22 @@
 	</div>
 </div>
 
+@*現金收入vs支出圓餅圖*@
+<div class="container" style="background-color:lavenderblush">
+	<div class="jumbotron">
+		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  資產分布百分比</h2>
+	</div>
+	<div class="row" style="height:350px" id="dd">
+		<div class="col-lg-12">
+			<canvas id="Doughnut"></canvas>
+		</div>
+		@*Draw Pie*@
+		@*<div class="col-lg-6">
+				<canvas id="Pie"></canvas>
+			</div>*@
+	</div>
+</div>
+
 
 @section scripts{
 	<script>
@@ -52,6 +68,7 @@
 			GetIncomeBalance();
 			GetExpenseBalance();
 			GetDiff();
+			LoadDoughnut();
 
 			for (var i = 2000; i < 2021; i++) {
 				var Yp = document.createElement("option")
@@ -205,6 +222,7 @@
 										GetIncomeBalance();
 										GetExpenseBalance();
 										GetDiff();
+										LoadDoughnut();
 										clearCanvas();
 									}
 								})
@@ -222,6 +240,7 @@
 									GetIncomeBalance();
 									GetExpenseBalance();
 									GetDiff();
+									LoadDoughnut();
 									clearCanvas();
 								});
 							},
@@ -239,6 +258,7 @@
 									GetIncomeBalance();
 									GetExpenseBalance();
 									GetDiff();
+									LoadDoughnut();
 									clearCanvas();
 								});
 							},
@@ -365,6 +385,42 @@
             }
         });
 		}
+
+			//資產分布百分比甜甜圈
+        //Draw Doughnut
+		function LoadDoughnut()
+		{
+        $.ajax({
+            type: "Get",
+            url: "@Url.Action("GetPie", "CashExpenses")",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+				var ctxDoughnut = document.getElementById("Doughnut");
+                var DoughnutChart = new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["收入百分比","支出百分比"],
+                        datasets: [{
+							data: [response.IncomeP,response.ExpenseP],
+                            backgroundColor: [
+                                window.chartColors.blue,
+                                window.chartColors.red,
+                            ]
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '收入資產百分比'
+                        },
+                    }
+                })
+            }
+          });
+		};
 
 
 	</script>
