@@ -174,7 +174,7 @@
 
             }).fail(function (err) {
                 var content = JSON.parse(err);
-                alert(content);
+                document.getElementById("CashAcc").value = 0;
             });
 
         });
@@ -274,7 +274,7 @@
             var CashDiv = document.getElementById("CashDDiv").value;                 //每股現金股利
             var StockDivInv = document.getElementById("StockCDivInv").value;  //參與除息庫存
             var StockDivAvc = document.getElementById("StockCDivAvc").value;  //參與除息每股成本
-            var Netincome =parseInt( CashDiv * StockDivInv*1000) ;                                            //現金收入
+            var Netincome =parseInt( CashDiv * StockDivInv) ;                                            //現金收入
             var DivR = CashDiv / StockDivAvc * 100;                                                            //報酬率
 
             document.getElementById("StockCDivNetincome").value = Netincome;
@@ -395,7 +395,10 @@
 
                 }).fail(function (err) {
 
-                    alert(err.responseText);
+                    document.getElementById("AccTotal").innerHTML = 0;
+                    document.getElementById("AccProfit").innerHTML =0;
+                    document.getElementById("AccProfitPercent").innerHTML = 0;
+
             });
         };
 
@@ -451,7 +454,7 @@
 						sorting: true,
 						paging: true,
 						autoload: true,
-						pageSize: 5,
+						pageSize: 15,
 						pageButtonCount: 5,
 						deleteConfirm: "確定要刪除這筆資料?",
 						pagerFormat: "頁數: {first} {prev} {pages} {next} {last}    {pageIndex} 之 {pageCount}",
@@ -461,8 +464,25 @@
 						pageLastText: "最終頁",
 						noDataContent: "目前沒有紀錄",
 
-						data: res,
+                        data: res,
 
+                        deleteItem: function (item) {
+                            var id = item.stockTradeID;
+								return $.ajax({
+									type: "Delete",
+									url: "@Url.Action("DeleteStock", "stock")/" + id,
+									data: item
+								}).done(function (res) {
+									$("#jsGridIncome").jsGrid("loadData");
+									$('#myP').notify("刪除成功", "success", { position: "bottom" });
+
+                                    LoadJsGrid();
+                                    LoadJsGrid2();
+                                    LoadPie();
+                                    LoadAccountData();
+
+								});
+							},
 						fields: [
 							{ name: "stockDate", type: "text", title: "交易日期", width: 100 },
 							{ name: "stockID", type: "text", title: "股票代碼", width: 100 },
@@ -473,7 +493,7 @@
 							{ name: "stockTax", type: "text", title: "證交稅", width: 100 },
 							{ name: "stockNetincome", type: "text", title: "資金收付", width: 100 },
 							{ name: "stockNote", type: "text", title: "筆記", width: 100 },
-                            { type: "control", editButton: false, deleteButton: false,  }
+                            { type: "control", editButton: false, deleteButton: true,  }
 						],
 
 					});

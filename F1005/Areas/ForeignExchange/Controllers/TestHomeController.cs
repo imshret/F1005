@@ -39,7 +39,8 @@ namespace F1005.Areas.ForeignExchange.Controllers
                 USD = c.USD,
                 ExchargeRate = c.ExchargeRate,
                 Tradetime = c.SummaryTable.TradeDate.ToLongDateString(),
-                UserName = c.SummaryTable.UserName
+                UserName = c.SummaryTable.UserName,
+                note=c.note       
             });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
