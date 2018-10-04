@@ -655,6 +655,7 @@
     <Content Include="Areas\Overview\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Stock\Views\Stock\_StockGetPie.cshtml" />
     <Content Include="Areas\BStage\Views\BS\Users.cshtml" />
+    <Content Include="Areas\BStage\Views\BS\IndexX.cshtml" />
     <None Include="Properties\PublishProfiles\新 老師端.pubxml" />
     <None Include="Properties\PublishProfiles\新新 老師端.pubxml" />
     <None Include="Properties\PublishProfiles\最後大魔王.pubxml" />
