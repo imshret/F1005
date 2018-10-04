@@ -165,9 +165,9 @@ namespace F1005.Areas.Overview.Controllers
             SmtpClient client = new SmtpClient();
             client.Host = "smtp.gmail.com";
             client.Port = 587;
-            client.Credentials = new NetworkCredential("jhywen022@gmail.com", "i4826696");
+            client.Credentials = new NetworkCredential("msit119.finalterm@gmail.com", "msit1199");
             client.EnableSsl = true;
-            MailMessage msg = new MailMessage("jhywen022@gmail.com", "jhywen022@gmail.com");
+            MailMessage msg = new MailMessage("msit119.finalterm@gmail.com", "msit119.one@gmail.com");
             msg.Subject = "我的財務報表";
             msg.Body = "我的財務報表，請查收附件檔";
             System.Net.Mail.Attachment attachment;
