@@ -105,7 +105,7 @@
                     $("#idsp1").show();
                     $("#idsp2").hide();   
 
-                    $("#fs").attr("disabled", false);     
+                    //$("#fs").attr("disabled", false);     
 
                     $("#MyP").attr("disabled", false);
                     $("#MyCP").attr("disabled", false);
@@ -118,8 +118,6 @@
 
                     $("#MyP").attr("disabled", true);
                     $("#MyCP").attr("disabled", true);
-                                       
-                    $("#fs").attr("disabled", true);
                 }
             }).fail(function (res) {
                 alert("WWW")
@@ -134,8 +132,8 @@
             }
             else {
                 $("#CC").text(null);
-                //var x = $("#C1").text();
-                if ($("#C1").text() == "" && $("#idsp1").text() == "Correct") {
+                //var x = $("#C1").text();                
+                if ($("#C1").text() == "") {
                     $("#fs").attr("disabled", false);
                 }
             }
