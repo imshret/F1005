@@ -45,6 +45,12 @@ namespace F1005.Models
             {
                 yield return new ValidationResult("手續費應該介於0%至3%間", new string[] { "Fee" });
             }
+            MyInvestEntities db = new MyInvestEntities();
+            var query = db.fund_data.Where(D => D.Currancy == "TWD").Select(D => D.FundName).ToList();
+            if (!query.Contains(FundName))
+            {
+                yield return new ValidationResult("查詢不到您指定的基金", new string[] { "FundName" });
+            }
         }
     }
 
