@@ -356,7 +356,12 @@ namespace F1005.Areas.Stock.Controllers
                 int _invchange = (int)stockHistory.stockAmount;
                 int _cashflow = (int)stockHistory.stockNetincome;
                 stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
+                stockHistory.stockTP = 0;
+                stockHistory.stockTax = 0;
+                stockHistory.stockFee = 0;
+                 
                 db.StockHistory.Add(stockHistory);
+                
                 db.SaveChanges();
 
                 //計算股票現值

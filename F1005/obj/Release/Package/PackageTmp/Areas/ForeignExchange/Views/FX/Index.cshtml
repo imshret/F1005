@@ -197,7 +197,7 @@
                 var tf = document.getElementById("tf").checked;
                 //checkcash:
                 var checkcash = localStorage.cash - $('#r4').val();
-                if (checkcash < 0 && tf == false)
+                if (checkcash < 0 && tf == false && localStorage.TradeClass == "買入")
                 {
                     alert("目前現金存款不足");
                 }

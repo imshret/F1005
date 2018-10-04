@@ -95,7 +95,7 @@ namespace F1005.Areas.ForeignExchange.Controllers
                     usersData.FXValue = th.SaveUserdata(name);
                     usersData.UserName = ud[0].UserName;
                     var cv = Math.Abs(tradeTable.NTD.Value);
-                    usersData.CashValue = ud[0].CashValue + tradeTable.NTD;
+                    usersData.CashValue = ud[0].CashValue + cv;
                     usersData.InsuranceValue = ud[0].InsuranceValue;
                     usersData.StockValue = ud[0].StockValue;
                     usersData.FundValue = ud[0].FundValue;

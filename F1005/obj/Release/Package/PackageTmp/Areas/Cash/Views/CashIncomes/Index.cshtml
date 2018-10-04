@@ -49,17 +49,17 @@
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-stats"></i>  資產分布百分比</h2>
 	</div>
 	<div class="row" style="height:350px" id="dd">
-		<div class="col-lg-6">
+		<div class="col-lg-12">
 			<canvas id="Doughnut"></canvas>
 		</div>
 		@*Draw Pie*@
-		<div class="col-lg-6">
+		@*<div class="col-lg-6">
 			<canvas id="Pie"></canvas>
-		</div>
+		</div>*@
 	</div>
 </div>
 
-<button onclick="Export()">Export Excel</button>
+
 
 
 @section scripts{
@@ -68,7 +68,6 @@
 			init();
 			GetIncomeHis();
 			LoadDoughnut();
-			LoadPie();
 			GetIncomeBalance();
 			GetExpenseBalance();
 			GetDiff();
@@ -218,7 +217,6 @@
 									$('#myP').notify("新增成功", "success", {position:"bottom"});
 									GetIncomeHis();
 									LoadDoughnut();
-									LoadPie();
 									GetIncomeBalance();
 									GetExpenseBalance();
 									GetDiff();
@@ -236,7 +234,6 @@
 									$('#myP').notify("修改成功", "success", { position: "bottom" });
 									GetIncomeHis();
 									LoadDoughnut();
-									LoadPie();
 									GetIncomeBalance();
 									GetExpenseBalance();
 									GetDiff();
@@ -255,7 +252,6 @@
 									$('#myP').notify("刪除成功", "success", { position: "bottom" });
 									GetIncomeHis();
 									LoadDoughnut();
-									LoadPie();
 									GetIncomeBalance();
 									GetExpenseBalance();
 									GetDiff();
@@ -441,7 +437,7 @@
 			context = container.getContext("2d");
 		}
 
-        //資產分布百分比圓餅圖
+        @*//資產分布百分比圓餅圖
         //Draw Pie
         function LoadPie() {
         $.ajax({
@@ -474,7 +470,7 @@
                 })
             }
         });
-		};
+		};*@
 
 		function Export(){
 			$.ajax({
