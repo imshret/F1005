@@ -6,6 +6,7 @@ namespace F1005.Areas.BStage.Models
     public class BSViewModel
     {     
         public string UserName { get; set; }
+        public string Email { get; set; }
         public string TradeDate { get; set; }
 
         public string ExCashType { get; set; }

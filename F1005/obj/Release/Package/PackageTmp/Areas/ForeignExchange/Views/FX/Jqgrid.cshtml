@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "JqGrid";
+}
+
+<h2>JqGrid</h2>
+
+@section scripts
+{
+<script src="~/Scripts/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var grid = jQuery('#grid');
+            grid.jqGrid({
+                url: '/FX/GetCustomers/',
+                datatype: 'json',
+                jsonReader: {
+                    repeatitems: false
+                },
+                mtype: 'GET',
+                colModel: [
+                    { name: 'UserName', label: '編號', width: 40, align: 'left' },
+                    { name: 'MClass', label: '公司名稱', width: 40, align: 'left' },
+
+                ],
+                pager: '#pager',
+                width: 660,
+                height: 'auto',
+                rowNum: 10,
+                rowList: [5, 10, 20, 50],
+                sortname: 'UserName',
+                sortorder: "desc",
+                viewrecords: true,
+                caption: 'My first grid'
+            });
+        });
+    </script>
+}
+<h2>JQGrid</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="grid"></table>
+<div id="pager">
+</div>

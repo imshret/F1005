@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="MyInvestEntities-Web.config Connection String" description="MyInvestEntities 應用程式在 web.config 中用來存取資料庫的連接字串。" defaultValue="metadata=res://*/Models.MyInvestModel.csdl|res://*/Models.MyInvestModel.ssdl|res://*/Models.MyInvestModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=192.168.35.8;initial catalog=MyInvest;persist security info=True;user id=msit119;password=msit119;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\分享資料\\F1005\\F1005\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MyInvestEntities']/@connectionString" />
+  </parameter>
+</parameters>

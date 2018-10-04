@@ -1,0 +1,135 @@
+﻿@model F1005.Models.StockHistory
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            <input id="Button1" type="button" value="查詢庫存與成本" class="btn btn-default" onclick="SearchInv()" />
+            <input id="Button2" type="button" value="計算獲利" class="btn btn-default" onclick="CalculateProfit()" />
+            <spin id="inv-error">
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        @using (Html.BeginForm("CreateStockSell", "Stock", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "股票賣出" })
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.UserName, new { @id = "UserName" })
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockID)@Html.ValidationMessageFor(m => m.stockID, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">股票代碼</label>*@
+                    @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StocksellID" })
+                    @*<input type="text" class="form-control" id="StocksellID" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SummaryTable.TradeDate)@Html.ValidationMessageFor(m => m.SummaryTable.TradeDate, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">交易日期</label>*@
+                    @*@Html.TextBoxFor(m => m.SummaryTable.TradeDate, null, new { @class = "form-control", @id = "StocksellDate", @Value = "2018-09-20" })*@
+                    @Html.EditorFor(m => m.SummaryTable.TradeDate, new { htmlAttributes = new { @class = "form-control", @id = "StocksellDate", @type = "date" } })
+                    
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("庫存數量(股)")
+                    <input type="text" class="form-control" id="StocksellInv" readonly="" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("庫存平均成本")
+                    <input type="text" class="form-control" id="StocksellAvc" readonly="" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockAmount)@Html.ValidationMessageFor(m => m.stockAmount, null, new { @style = "color:orangered" })
+                    @*<label for="Stockbuyid">賣出數量(張)</label>*@
+                    @Html.TextBoxFor(m => m.stockAmount, null, new { @class = "form-control", @id = "StocksellAmount" , @oninput = "CalculateProfit()" })
+                    @*<input type="text" class="form-control" id="StocksellAmount" oninput="CalculateCost()" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockPrice)@Html.ValidationMessageFor(m => m.stockPrice, null, new { @style = "color:orangered"  })
+                    @*<label for="Stockbuyid">賣出價格</label>*@
+                    @Html.TextBoxFor(m => m.stockPrice, null, new { @class = "form-control", @id = "StocksellPrice", @oninput = "CalculateProfit()" })
+                    @*<input type="text" class="form-control" id="StocksellPrice" oninput="CalculateCost()" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StocksellFee">最低手續費(元)</label>
+                    <input type="text" class="form-control" id="StocksellMinFee" value="20" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StocksellDiscount">手續費折扣(折)</label>
+                    <input type="text" class="form-control" id="StocksellDiscount" value="6" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StocksellFeerate">手續費費率(‰)</label>
+                    <input type="text" class="form-control" id="StocksellFeerate" value="1.425" readonly="" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.stockFee, new { @id = "stockSellFee" })
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StocksellTaxrate">證交稅稅率(‰)</label>
+                    <input type="text" class="form-control" id="StocksellTaxrate" value="3" readonly="" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.stockTax, new { @id = "stockSellTax" })
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <lable for="StockSellProfit">損益</lable>@Html.ValidationMessageFor(m=>m.stockNetincome,null,new { @style = "color:orangered" })
+                    <input type="text" class="form-control" id="StockSellProfit" readonly="" />
+                   
+                </div>
+            </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.stockNetincome, new { @id = "stocksellNetincome" })
+                </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StocksellReturnrate">報酬率(%)</label>
+                    <input type="text" class="form-control" id="StocksellReturnrate" readonly="" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockNote)
+                    @Html.TextBoxFor(m => m.stockNote, null, new { @class = "form-control", @id = "StocksellNote" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-left"style="margin-top:25px" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

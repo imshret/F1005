@@ -16,13 +16,24 @@ namespace F1005.Areas.BStage.Controllers
 
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
+            return View();
+        }
+
+        public ActionResult IndexX()
+        {
             Session["User"] = "msit119";           
 
             return View();
         }
 
-        public ActionResult IndexStock()
-        {  
+
+        public ActionResult IndexStock()        {  
+
             MyInvestEntities db = new MyInvestEntities();
                        
             return View();
@@ -30,6 +41,8 @@ namespace F1005.Areas.BStage.Controllers
 
         public ActionResult IndexFX()
         {
+
+
             MyInvestEntities db = new MyInvestEntities();
 
             return View();
@@ -163,14 +176,50 @@ namespace F1005.Areas.BStage.Controllers
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
+        //會員清單
+        public ActionResult Users()
+        {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
+            return View();
+        }
+
+
+        //會員清單
+        public JsonResult GetUsers()
+        {
+            var db = new F1005.Models.MyInvestEntities();
+            var ret = db.UsersData.ToList().Where(c => c.UserName != "msit119").Select(c => new BSViewModel {
+                UserName = c.UserName,
+                Email = c.Email,
+            });
+            //dynamic retObject = new { data = ret.ToList() };
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        } 
+
+
+
         //後台NAV
         public ActionResult Recent()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 
         public ActionResult AllSum()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 

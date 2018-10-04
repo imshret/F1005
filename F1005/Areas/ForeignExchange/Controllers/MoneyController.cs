@@ -29,7 +29,7 @@ namespace F1005.Areas.ForeignExchange.Controllers
                 CurrencyClassName=c.Name,
                 OnlineBuy =c.OnlineBuy,
                 OnlineSell=c.OnlineSell,
-                Date=c.Date.Value.ToLongDateString(),
+                Date=c.Date.Value.ToShortDateString(),
             });
             //dynamic retObject = new { data = ret.ToList() };
             return Json(ret, JsonRequestBehavior.AllowGet);

@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title-MY Invest-我的投資管家</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("MY Invest-我的投資管家", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("msit119_one登入首頁", "IndexX", "Home", new { Area = "Main" }, null)</li>
+                    <li>@Html.ActionLink("msit119 後臺登入首頁", "Index", "BS", new { Area = "BStage" }, null)</li>                      
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <footer>
+            <div style="background-color:white; margin:0px; height:300px;">
+                <div style="padding:5px;">
+                    <h2>我的理財管家MyInvest</h2>
+                    <h2>
+                        客服資訊
+                    </h2>
+                    <h3>
+                        服務信箱：msit119@gmail.com
+                    </h3>
+                    <h3>
+                        服務專線：(02) 6631-6666
+                    </h3>
+                    <h3>
+                        服務時間：週一至週五 08:00-22:00
+                    </h3>
+                    <h2>
+                        &copy; @DateTime.Now.Year - 資訊策進會MSIT119
+                        <img src=@Url.Content("~/Images/home.png") />
+                    </h2>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+    @RenderSection("styles", required: false)
+</body>
+</html>

@@ -1,0 +1,164 @@
+﻿@model F1005.Areas.Stock.Models.StockHistory
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Create", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.STId)
+            </div>
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.TradeType, new { @Value = "STOCK" })
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.SummaryTable.userID, new { @Value = "A0001" })
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockID)
+                    @*<label for="Stockbuyid">股票代碼</label>*@
+                    @Html.TextBoxFor(m => m.stockID, null, new { @class = "form-control", @id = "StockbuyID" })
+                    @*<input type="text" class="form-control" id="StockbuyID" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SummaryTable.date)
+                    @*<label for="Stockbuyid">交易日期</label>*@
+                    @Html.TextBoxFor(m => m.SummaryTable.date, null, new { @class = "form-control", @id = "StockbuyDate", @Value = "2018-09-18" })
+                    @*<input type="text" class="form-control" id="StockbuyDate" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockAmount)
+                    @*<label for="Stockbuyid">買進數量(張)</label>*@
+                    @Html.TextBoxFor(m => m.stockAmount, null, new { @class = "form-control", @id = "StockbuyAmount", @oninput = "CalculateCost()" })
+                    @*<input type="text" class="form-control" id="StockbuyAmount" oninput="CalculateCost()" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockPirce)
+                    @*<label for="Stockbuyid">買進價格</label>*@
+                    @Html.TextBoxFor(m => m.stockPirce, null, new { @class = "form-control", @id = "StockbuyPrice", @oninput = "CalculateCost()" })
+                    @*<input type="text" class="form-control" id="StockbuyPrice" oninput="CalculateCost()" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label for="Stockbuyid">最低手續費</label>
+                    <input type="text" class="form-control" id="StockbuyFee" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Stockbuyid">手續費折扣</label>
+                    <input type="text" class="form-control" id="StockbuyDiscount" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Stockbuyid">手續費費率(‰)</label>
+                    <input type="text" class="form-control" id="StockbuyFeerate" value="1.425" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.stockFee, new { @id = "stockFee" })
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Stockbuyid">證交稅稅率(‰)</label>
+                    <input type="text" class="form-control" id="StockbuyTaxrate" value="3" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.stockTax, new { @id = "stockTax" })
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    @Html.LabelFor(m => m.stockNetincom)
+                    @*<label for="Stockbuyid">買進總成本</label>*@
+                    @Html.TextBoxFor(m => m.stockNetincom, null, new { @class = "form-control", @id = "stockNetincom", @readonly = "" })
+                    @*<input type="text" class="form-control" id="StockTotalcost" readonly="" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StockbuyBEPoint">損平價格</label>
+                    <input type="text" class="form-control" id="StockbuyBEPoint" readonly="" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="StockbuyERR">預期報酬率(%)</label>
+                    <input type="text" class="form-control" id="StockbuyERR" oninput="CalculateTP()" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label for="StockbuyER">預期報酬</label>
+                    <input type="text" class="form-control" id="StockbuyER" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockTP)
+                    @*<label for="Stockbuyid">目標價格</label>*@
+                    @Html.TextBoxFor(m => m.stockTP, null, new { @class = "form-control", @id = "StockbuyTP" })
+                    @*<input type="text" class="form-control" id="StockbuyTP" />*@
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.stockNote)
+                    @*<label for="Stockbuyid">筆記</label>*@
+                    @Html.TextBoxFor(m => m.stockNote, null, new { @class = "form-control", @id = "StockbuyNote" })
+                    @*<input type="text" class="form-control" id="StockbuyNote" />*@
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" id="submit" value="Create" class="btn btn-default pull-right" />
+                </div>
+            </div>
+
+
+        }
+    </div>
+
+
+
+</div>
+<script>
+
+    @*function Createdata() {
+        $("#submit").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Create","Home")",
+            data: $("#form").serialize(),
+            datatype:"json"
+
+
+        })
+            .done(function (result) {
+                alert(result);
+            }).fail(function (err) {
+                alert(err.responseText);
+            });
+        })
+    };*@
+
+</script>

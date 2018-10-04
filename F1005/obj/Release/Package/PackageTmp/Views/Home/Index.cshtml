@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section styles
+{
+    <style>
+        .index {
+            height: 400px;
+            width: 400px;
+            border: solid;
+            border-radius: 10px;
+            display: block;
+            margin: auto;
+        }
+    </style>
+}
+
+<div class="jumbotron">
+    <div class="row">
+
+        <div class="col-lg-7" style="height:500px; background-color: white">
+            <div class="col-lg-12" style="height:50px"></div>
+
+            <div id="myCarousel" class="carousel slide" style="background-color:transparent" align="center">
+                <!-- 輪播（Carousel）指標(圖下圈圈) -->
+                @*<ol class="carousel-indicators">          
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                    <li data-target="#myCarousel" data-slide-to="4"></li>
+                </ol>*@
+
+                <!-- 輪播（Carousel）項目(圖片本體 -->
+                <div class="carousel-inner">
+                    <div class="item active" style="height:400px">
+                        <img class="index" src=@Url.Content("~/Images/cash2.png") />
+                    </div>
+                    <div class="item" style="height:400px">
+                        <img class="index" src=@Url.Content("~/Images/stock3.png") />
+                    </div>
+                    <div class="item" style="height:400px">
+                        <img class="index" src=@Url.Content("~/Images/FX2.png") />
+                    </div>
+                    <div class="item" style="height:400px">
+                        <img class="index" src=@Url.Content("~/Images/deposit2.png") />
+                    </div>
+                    <div class="item" style="height:400px">
+                        <img class="index" src=@Url.Content("~/Images/fund.png") />
+                    </div>
+                </div>
+
+                <!-- 輪播（Carousel）導航(左右鍵) -->
+                @*<a class="carousel-control left" href="#myCarousel"
+                   data-slide="prev" style="background-color:transparent">&lsaquo;</a>
+                  <a class="carousel-control right" href="#myCarousel"
+                   data-slide="next" style="background-color:transparent">&rsaquo;</a>*@
+            </div>
+        </div>
+
+
+        <div class="col-lg-5" style="height:500px; background-color: white">
+            <span>@Html.Action("Login", "Account")</span>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.carousel').carousel({
+            interval: 3000
+        });
+    </script>   
+    
+    }
