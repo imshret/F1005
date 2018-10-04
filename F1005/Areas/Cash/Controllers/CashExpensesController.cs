@@ -303,5 +303,42 @@ namespace F1005.Areas.Cash.Controllers
             var query = ((decimal)Income - (decimal)Expense).ToString("c2");
             return Json(query, JsonRequestBehavior.AllowGet);
         }
+
+        //支出收入百分比
+        public ActionResult GetPie()
+        {
+            var username = Convert.ToString(Session["User"]);
+            var ISum = (decimal)db.CashIncome.Where(c => c.UserName == username).Select(c => c.InAmount).DefaultIfEmpty(0).Sum();
+            var ESum = (decimal)db.CashExpense.Where(c => c.UserName == username).Select(c => c.ExAmount).DefaultIfEmpty(0).Sum();
+
+            var total = ISum + ESum;
+            if (ISum == 0)
+            {
+                var query = db.CashExpense.ToList().Select(c => new
+                {
+                    IncomeP = (ISum / total * 100).ToString("f2"),
+                    ExpenseP = (ESum / total * 100).ToString("f2")
+                }).FirstOrDefault();
+                return Json(query, JsonRequestBehavior.AllowGet);
+            }
+            else if (ESum == 0)
+            {
+                var query = db.CashIncome.ToList().Select(c => new
+                {
+                    IncomeP = (ISum / total * 100).ToString("f2"),
+                    ExpenseP = (ESum / total * 100).ToString("f2")
+                }).FirstOrDefault();
+                return Json(query, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var query = db.CashIncome.ToList().Select(c => new
+                {
+                    IncomeP = (ISum / total * 100).ToString("f2"),
+                    ExpenseP = (ESum / total * 100).ToString("f2")
+                }).FirstOrDefault();
+                return Json(query, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
