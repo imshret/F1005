@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<F1005.Models.CashExpense>
-
+@*@model F1005.Models.CashExpense*@
 @{
 	ViewBag.Title = "Index";
 }
@@ -11,7 +11,7 @@
 		<h2 style="font-family:'Microsoft JhengHei'"><i class="glyphicon glyphicon-th-list"></i>  現金支出明細表</h2>
 	</div>
 
-	<div class="panel panel-info">
+	<div class="panel panel-info" id="myP">
 		<div class="panel-heading">現金支出明細表</div>
 		<div class="panel-body"><div id="jsGridExpense"></div></div>
 	</div>
@@ -89,7 +89,7 @@
 				document.getElementById("DiffBalance").innerHTML = "<h2>" + " 收支差額:  " + res + "</h2>";
 				document.getElementById("DiffBalance").setAttribute("class", "text-right text-default");
 
-				
+
 			})
 		};
 
@@ -187,19 +187,26 @@
 									ExAmount: item.ExAmount,
 									ExDate: item.ExDate,
 									ExNote: item.ExNote
-								} 
+								}
 								return $.ajax({
 									type: "POST",
 									url: "@Url.Action("InsertExpense", "CashExpenses")",
 									data: dd
-								}).done(function () {
+								}).done(function (res) {
 									$("#jsGridExpense").jsGrid("loadData");
-									$('#xxx').notify("新增成功", "success", { position: "bottom" });
-									GetExpenseHis();
-									GetIncomeBalance();
-									GetExpenseBalance();
-									GetDiff();
-									clearCanvas();
+									if (res <0)
+									{
+										$('#myP').notify("收入不足，無法新增支出項目", "error", { position: "bottom" });
+									}
+									else
+									{
+										$('#myP').notify("新增成功", "success", { position: "bottom" });
+										GetExpenseHis();
+										GetIncomeBalance();
+										GetExpenseBalance();
+										GetDiff();
+										clearCanvas();
+									}
 								})
 							},
 
@@ -210,7 +217,7 @@
 									data: item
 								}).done(function () {
 									$("#jsGridExpense").jsGrid("loadData");
-									$('#xxx').notify("修改成功", "success", { position: "bottom" });
+									$('#myP').notify("修改成功", "success", { position: "bottom" });
 									GetExpenseHis();
 									GetIncomeBalance();
 									GetExpenseBalance();
@@ -227,7 +234,7 @@
 									data: item
 								}).done(function (res) {
 									$("#jsGridExpense").jsGrid("loadData");
-									$('#xxx').notify("刪除成功", "success", { position: "bottom" });
+									$('#myP').notify("刪除成功", "success", { position: "bottom" });
 									GetExpenseHis();
 									GetIncomeBalance();
 									GetExpenseBalance();
@@ -239,7 +246,7 @@
 
 						fields: [
 							{ name: "ExCashID", type: "text", title: "交易序號", width: 100, inserting: false },
-							{ name: "UserID", type: "text", title: "使用者代號", width: 100, inserting: false},
+							{ name: "UserName", type: "text", title: "使用者代號", width: 100, inserting: false},
 							{ name: "ExCashType", type: "text", title: "交易類別", width: 100, inserting: false},
 							{ name: "ExAmount", type: "text", title: "支出金額", width: 100, validate: "required"},
 							{ name: "ExDate", type: "date", title: "日期", width: 100, validate: "required" },
@@ -315,7 +322,7 @@
 				var month = d.substring(0, 2);
 			}
 			var year = document.getElementById("Year").value;
-			
+
         $.ajax({
             type: "Get",
             url: "@Url.Action("GetExpenseHisByMonth", "CashExpenses")/",
@@ -358,6 +365,7 @@
             }
         });
 		}
+
 
 	</script>
 }

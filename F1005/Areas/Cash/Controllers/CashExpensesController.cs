@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace F1005.Areas.Cash.Controllers
                 return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
 
-            return View();
+            return View(db.CashExpense.ToList());
         }
 
         //// GET: Cash/CashExpenses/Details/5
@@ -145,7 +146,7 @@ namespace F1005.Areas.Cash.Controllers
             var query = db.CashExpense.ToList().Where(c => c.UserName == username).OrderBy(c=>c.ExCashID).Select(c => new GetExpenseViewModel
             {
                 ExCashID = c.ExCashID,
-                UserID = c.UserName,
+                UserName = c.UserName,
                 ExCashType = c.ExCashType,
                 ExAmount = Convert.ToInt32(c.ExAmount).ToString("c2"),
                 ExDate = c.ExDate.ToShortDateString(),
@@ -162,39 +163,64 @@ namespace F1005.Areas.Cash.Controllers
                 return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
 
-            summaryTable.TradeType = cashExpense.ExCashType;
-            summaryTable.TradeDate = cashExpense.ExDate;
-            summaryTable.UserName = cashExpense.UserName;
-            db.SummaryTable.Add(summaryTable);
             if (ModelState.IsValid)
             {
-                cashExpense.OID = summaryTable.STId;
-                db.CashExpense.Add(cashExpense);
-                try
+                var username = Convert.ToString(Session["User"]);
+                var Esum = db.CashExpense.Sum(c => c.ExAmount);
+                var Isum = db.CashIncome.Sum(c => c.InAmount);
+                var net = Isum - Esum;
+                //如果淨資產小於零,不給新增支出項目
+                if (net - cashExpense.ExAmount < 0)
                 {
-                    db.SaveChanges();
+                    return Json(net - cashExpense.ExAmount, JsonRequestBehavior.AllowGet);
                 }
-                catch(Exception er)
+                else
                 {
-                    throw er;
+                    //更新userdata的cashvalue
+                    var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
+                    userdata.CashValue = net - cashExpense.ExAmount;
+                    db.Entry(userdata).State = EntityState.Modified;
+                    //新增總表資料
+                    summaryTable.TradeType = cashExpense.ExCashType;
+                    summaryTable.TradeDate = cashExpense.ExDate;
+                    summaryTable.UserName = cashExpense.UserName;
+                    db.SummaryTable.Add(summaryTable);
+                    //新增支出表資料
+                    cashExpense.OID = summaryTable.STId;
+                    db.CashExpense.Add(cashExpense);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception er)
+                    {
+                        throw er;
+                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
             }
-
-            return View(cashExpense);
+             return View(cashExpense);
         }
 
         //Edit Expense
-        public ActionResult EditExpense([Bind(Include = "ExCashID,UserID,ExCashType,ExAmount,ExDate,ExNote")] CashExpense cashExpense)
+        public ActionResult EditExpense([Bind(Include = "ExCashID,UserName,ExCashType,ExAmount,ExDate,ExNote")] CashExpense cashExpense)
         {
             if (Session["User"] == null)
             {
                 return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
             }
-
+            var username = Convert.ToString(Session["User"]);
             if (ModelState.IsValid)
             {
+                //更新支出表資料
                 db.Entry(cashExpense).State = EntityState.Modified;
+                //更新userdata的cashvalue
+                var Esum = db.CashExpense.Sum(c => c.ExAmount);
+                var Isum = db.CashIncome.Sum(c => c.InAmount);
+                var net = Isum - Esum;
+                var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
+                userdata.CashValue = net;
+                db.Entry(userdata).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -205,9 +231,21 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult DeleteExpense(int? id)
         {
             CashExpense obj = db.CashExpense.Find(id);
-            var username = db.SummaryTable.Where(c => c.STId == obj.OID).Select(c => c).SingleOrDefault();
-            db.SummaryTable.Remove(username);
+            var stData = db.SummaryTable.Where(c => c.STId == obj.OID).Select(c => c).SingleOrDefault();
+            //刪除總表資料
+            db.SummaryTable.Remove(stData);
+            //刪除收入表資料
             db.CashExpense.Remove(obj);
+
+            //更新userdata的cashvalue
+            var username = Convert.ToString(Session["User"]);
+            var Esum = db.CashExpense.Sum(c => c.ExAmount);
+            var Isum = db.CashIncome.Sum(c => c.InAmount);
+            var net = Isum - Esum;
+            var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
+            userdata.CashValue = net;
+            db.Entry(userdata).State = EntityState.Modified;
+            
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -219,7 +257,7 @@ namespace F1005.Areas.Cash.Controllers
         {
             var username = Convert.ToString(Session["User"]);
             var month = DateTime.Now.Month;
-            var query = db.CashExpense.ToList().Where(c => c.UserName == username && c.ExDate.Month==month).OrderBy(c=>c.ExDate).Select(c => new ExpenseHisViewModel
+            var query = db.CashExpense.ToList().Where(c => c.UserName == username && c.ExDate.Month==month).OrderBy(c=>c.ExCashID).Select(c => new ExpenseHisViewModel
             {
                 Amount = c.ExAmount,
                 MyDate = c.ExDate.ToShortDateString()
@@ -232,7 +270,7 @@ namespace F1005.Areas.Cash.Controllers
         public ActionResult GetExpenseHisByMonth(int? year, int? month)
         {
             var username = Convert.ToString(Session["User"]);
-            var query = db.CashExpense.Where(c => c.UserName == username && c.ExDate.Year==year && c.ExDate.Month == month).OrderBy(c => c.ExDate).ToList().Select(c => new ExpenseHisViewModel
+            var query = db.CashExpense.Where(c => c.UserName == username && c.ExDate.Year==year && c.ExDate.Month == month).OrderBy(c => c.ExCashID).ToList().Select(c => new ExpenseHisViewModel
             {
                 Amount = c.ExAmount,
                 MyDate = c.ExDate.ToShortDateString()
