@@ -657,6 +657,7 @@
     <Content Include="Areas\BStage\Views\BS\Users.cshtml" />
     <None Include="Properties\PublishProfiles\新 老師端.pubxml" />
     <None Include="Properties\PublishProfiles\新新 老師端.pubxml" />
+    <None Include="Properties\PublishProfiles\最後大魔王.pubxml" />
     <None Include="Properties\PublishProfiles\本機端.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
