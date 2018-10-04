@@ -1,5 +1,4 @@
-﻿
-<div class="container-fluid" style="width:70%;">
+﻿<div class="container-fluid" style="width:70%;">
     <h2>目前現金資產</h2>
     <input type="text" id="nowcash" disabled style="font-size:x-large" />
     <h2>外匯資產總表</h2>
@@ -13,13 +12,17 @@
     <h3>交易紀錄</h3>
     <div id="jsGrid1"></div>
 </div>
+@section styles
+{
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+}
 @section scripts
 {
     <script src="~/Scripts/jquery.jqGrid.min.js"></script>
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>*@
     <script src="~/Scripts/Chart.min.js"></script>
-        <script src="~/Scripts/Utility.js"></script>
-        <script src="~/Scripts/Colors.js"></script>
+    <script src="~/Scripts/Utility.js"></script>
+    <script src="~/Scripts/Colors.js"></script>
     <script>
         //chart外幣現值比例圖
         function loadpie() {
@@ -184,7 +187,7 @@
                     alert(content)
                 });
         }
-        function clearCanvas() { 
+        function clearCanvas() {
             $('#chart').remove();
             $('#container').append('<canvas id="chart"></canvas>');
             container = document.getElementById("chart");

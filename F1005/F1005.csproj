@@ -305,6 +305,7 @@
     <Content Include="Areas\Main\3DScroll\3Dsite.css" />
     <Content Include="Areas\Main\3DScroll\jquery.tiltedpage-scroll.js" />
     <Content Include="Areas\Main\3DScroll\tiltedpage-scroll.css" />
+    <Content Include="Areas\Main\Images\MYINVEST_blacklogo.png" />
     <Content Include="Areas\Main\Images\p1.jpeg" />
     <Content Include="Areas\Main\Images\p2.jpg" />
     <Content Include="Areas\Main\Images\p3.jpg" />
