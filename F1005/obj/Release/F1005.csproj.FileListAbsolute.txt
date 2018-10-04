@@ -242,4 +242,3 @@ D:\分享資料\F1005\F1005\obj\Release\F1005.csproj.CoreCompileInputs.cache
 D:\分享資料\F1005\F1005\obj\Release\F1005.csproj.CopyComplete
 D:\分享資料\F1005\F1005\obj\Release\F1005.dll
 D:\分享資料\F1005\F1005\obj\Release\F1005.pdb
-D:\分享資料\F1005\F1005\obj\Release\F1005.csprojAssemblyReference.cache
