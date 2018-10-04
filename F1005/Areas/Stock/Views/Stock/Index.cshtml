@@ -174,7 +174,7 @@
 
             }).fail(function (err) {
                 var content = JSON.parse(err);
-                alert(content);
+                document.getElementById("CashAcc").value = 0;
             });
 
         });
@@ -274,7 +274,7 @@
             var CashDiv = document.getElementById("CashDDiv").value;                 //每股現金股利
             var StockDivInv = document.getElementById("StockCDivInv").value;  //參與除息庫存
             var StockDivAvc = document.getElementById("StockCDivAvc").value;  //參與除息每股成本
-            var Netincome =parseInt( CashDiv * StockDivInv*1000) ;                                            //現金收入
+            var Netincome =parseInt( CashDiv * StockDivInv) ;                                            //現金收入
             var DivR = CashDiv / StockDivAvc * 100;                                                            //報酬率
 
             document.getElementById("StockCDivNetincome").value = Netincome;
@@ -395,7 +395,10 @@
 
                 }).fail(function (err) {
 
-                    alert(err.responseText);
+                    document.getElementById("AccTotal").innerHTML = 0;
+                    document.getElementById("AccProfit").innerHTML =0;
+                    document.getElementById("AccProfitPercent").innerHTML = 0;
+
             });
         };
 
