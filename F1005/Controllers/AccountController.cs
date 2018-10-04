@@ -129,6 +129,12 @@ namespace F1005.Controllers
 
                 model.Password = BitConverter.ToString(ans);
 
+                model.CashValue = 0;
+                model.StockValue = 0;
+                model.FXValue = 0;
+                model.InsuranceValue = 0;
+                model.FundValue = 0;
+
                 //將會員記錄新增到Users資料表
                 db.UsersData.Add(model);
 
