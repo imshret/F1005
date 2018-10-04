@@ -19,6 +19,11 @@ namespace F1005.Areas.Overview.Controllers
         // GET: Overview/MyAsset
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToRoute("Default", new { Controller = "Home", Action = "Index" });
+            }
+
             return View();
         }
 

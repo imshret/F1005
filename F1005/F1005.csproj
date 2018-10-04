@@ -206,9 +206,12 @@
     <Compile Include="Areas\Cash\Controllers\GetIncomeViewModel.cs" />
     <Compile Include="Areas\Cash\Controllers\IncomeHisViewModel.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\FXController.cs" />
+    <Compile Include="Areas\ForeignExchange\Controllers\FxsaveUserdata.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\GetCurrencyViewModel.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\GetDataViewModel.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\HomeController.cs" />
+    <Compile Include="Areas\ForeignExchange\Controllers\Linebot.cs" />
+    <Compile Include="Areas\ForeignExchange\Controllers\LinebotgoController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\MoneyController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\TestHomeController.cs" />
     <Compile Include="Areas\ForeignExchange\Controllers\TradeTablesController.cs" />
@@ -224,6 +227,9 @@
     <Compile Include="Areas\Main\Controllers\HomeController.cs" />
     <Compile Include="Areas\Main\Controllers\RssViewModel.cs" />
     <Compile Include="Areas\Main\MainAreaRegistration.cs" />
+    <Compile Include="Areas\Overview\Controllers\MyAssetController.cs" />
+    <Compile Include="Areas\Overview\Controllers\PercentageViewModel.cs" />
+    <Compile Include="Areas\Overview\OverviewAreaRegistration.cs" />
     <Compile Include="Areas\Stock\Controllers\GetAllListViewModel.cs" />
     <Compile Include="Areas\Stock\Controllers\HomeController.cs" />
     <Compile Include="Areas\Stock\Controllers\StockController.cs" />
@@ -636,6 +642,10 @@
     <Content Include="Models\MyInvestModel.edmx.diagram">
       <DependentUpon>MyInvestModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Overview\Views\MyAsset\Index.cshtml" />
+    <Content Include="Areas\Overview\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Overview\Views\web.config" />
+    <Content Include="Areas\Overview\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\新 老師端.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
