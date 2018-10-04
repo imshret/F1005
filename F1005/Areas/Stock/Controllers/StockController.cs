@@ -128,11 +128,11 @@ namespace F1005.Areas.Stock.Controllers
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
 
-                //計算股票現值
+                //計算與登錄股票現值
                 var name = summaryTable.UserName;
                 decimal pvsum = calculator.getPVsum(name);
                 var ud = calculator.GetUserdata(name);
-
+                
                 userdata.StockValue = (double)pvsum;
                 userdata.UserName = ud[0].UserName;
                 userdata.CashValue =ud[0].CashValue + Math.Abs((double)stockHistory.stockNetincome);
@@ -495,6 +495,80 @@ namespace F1005.Areas.Stock.Controllers
         }
 
 
+        //Delete資料
+
+        public ActionResult DeleteStock(int? id)
+        {
+            StockHistory obj = db.StockHistory.Find(id);
+            CashExpense objCashExp = db.CashExpense.Find(id);
+            CashIncome objCashIn = db.CashIncome.Find(id);
+            var stData = db.SummaryTable.Where(c => c.STId == obj.STId).Select(c => c).SingleOrDefault();
+            var netincome = obj.stockNetincome;  //負值=買進紀錄、正值=賣出紀錄
+            double cashchange = 0;
+            if (netincome > 0)
+            {
+                //cashchange = (double)netincome;
+                ////刪除總表資料
+                db.SummaryTable.Remove(stData);
+                //刪除股票表資料
+                db.StockHistory.Remove(obj);
+                //刪除現金表資料
+                db.CashIncome.Remove(objCashIn);
+            }
+            else if(netincome<0)    //買進紀錄
+            {
+            bool flagcash = obj.CashAccount;
+                if (flagcash)    //現金支出要回沖
+                {
+                    cashchange = (double)netincome;
+                    //////刪除總表資料
+                    //db.SummaryTable.Remove(stData);
+                    //刪除股票表資料
+                    db.StockHistory.Remove(obj);
+                    //刪除現金支出資料
+                    db.CashExpense.Remove(objCashExp);
+                    
+                }
+                else
+                {
+                    cashchange = 0;
+                    ////刪除總表資料
+                    //db.SummaryTable.Remove(stData);
+                    //刪除股票表資料
+                    db.StockHistory.Remove(obj);
+                }
+            }
+            else //netincom=0
+            {
+                cashchange = 0;
+                ////刪除總表資料
+                //db.SummaryTable.Remove(stData);
+                //刪除股票表資料
+                db.StockHistory.Remove(obj);
+            }
+            db.SaveChanges();
+
+            //計算與登錄股票現值
+            AVGCalculator calculator = new AVGCalculator();
+            var name = Convert.ToString(Session["User"]);
+            decimal pvsum = calculator.getPVsum(name);
+            var ud = calculator.GetUserdata(name);
+            UsersData userdata = new UsersData();
+            userdata.StockValue = (double)pvsum;
+            userdata.UserName = ud[0].UserName;
+            userdata.CashValue = ud[0].CashValue + (cashchange*(-1));
+            userdata.Password = ud[0].Password;
+            userdata.Email = ud[0].Email;
+            userdata.FXValue = ud[0].FXValue;
+            userdata.InsuranceValue = ud[0].InsuranceValue;
+            userdata.FundValue = ud[0].FundValue;
+            db.Entry(userdata).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+
 
         //顯示特定User的股票買賣紀錄
         public ActionResult GetAllList()
@@ -503,6 +577,7 @@ namespace F1005.Areas.Stock.Controllers
 
             var query = db.StockHistory.ToList().Where(c => c.SummaryTable.UserName == username).Select(c => new GetAllListViewModel
             {
+                stockTradeID = c.stockTradeID,
                 stockID = $"({c.stockID}){c.Stock_data.證券名稱}",
                 stockPrice = c.stockPrice,
                 stockAmount = c.stockAmount,
