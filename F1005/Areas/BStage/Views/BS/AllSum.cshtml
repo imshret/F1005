@@ -23,7 +23,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
     <script>
-        var label = ["現金","股票", "外匯" ,"儲蓄險" ,"基金"];  
+        var label = ["現金","股票", "外匯" ,"儲蓄險" ,"基金"];
 
            function calldata() {
             $.ajax({
@@ -71,8 +71,8 @@
             }
             );
         }
-     
-        $(function () {
+
+        $(document).ready(function () {
             calldata();
         });
 
