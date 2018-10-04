@@ -125,6 +125,7 @@ namespace F1005.Areas.Stock.Controllers
                 int _cashflow = (int)stockHistory.stockNetincome;
                 stockHistory.stockLastAVG = calculator.GetAvg(_username, _searchid, _invchange, _cashflow);
                 stockHistory.STId = id;
+                stockHistory.stockTP = 0;
                 db.StockHistory.Add(stockHistory);
                 db.SaveChanges();
 
@@ -579,12 +580,12 @@ namespace F1005.Areas.Stock.Controllers
             {
                 stockTradeID = c.stockTradeID,
                 stockID = $"({c.stockID}){c.Stock_data.證券名稱}",
-                stockPrice = c.stockPrice,
+                stockPrice = (c.stockPrice).Value.ToString("c2"),
                 stockAmount = c.stockAmount,
-                stockTP = c.stockTP,
-                stockFee = c.stockFee,
-                stockTax = c.stockTax,
-                stockNetincome = c.stockNetincome,
+                stockTP = c.stockTP.Value.ToString("c2"),
+                stockFee = c.stockFee.Value.ToString("c2"),
+                stockTax = c.stockTax.Value.ToString("c2"),
+                stockNetincome = c.stockNetincome.Value.ToString("c2"),
                 stockNote = c.stockNote,
                 stockDate = c.SummaryTable.TradeDate.ToShortDateString()
             });
@@ -615,18 +616,20 @@ namespace F1005.Areas.Stock.Controllers
             List<InvViewModel2> testmodel = new List<InvViewModel2>();
             foreach (var item in InvList2)
             {
-                testmodel.Add(new InvViewModel2
+                if (item.stockamount != 0)
                 {
-                    stockname = item.stockname,
-                    stockamount = item.stockamount,
-                    avgcost = calculator.GetAvg2(username, item.stockid).ToString("c2"),
-                    stocklastprice = (Convert.ToDecimal(item.stockpv)).ToString("C2"),
-                    pv=calculator.getpv(item.stockamount, item.stockpv).ToString("C0"),
-                    Net =(( (Convert.ToDecimal(item.stockpv)) - calculator.GetAvg2(username, item.stockid)) * Convert.ToDecimal( item.stockamount)).ToString("C2"),
-                    profitpercent =calculator.getProfitPercent(calculator.GetAvg2(username, item.stockid), item.stockpv).ToString("#0.00%")
+                    testmodel.Add(new InvViewModel2
+                    {
+                        stockname = item.stockname,
+                        stockamount = item.stockamount,
+                        avgcost = calculator.GetAvg2(username, item.stockid).ToString("c2"),
+                        stocklastprice = (Convert.ToDecimal(item.stockpv)).ToString("C2"),
+                        pv = calculator.getpv(item.stockamount, item.stockpv).ToString("C0"),
+                        Net = (((Convert.ToDecimal(item.stockpv)) - calculator.GetAvg2(username, item.stockid)) * Convert.ToDecimal(item.stockamount)).ToString("C2"),
+                        profitpercent = calculator.getProfitPercent(calculator.GetAvg2(username, item.stockid), item.stockpv).ToString("#0.00%")
 
-                });
-
+                    });
+                }
             }
             return Json(testmodel, JsonRequestBehavior.AllowGet);
         }

@@ -225,8 +225,10 @@
                 document.getElementById("stockSellFee").value = parseInt(SellPrice * SellAmount * Feerate);
                 document.getElementById("stockSellTax").value = parseInt(SellPrice * SellAmount * Taxrate);
                 document.getElementById("StockSellProfit").value = parseInt(Netincome);
+                $("#StockSellProfit").css("color", "black");
                 document.getElementById("stocksellNetincome").value = TotalProfit.toFixed(0);
                 document.getElementById("StocksellReturnrate").value = RR.toFixed(2);
+                $("#StocksellReturnrate").css("color", "black");
             }
             else {
 
