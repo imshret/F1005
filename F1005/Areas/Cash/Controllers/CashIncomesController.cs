@@ -166,13 +166,12 @@ namespace F1005.Areas.Cash.Controllers
             if (ModelState.IsValid)
             {
                 var username = Convert.ToString(Session["User"]);
-                var Esum = db.CashExpense.Sum(c => c.ExAmount);
-                var Isum = db.CashIncome.Sum(c => c.InAmount) + cashIncome.InAmount;
+                var Esum = db.CashExpense.Sum(c => c.ExAmount).HasValue? db.CashExpense.Sum(c => c.ExAmount):0;
+                var Isum = (db.CashIncome.Sum(c => c.InAmount) + Convert.ToInt32(cashIncome.InAmount)).HasValue? db.CashIncome.Sum(c => c.InAmount) + Convert.ToInt32(cashIncome.InAmount):0;
                 var net = Isum - Esum;
                 //算出現金淨值,更新至userdata的cashvalue
-
                 var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
-                userdata.CashValue = net+cashIncome.InAmount;
+                userdata.CashValue = (double)net;
                 db.Entry(userdata).State = EntityState.Modified;
 
                 //新增總表資料
@@ -212,16 +211,16 @@ namespace F1005.Areas.Cash.Controllers
                 //cashIncome.InCashType = id[0].InCashType;
                 //cashIncome.InDate = id[0].InDate;
 
-                //更新收入表資料
-                db.Entry(cashIncome).State = EntityState.Modified;
 
                 //更新userdata的cashvalue
-                var Esum = db.CashExpense.Sum(c => c.ExAmount);
+                var Esum = db.CashExpense.Sum(c => c.ExAmount).HasValue ? db.CashExpense.Sum(c => c.ExAmount):0;
                 var Isum = db.CashIncome.Sum(c => c.InAmount);
-                var net = Isum - Esum;
+                var net = (decimal)Isum - (decimal)Esum;
                 var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
-                userdata.CashValue = net;
+                userdata.CashValue = (double)net;
                 db.Entry(userdata).State = EntityState.Modified;
+                //更新收入表資料
+                db.Entry(cashIncome).State = EntityState.Modified;    
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -247,11 +246,11 @@ namespace F1005.Areas.Cash.Controllers
 
             //更新userdata的cashvalue
             var username = Convert.ToString(Session["User"]);
-            var Esum = db.CashExpense.Sum(c => c.ExAmount);
-            var Isum = db.CashIncome.Sum(c => c.InAmount);
+            var Esum = db.CashExpense.Sum(c => c.ExAmount).HasValue? db.CashExpense.Sum(c => c.ExAmount):0;
+            var Isum = db.CashIncome.Sum(c => c.InAmount).HasValue? db.CashIncome.Sum(c => c.InAmount):0;
             var net = Isum - Esum;
             var userdata = db.UsersData.Where(c => c.UserName == username).Select(c => c).SingleOrDefault();
-            userdata.CashValue = net;
+            userdata.CashValue = (double)net;
             db.Entry(userdata).State = EntityState.Modified;
 
             db.SaveChanges();
